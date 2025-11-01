@@ -35,7 +35,7 @@ func functionWith10Args(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 int) int {
 func BenchmarkBasicCalls(b *testing.B) {
 	b.Run("Baseline", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = i
+			globalResultInt = i
 		}
 	})
 
@@ -52,7 +52,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith1Arg(42)
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("With3Args", func(b *testing.B) {
@@ -60,7 +60,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith3Args(1, 2, 3)
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("With10Args", func(b *testing.B) {
@@ -68,7 +68,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith10Args(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -95,7 +95,7 @@ func BenchmarkInterfaceAndMethod(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = calc.Calculate()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("DirectMethodCall", func(b *testing.B) {
@@ -104,7 +104,7 @@ func BenchmarkInterfaceAndMethod(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = calc.Calculate()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -158,7 +158,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverSmall()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("PointerReceiver/Small", func(b *testing.B) {
@@ -167,7 +167,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverSmall()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("ValueReceiver/Medium", func(b *testing.B) {
@@ -176,7 +176,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverMedium()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("PointerReceiver/Medium", func(b *testing.B) {
@@ -185,7 +185,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverMedium()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("ValueReceiver/Large", func(b *testing.B) {
@@ -194,7 +194,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverLarge()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("PointerReceiver/Large", func(b *testing.B) {
@@ -203,7 +203,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverLarge()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -230,7 +230,7 @@ func BenchmarkEmbedding(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = e.value
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("PromotedMethodCall", func(b *testing.B) {
@@ -239,7 +239,7 @@ func BenchmarkEmbedding(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = e.BaseMethod()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -264,7 +264,7 @@ func BenchmarkDefer(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWithDefer()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("WithoutDefer", func(b *testing.B) {
@@ -272,7 +272,7 @@ func BenchmarkDefer(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWithoutDefer()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -307,7 +307,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("Recursion", func(b *testing.B) {
@@ -315,7 +315,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fibonacci(10)
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("Variadic", func(b *testing.B) {
@@ -323,7 +323,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = variadicFunction(1, 2, 3, 4, 5)
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -346,7 +346,7 @@ func BenchmarkInlining(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = inlinableFunction()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("NonInlinable", func(b *testing.B) {
@@ -354,7 +354,7 @@ func BenchmarkInlining(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = nonInlinableFunction()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }
 
@@ -369,7 +369,7 @@ func BenchmarkIndirectCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("MethodValue", func(b *testing.B) {
@@ -379,6 +379,6 @@ func BenchmarkIndirectCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		_ = result
+		globalResultInt = result
 	})
 }

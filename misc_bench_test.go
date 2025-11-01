@@ -18,6 +18,7 @@ var (
 	globalMiscInterface interface{}
 	globalMiscType      reflect.Type
 	globalMiscValue     reflect.Value
+	globalMiscValues    []reflect.Value
 	globalMiscErr       error
 )
 
@@ -33,15 +34,15 @@ func BenchmarkTypeAssertion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("SuccessWithCheck", func(b *testing.B) {
 		var result int
 		for i := 0; i < b.N; i++ {
-			result, _ = iface.(int)
+			result = iface.(int)
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("FailureWithCheck", func(b *testing.B) {
@@ -71,7 +72,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = len(v)
 			}
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("5Way", func(b *testing.B) {
@@ -90,7 +91,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = len(v)
 			}
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("10Way", func(b *testing.B) {
@@ -119,7 +120,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = *v
 			}
 		}
-		_ = result
+		globalMiscInt = result
 	})
 }
 
@@ -143,7 +144,7 @@ func recoverFunction() (recovered bool) {
 
 func BenchmarkPanicRecover(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = recoverFunction()
+		globalMiscBool = recoverFunction()
 	}
 }
 
@@ -165,13 +166,13 @@ func BenchmarkReflection(b *testing.B) {
 
 	b.Run("TypeOf", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = reflect.TypeOf(s)
+			globalMiscType = reflect.TypeOf(s)
 		}
 	})
 
 	b.Run("ValueOf", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = reflect.ValueOf(s)
+			globalMiscValue = reflect.ValueOf(s)
 		}
 	})
 
@@ -180,13 +181,13 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.Field1
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("FieldAccess/Reflection", func(b *testing.B) {
 		v := reflect.ValueOf(s).Elem()
 		for i := 0; i < b.N; i++ {
-			_ = v.Field(0).Int()
+			globalMiscInt = int(v.Field(0).Int())
 		}
 	})
 
@@ -195,14 +196,14 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.Method()
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("MethodCall/Reflection", func(b *testing.B) {
 		v := reflect.ValueOf(s)
 		method := v.MethodByName("Method")
 		for i := 0; i < b.N; i++ {
-			_ = method.Call(nil)
+			globalMiscValues = method.Call(nil)
 		}
 	})
 }
@@ -220,7 +221,7 @@ func BenchmarkErrorHandling(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			err := returnError()
 			if err != nil {
-				_ = err
+				globalMiscErr = err
 			}
 		}
 	})
@@ -230,7 +231,7 @@ func BenchmarkErrorHandling(b *testing.B) {
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
-						_ = r
+						globalMiscInterface = r
 					}
 				}()
 				panic("error")
@@ -249,7 +250,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = 42
 		}
-		_ = iface
+		globalMiscInterface = iface
 	})
 
 	b.Run("AssignStruct", func(b *testing.B) {
@@ -258,7 +259,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = s
 		}
-		_ = iface
+		globalMiscInterface = iface
 	})
 
 	b.Run("AssignPointer", func(b *testing.B) {
@@ -267,7 +268,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = s
 		}
-		_ = iface
+		globalMiscInterface = iface
 	})
 
 	b.Run("ExtractInt", func(b *testing.B) {
@@ -276,7 +277,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		_ = result
+		globalMiscInt = result
 	})
 }
 
@@ -315,7 +316,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = genericMax(10, 20)
 		}
-		_ = result
+		globalMiscInt = result
 	})
 
 	b.Run("Interface", func(b *testing.B) {
@@ -323,7 +324,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = interfaceMax(10, 20)
 		}
-		_ = result
+		globalMiscInt = result
 	})
 }
 
@@ -339,25 +340,25 @@ func BenchmarkRegex(b *testing.B) {
 	b.Run("CompileEachTime", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			matched, _ := regexp.MatchString(`test\d+`, input)
-			_ = matched
+			globalMiscBool = matched
 		}
 	})
 
 	b.Run("Precompiled", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = precompiledRegex.MatchString(input)
+			globalMiscBool = precompiledRegex.MatchString(input)
 		}
 	})
 
 	b.Run("StringContains", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = strings.Contains(input, "test")
+			globalMiscBool = strings.Contains(input, "test")
 		}
 	})
 
 	b.Run("StringHasPrefix", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = strings.HasPrefix(input, "This")
+			globalMiscBool = strings.HasPrefix(input, "This")
 		}
 	})
 }
@@ -371,14 +372,14 @@ func BenchmarkErrorWrapping(b *testing.B) {
 
 	b.Run("Errorf", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = fmt.Errorf("wrapped: %w", baseErr)
+			globalMiscErr = fmt.Errorf("wrapped: %w", baseErr)
 		}
 	})
 
 	b.Run("Join", func(b *testing.B) {
 		err2 := errors.New("second error")
 		for i := 0; i < b.N; i++ {
-			_ = errors.Join(baseErr, err2)
+			globalMiscErr = errors.Join(baseErr, err2)
 		}
 	})
 }

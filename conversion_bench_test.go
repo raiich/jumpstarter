@@ -28,7 +28,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.Itoa(n)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("Sprintf", func(b *testing.B) {
@@ -36,7 +36,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprintf("%d", n)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	s := "12345"
@@ -46,7 +46,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result, _ = strconv.ParseInt(s, 10, 64)
 		}
-		_ = result
+		globalConvInt64 = result
 	})
 
 	b.Run("Sscanf", func(b *testing.B) {
@@ -54,7 +54,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			fmt.Sscanf(s, "%d", &result)
 		}
-		_ = result
+		globalConvInt = result
 	})
 
 	b.Run("FormatInt/Base2", func(b *testing.B) {
@@ -62,7 +62,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 2)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("FormatInt/Base10", func(b *testing.B) {
@@ -70,7 +70,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 10)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("FormatInt/Base16", func(b *testing.B) {
@@ -78,7 +78,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 16)
 		}
-		_ = result
+		globalConvString = result
 	})
 }
 
@@ -96,7 +96,7 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = int64(i)
 		}
-		_ = result
+		globalConvInt64 = result
 	})
 
 	b.Run("Int64ToFloat64", func(b *testing.B) {
@@ -104,7 +104,7 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = float64(i64)
 		}
-		_ = result
+		globalConvFloat64 = result
 	})
 
 	b.Run("Float64ToInt", func(b *testing.B) {
@@ -112,7 +112,7 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = int(f64)
 		}
-		_ = result
+		globalConvInt = result
 	})
 }
 
@@ -129,7 +129,7 @@ func BenchmarkStringByteSliceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []byte(s)
 		}
-		_ = result
+		globalConvBytes = result
 	})
 
 	b.Run("BytesToString", func(b *testing.B) {
@@ -137,7 +137,7 @@ func BenchmarkStringByteSliceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = string(bs)
 		}
-		_ = result
+		globalConvString = result
 	})
 }
 
@@ -154,7 +154,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprintf("Hello %s %d", s, n)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("Sprint", func(b *testing.B) {
@@ -162,7 +162,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprint("Hello ", s, " ", n)
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	parts := []string{"Hello", "World", "From", "Go"}
@@ -172,7 +172,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strings.Join(parts, " ")
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("PlusOperator", func(b *testing.B) {
@@ -180,7 +180,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3]
 		}
-		_ = result
+		globalConvString = result
 	})
 
 	b.Run("Builder", func(b *testing.B) {
@@ -195,6 +195,6 @@ func BenchmarkFormatting(b *testing.B) {
 			}
 			result = sb.String()
 		}
-		_ = result
+		globalConvString = result
 	})
 }

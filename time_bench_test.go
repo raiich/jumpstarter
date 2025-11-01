@@ -19,23 +19,29 @@ var (
 
 func BenchmarkTimeOperations(b *testing.B) {
 	b.Run("Now", func(b *testing.B) {
+		var result time.Time
 		for i := 0; i < b.N; i++ {
-			_ = time.Now()
+			result = time.Now()
 		}
+		globalTime = result
 	})
 
 	start := time.Now()
 
 	b.Run("Since", func(b *testing.B) {
+		var result time.Duration
 		for i := 0; i < b.N; i++ {
-			_ = time.Since(start)
+			result = time.Since(start)
 		}
+		globalDuration = result
 	})
 
 	b.Run("NowSub", func(b *testing.B) {
+		var result time.Duration
 		for i := 0; i < b.N; i++ {
-			_ = time.Now().Sub(start)
+			result = time.Now().Sub(start)
 		}
+		globalDuration = result
 	})
 }
 
@@ -48,9 +54,11 @@ func BenchmarkTimezoneConversion(b *testing.B) {
 	loc, _ := time.LoadLocation("America/New_York")
 
 	b.Run("In", func(b *testing.B) {
+		var result time.Time
 		for i := 0; i < b.N; i++ {
-			_ = t.In(loc)
+			result = t.In(loc)
 		}
+		globalTime = result
 	})
 }
 
@@ -62,15 +70,19 @@ func BenchmarkTimeFormatting(b *testing.B) {
 	t := time.Now()
 
 	b.Run("Format", func(b *testing.B) {
+		var result string
 		for i := 0; i < b.N; i++ {
-			_ = t.Format(time.RFC3339)
+			result = t.Format(time.RFC3339)
 		}
+		globalTimeStr = result
 	})
 
 	b.Run("String", func(b *testing.B) {
+		var result string
 		for i := 0; i < b.N; i++ {
-			_ = t.String()
+			result = t.String()
 		}
+		globalTimeStr = result
 	})
 }
 
@@ -90,8 +102,7 @@ func BenchmarkTimer(b *testing.B) {
 	b.Run("After", func(b *testing.B) {
 		b.Skip("time.After creates timers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
-			ch := time.After(time.Hour)
-			_ = ch
+			globalTimeChan = time.After(time.Hour)
 		}
 	})
 
@@ -125,8 +136,7 @@ func BenchmarkTicker(b *testing.B) {
 	b.Run("Tick", func(b *testing.B) {
 		b.Skip("time.Tick creates tickers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
-			ch := time.Tick(time.Hour)
-			_ = ch
+			globalTimeChan = time.Tick(time.Hour)
 		}
 	})
 }

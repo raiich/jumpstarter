@@ -12,13 +12,13 @@
   - NewTimer: duration 0 でタイマー登録のオーバーヘッドを計測
   - AfterFunc: duration 0 で計測
   - NewTicker: time.Nanosecond で Tick ごとのオーバーヘッドを計測
+- ✅ グローバル変数への代入を全ベンチマークに適用
+  - 全9ファイルで `_ = result` パターンをグローバル変数への代入に置き換え
+  - 型アサーションの bool を受け取らない書き方に統一
 
 ## 実装中
 
-- ⚠️ グローバル変数への代入を全ベンチマークに適用
-  - function_call_bench_test.go: 一部完了
-  - allocation_bench_test.go: 一部完了
-  - その他: グローバル変数は定義済み、`_ = result` の置き換えは未完了
+なし
 
 ## 既知の問題
 

@@ -64,19 +64,19 @@ func BenchmarkJSON(b *testing.B) {
 
 	b.Run("Marshal/Small", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(small)
+			globalEncBytes, globalEncErr = json.Marshal(small)
 		}
 	})
 
 	b.Run("Marshal/Medium", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(medium)
+			globalEncBytes, globalEncErr = json.Marshal(medium)
 		}
 	})
 
 	b.Run("Marshal/Large", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(large)
+			globalEncBytes, globalEncErr = json.Marshal(large)
 		}
 	})
 
@@ -84,7 +84,7 @@ func BenchmarkJSON(b *testing.B) {
 	b.Run("Unmarshal/Small", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var result SmallJSON
-			_ = json.Unmarshal(smallJSON, &result)
+			globalEncErr = json.Unmarshal(smallJSON, &result)
 		}
 	})
 
@@ -92,7 +92,7 @@ func BenchmarkJSON(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
 			enc := json.NewEncoder(&buf)
-			_ = enc.Encode(small)
+			globalEncErr = enc.Encode(small)
 		}
 	})
 
@@ -101,7 +101,7 @@ func BenchmarkJSON(b *testing.B) {
 			buf := bytes.NewBuffer(smallJSON)
 			dec := json.NewDecoder(buf)
 			var result SmallJSON
-			_ = dec.Decode(&result)
+			globalEncErr = dec.Decode(&result)
 		}
 	})
 }
@@ -132,19 +132,19 @@ func BenchmarkJSONTags(b *testing.B) {
 
 	b.Run("NoTags", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(noTags)
+			globalEncBytes, globalEncErr = json.Marshal(noTags)
 		}
 	})
 
 	b.Run("WithTags", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(withTags)
+			globalEncBytes, globalEncErr = json.Marshal(withTags)
 		}
 	})
 
 	b.Run("WithOmitEmpty", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = json.Marshal(withOmitEmpty)
+			globalEncBytes, globalEncErr = json.Marshal(withOmitEmpty)
 		}
 	})
 }
@@ -160,13 +160,13 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
 			enc := gob.NewEncoder(&buf)
-			_ = enc.Encode(data)
+			globalEncErr = enc.Encode(data)
 		}
 	})
 
 	var gobBuf bytes.Buffer
 	enc := gob.NewEncoder(&gobBuf)
-	_ = enc.Encode(data)
+	globalEncErr = enc.Encode(data)
 	gobData := gobBuf.Bytes()
 
 	b.Run("Gob/Decode", func(b *testing.B) {
@@ -174,7 +174,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 			buf := bytes.NewBuffer(gobData)
 			dec := gob.NewDecoder(buf)
 			var result SmallJSON
-			_ = dec.Decode(&result)
+			globalEncErr = dec.Decode(&result)
 		}
 	})
 
@@ -182,7 +182,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 
 	b.Run("Base64/Encode", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = base64.StdEncoding.EncodeToString(input)
+			globalEncStr = base64.StdEncoding.EncodeToString(input)
 		}
 	})
 
@@ -190,13 +190,13 @@ func BenchmarkOtherEncodings(b *testing.B) {
 
 	b.Run("Base64/Decode", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = base64.StdEncoding.DecodeString(encoded)
+			globalEncBytes, globalEncErr = base64.StdEncoding.DecodeString(encoded)
 		}
 	})
 
 	b.Run("Hex/Encode", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = hex.EncodeToString(input)
+			globalEncStr = hex.EncodeToString(input)
 		}
 	})
 
@@ -204,7 +204,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 
 	b.Run("Hex/Decode", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, _ = hex.DecodeString(hexEncoded)
+			globalEncBytes, globalEncErr = hex.DecodeString(hexEncoded)
 		}
 	})
 }

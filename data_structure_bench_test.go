@@ -7,9 +7,10 @@ import (
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalDsInt  int
-	globalDsBool bool
-	globalDsSum  int
+	globalDsInt    int
+	globalDsBool   bool
+	globalDsSum    int
+	globalDsSlice  []int
 )
 
 // ============================================================================
@@ -29,7 +30,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = arr[i%100]
 		}
-		_ = result
+		globalDsInt = result
 	})
 
 	b.Run("SliceAccess", func(b *testing.B) {
@@ -37,7 +38,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		_ = result
+		globalDsInt = result
 	})
 }
 
@@ -58,7 +59,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		_ = result
+		globalDsInt = result
 	})
 
 	b.Run("MapAccess", func(b *testing.B) {
@@ -66,7 +67,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = m[i%100]
 		}
-		_ = result
+		globalDsInt = result
 	})
 }
 
@@ -84,7 +85,7 @@ func BenchmarkSliceCopy(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := make([]int, len(src))
 			copy(dst, src)
-			_ = dst
+			globalDsSlice = dst
 		}
 	})
 
@@ -94,14 +95,14 @@ func BenchmarkSliceCopy(b *testing.B) {
 			for j := range src {
 				dst[j] = src[j]
 			}
-			_ = dst
+			globalDsSlice = dst
 		}
 	})
 
 	b.Run("AppendVariadic", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := append([]int{}, src...)
-			_ = dst
+			globalDsSlice = dst
 		}
 	})
 }
@@ -143,7 +144,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		_ = sum
+		globalDsSum = sum
 	})
 
 	b.Run("RangeIndex", func(b *testing.B) {
@@ -154,7 +155,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		_ = sum
+		globalDsSum = sum
 	})
 
 	b.Run("RangeValue", func(b *testing.B) {
@@ -165,7 +166,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += v
 			}
 		}
-		_ = sum
+		globalDsSum = sum
 	})
 
 	b.Run("RangeBoth", func(b *testing.B) {
@@ -176,7 +177,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += j + v
 			}
 		}
-		_ = sum
+		globalDsSum = sum
 	})
 }
 
@@ -199,7 +200,7 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s1 == s2
 		}
-		_ = result
+		globalDsBool = result
 	})
 
 	b.Run("DeepEqual", func(b *testing.B) {
@@ -207,6 +208,6 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = reflect.DeepEqual(s1, s2)
 		}
-		_ = result
+		globalDsBool = result
 	})
 }

@@ -9,8 +9,9 @@ import (
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalCounter int64
-	globalBool    bool
+	globalCounter   int64
+	globalBool      bool
+	globalInterface interface{}
 )
 
 // ============================================================================
@@ -218,7 +219,7 @@ func BenchmarkSyncPool(b *testing.B) {
 
 	b.Run("Get", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = pool.Get()
+			globalInterface = pool.Get()
 		}
 	})
 
@@ -270,7 +271,7 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 	b.Run("AtomicLoad", func(b *testing.B) {
 		var counter int64
 		for i := 0; i < b.N; i++ {
-			_ = atomic.LoadInt64(&counter)
+			globalCounter = atomic.LoadInt64(&counter)
 		}
 	})
 
@@ -301,7 +302,7 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 		var counter int64
 		for i := 0; i < b.N; i++ {
 			mu.Lock()
-			_ = counter
+			globalCounter = counter
 			mu.Unlock()
 		}
 	})

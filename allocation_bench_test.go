@@ -45,7 +45,7 @@ func BenchmarkStackVsHeap(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = allocateOnStack()
 		}
-		globalInt = result
+		globalSlice = result
 	})
 
 	b.Run("Heap", func(b *testing.B) {
@@ -82,7 +82,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &SmallStructAlloc{a: 1}
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("Medium", func(b *testing.B) {
@@ -90,7 +90,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &MediumStructAlloc{a: 1, b: 2, c: 3, d: 4}
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("Large", func(b *testing.B) {
@@ -98,7 +98,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &LargeStructAlloc{a: 1, b: 2, c: 3, d: 4}
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -113,7 +113,7 @@ func BenchmarkSlicePreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				s = append(s, j)
 			}
-			_ = s
+			globalSlice = s
 		}
 	})
 
@@ -123,7 +123,7 @@ func BenchmarkSlicePreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				s = append(s, j)
 			}
-			_ = s
+			globalSlice = s
 		}
 	})
 }
@@ -138,7 +138,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = make([]int, 0, 10)
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("Literal", func(b *testing.B) {
@@ -146,7 +146,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []int{}
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("LiteralWithValues", func(b *testing.B) {
@@ -154,7 +154,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -169,7 +169,7 @@ func BenchmarkMapPreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				m[j] = j
 			}
-			_ = m
+			globalMap = m
 		}
 	})
 
@@ -179,7 +179,7 @@ func BenchmarkMapPreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				m[j] = j
 			}
-			_ = m
+			globalMap = m
 		}
 	})
 }
@@ -193,7 +193,7 @@ func BenchmarkMapOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			m := make(map[int]int)
 			m[42] = 100
-			_ = m
+			globalMap = m
 		}
 	})
 
@@ -205,7 +205,7 @@ func BenchmarkMapOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = m[42]
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("Delete", func(b *testing.B) {
@@ -230,7 +230,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = "Hello" + " " + "World"
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("StringsBuilder", func(b *testing.B) {
@@ -242,7 +242,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 			sb.WriteString("World")
 			result = sb.String()
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("BytesBuffer", func(b *testing.B) {
@@ -254,7 +254,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 			buf.WriteString("World")
 			result = buf.String()
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -271,7 +271,7 @@ func BenchmarkStringByteConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []byte(s)
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("BytesToString", func(b *testing.B) {
@@ -279,7 +279,7 @@ func BenchmarkStringByteConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = string(bs)
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -293,7 +293,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = 42
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("StructToInterface", func(b *testing.B) {
@@ -302,7 +302,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("PointerToInterface", func(b *testing.B) {
@@ -311,7 +311,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("TypeAssertion", func(b *testing.B) {
@@ -320,7 +320,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -335,7 +335,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("PointerCopy/Small", func(b *testing.B) {
@@ -344,7 +344,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("ValueCopy/Medium", func(b *testing.B) {
@@ -353,7 +353,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("PointerCopy/Medium", func(b *testing.B) {
@@ -362,7 +362,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("ValueCopy/Large", func(b *testing.B) {
@@ -371,7 +371,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("PointerCopy/Large", func(b *testing.B) {
@@ -380,7 +380,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		_ = result
+		globalSlice = result
 	})
 }
 
@@ -394,7 +394,7 @@ func BenchmarkStructInitialization(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = SmallStructAlloc{}
 		}
-		_ = result
+		globalSlice = result
 	})
 
 	b.Run("FieldSpecified", func(b *testing.B) {
@@ -402,6 +402,6 @@ func BenchmarkStructInitialization(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = SmallStructAlloc{a: 0}
 		}
-		_ = result
+		globalSlice = result
 	})
 }

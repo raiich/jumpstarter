@@ -19,15 +19,19 @@ var (
 
 func BenchmarkContextCreation(b *testing.B) {
 	b.Run("Background", func(b *testing.B) {
+		var result context.Context
 		for i := 0; i < b.N; i++ {
-			_ = context.Background()
+			result = context.Background()
 		}
+		globalCtx = result
 	})
 
 	b.Run("TODO", func(b *testing.B) {
+		var result context.Context
 		for i := 0; i < b.N; i++ {
-			_ = context.TODO()
+			result = context.TODO()
 		}
+		globalCtx = result
 	})
 }
 
@@ -43,17 +47,21 @@ func BenchmarkContextWithValue(b *testing.B) {
 
 	b.Run("WithValue", func(b *testing.B) {
 		ctx := context.Background()
+		var result context.Context
 		for i := 0; i < b.N; i++ {
-			_ = context.WithValue(ctx, key, value)
+			result = context.WithValue(ctx, key, value)
 		}
+		globalCtx = result
 	})
 
 	ctx := context.WithValue(context.Background(), key, value)
 
 	b.Run("Value", func(b *testing.B) {
+		var result interface{}
 		for i := 0; i < b.N; i++ {
-			_ = ctx.Value(key)
+			result = ctx.Value(key)
 		}
+		globalCtxValue = result
 	})
 }
 
@@ -66,7 +74,7 @@ func BenchmarkContextWithCancel(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
-			_ = ctx
+			globalCtx = ctx
 		}
 	})
 
@@ -74,7 +82,7 @@ func BenchmarkContextWithCancel(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
 			cancel()
-			_ = ctx
+			globalCtx = ctx
 		}
 	})
 
@@ -83,7 +91,7 @@ func BenchmarkContextWithCancel(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithDeadline(context.Background(), deadline)
 			cancel()
-			_ = ctx
+			globalCtx = ctx
 		}
 	})
 }
@@ -98,9 +106,11 @@ func BenchmarkNestedContextValue(b *testing.B) {
 
 	b.Run("Depth1", func(b *testing.B) {
 		ctx := context.WithValue(context.Background(), key, value)
+		var result interface{}
 		for i := 0; i < b.N; i++ {
-			_ = ctx.Value(key)
+			result = ctx.Value(key)
 		}
+		globalCtxValue = result
 	})
 
 	b.Run("Depth5", func(b *testing.B) {
@@ -110,9 +120,11 @@ func BenchmarkNestedContextValue(b *testing.B) {
 		}
 		ctx = context.WithValue(ctx, key, value)
 		b.ResetTimer()
+		var result interface{}
 		for i := 0; i < b.N; i++ {
-			_ = ctx.Value(key)
+			result = ctx.Value(key)
 		}
+		globalCtxValue = result
 	})
 
 	b.Run("Depth10", func(b *testing.B) {
@@ -122,9 +134,11 @@ func BenchmarkNestedContextValue(b *testing.B) {
 		}
 		ctx = context.WithValue(ctx, key, value)
 		b.ResetTimer()
+		var result interface{}
 		for i := 0; i < b.N; i++ {
-			_ = ctx.Value(key)
+			result = ctx.Value(key)
 		}
+		globalCtxValue = result
 	})
 }
 

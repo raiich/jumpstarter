@@ -63,28 +63,46 @@ func BenchmarkJSON(b *testing.B) {
 	}
 
 	b.Run("Marshal/Small", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(small)
+			globalEncBytes, err = json.Marshal(small)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
 	b.Run("Marshal/Medium", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(medium)
+			globalEncBytes, err = json.Marshal(medium)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
 	b.Run("Marshal/Large", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(large)
+			globalEncBytes, err = json.Marshal(large)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
-	smallJSON, _ := json.Marshal(small)
+	smallJSON, err := json.Marshal(small)
+	if err != nil {
+		b.Fatal(err)
+	}
 	b.Run("Unmarshal/Small", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var result SmallJSON
-			globalEncErr = json.Unmarshal(smallJSON, &result)
+			err := json.Unmarshal(smallJSON, &result)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
@@ -92,7 +110,10 @@ func BenchmarkJSON(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
 			enc := json.NewEncoder(&buf)
-			globalEncErr = enc.Encode(small)
+			err := enc.Encode(small)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
@@ -101,7 +122,10 @@ func BenchmarkJSON(b *testing.B) {
 			buf := bytes.NewBuffer(smallJSON)
 			dec := json.NewDecoder(buf)
 			var result SmallJSON
-			globalEncErr = dec.Decode(&result)
+			err := dec.Decode(&result)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 }
@@ -131,20 +155,32 @@ func BenchmarkJSONTags(b *testing.B) {
 	withOmitEmpty := WithOmitEmpty{Name: "Alice", Age: 30, Email: "alice@example.com"}
 
 	b.Run("NoTags", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(noTags)
+			globalEncBytes, err = json.Marshal(noTags)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
 	b.Run("WithTags", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(withTags)
+			globalEncBytes, err = json.Marshal(withTags)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
 	b.Run("WithOmitEmpty", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = json.Marshal(withOmitEmpty)
+			globalEncBytes, err = json.Marshal(withOmitEmpty)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 }
@@ -160,13 +196,19 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
 			enc := gob.NewEncoder(&buf)
-			globalEncErr = enc.Encode(data)
+			err := enc.Encode(data)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
 	var gobBuf bytes.Buffer
 	enc := gob.NewEncoder(&gobBuf)
-	globalEncErr = enc.Encode(data)
+	err := enc.Encode(data)
+	if err != nil {
+		b.Fatal(err)
+	}
 	gobData := gobBuf.Bytes()
 
 	b.Run("Gob/Decode", func(b *testing.B) {
@@ -174,7 +216,10 @@ func BenchmarkOtherEncodings(b *testing.B) {
 			buf := bytes.NewBuffer(gobData)
 			dec := gob.NewDecoder(buf)
 			var result SmallJSON
-			globalEncErr = dec.Decode(&result)
+			err := dec.Decode(&result)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
@@ -189,8 +234,12 @@ func BenchmarkOtherEncodings(b *testing.B) {
 	encoded := base64.StdEncoding.EncodeToString(input)
 
 	b.Run("Base64/Decode", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = base64.StdEncoding.DecodeString(encoded)
+			globalEncBytes, err = base64.StdEncoding.DecodeString(encoded)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 
@@ -203,8 +252,12 @@ func BenchmarkOtherEncodings(b *testing.B) {
 	hexEncoded := hex.EncodeToString(input)
 
 	b.Run("Hex/Decode", func(b *testing.B) {
+		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, globalEncErr = hex.DecodeString(hexEncoded)
+			globalEncBytes, err = hex.DecodeString(hexEncoded)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 	})
 }

@@ -337,10 +337,15 @@ func BenchmarkRegex(b *testing.B) {
 	input := "This is test123 string"
 
 	b.Run("CompileEachTime", func(b *testing.B) {
+		var matched bool
+		var err error
 		for i := 0; i < b.N; i++ {
-			matched, _ := regexp.MatchString(`test\d+`, input)
-			globalMiscBool = matched
+			matched, err = regexp.MatchString(`test\d+`, input)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
+		globalMiscBool = matched
 	})
 
 	b.Run("Precompiled", func(b *testing.B) {

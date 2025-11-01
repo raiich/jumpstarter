@@ -43,8 +43,12 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 
 	b.Run("ParseInt", func(b *testing.B) {
 		var result int64
+		var err error
 		for i := 0; i < b.N; i++ {
-			result, _ = strconv.ParseInt(s, 10, 64)
+			result, err = strconv.ParseInt(s, 10, 64)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 		globalConvInt64 = result
 	})

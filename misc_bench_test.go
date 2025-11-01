@@ -1,0 +1,417 @@
+package jumpstarter
+
+import (
+	"errors"
+	"fmt"
+	"reflect"
+	"regexp"
+	"sort"
+	"strings"
+	"testing"
+)
+
+// ============================================================================
+// 型アサーション
+// ============================================================================
+
+func BenchmarkTypeAssertion(b *testing.B) {
+	var iface interface{} = 42
+
+	b.Run("Success", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			result = iface.(int)
+		}
+		_ = result
+	})
+
+	b.Run("SuccessWithCheck", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			result, _ = iface.(int)
+		}
+		_ = result
+	})
+
+	b.Run("FailureWithCheck", func(b *testing.B) {
+		var result string
+		var ok bool
+		for i := 0; i < b.N; i++ {
+			result, ok = iface.(string)
+		}
+		_, _ = result, ok
+	})
+}
+
+// ============================================================================
+// 型switch
+// ============================================================================
+
+func BenchmarkTypeSwitch(b *testing.B) {
+	var iface interface{} = 42
+
+	b.Run("2Way", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			switch v := iface.(type) {
+			case int:
+				result = v
+			case string:
+				result = len(v)
+			}
+		}
+		_ = result
+	})
+
+	b.Run("5Way", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			switch v := iface.(type) {
+			case int:
+				result = v
+			case string:
+				result = len(v)
+			case bool:
+				result = 0
+			case float64:
+				result = int(v)
+			case []byte:
+				result = len(v)
+			}
+		}
+		_ = result
+	})
+
+	b.Run("10Way", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			switch v := iface.(type) {
+			case int:
+				result = v
+			case string:
+				result = len(v)
+			case bool:
+				result = 0
+			case float64:
+				result = int(v)
+			case []byte:
+				result = len(v)
+			case int64:
+				result = int(v)
+			case uint:
+				result = int(v)
+			case []int:
+				result = len(v)
+			case map[string]int:
+				result = len(v)
+			case *int:
+				result = *v
+			}
+		}
+		_ = result
+	})
+}
+
+// ============================================================================
+// panic/recover
+// ============================================================================
+
+func panicFunction() {
+	panic("error")
+}
+
+func recoverFunction() (recovered bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			recovered = true
+		}
+	}()
+	panicFunction()
+	return false
+}
+
+func BenchmarkPanicRecover(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = recoverFunction()
+	}
+}
+
+// ============================================================================
+// reflection操作
+// ============================================================================
+
+type ReflectStruct struct {
+	Field1 int
+	Field2 string
+}
+
+func (r *ReflectStruct) Method() int {
+	return r.Field1
+}
+
+func BenchmarkReflection(b *testing.B) {
+	s := &ReflectStruct{Field1: 42, Field2: "test"}
+
+	b.Run("TypeOf", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = reflect.TypeOf(s)
+		}
+	})
+
+	b.Run("ValueOf", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = reflect.ValueOf(s)
+		}
+	})
+
+	b.Run("FieldAccess/Direct", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			result = s.Field1
+		}
+		_ = result
+	})
+
+	b.Run("FieldAccess/Reflection", func(b *testing.B) {
+		v := reflect.ValueOf(s).Elem()
+		for i := 0; i < b.N; i++ {
+			_ = v.Field(0).Int()
+		}
+	})
+
+	b.Run("MethodCall/Direct", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			result = s.Method()
+		}
+		_ = result
+	})
+
+	b.Run("MethodCall/Reflection", func(b *testing.B) {
+		v := reflect.ValueOf(s)
+		method := v.MethodByName("Method")
+		for i := 0; i < b.N; i++ {
+			_ = method.Call(nil)
+		}
+	})
+}
+
+// ============================================================================
+// エラーハンドリング
+// ============================================================================
+
+func returnError() error {
+	return errors.New("error")
+}
+
+func BenchmarkErrorHandling(b *testing.B) {
+	b.Run("ErrorReturn", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			err := returnError()
+			if err != nil {
+				_ = err
+			}
+		}
+	})
+
+	b.Run("PanicRecover", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						_ = r
+					}
+				}()
+				panic("error")
+			}()
+		}
+	})
+}
+
+// ============================================================================
+// interface{}の操作
+// ============================================================================
+
+func BenchmarkInterfaceOperations(b *testing.B) {
+	b.Run("AssignInt", func(b *testing.B) {
+		var iface interface{}
+		for i := 0; i < b.N; i++ {
+			iface = 42
+		}
+		_ = iface
+	})
+
+	b.Run("AssignStruct", func(b *testing.B) {
+		s := ReflectStruct{Field1: 42, Field2: "test"}
+		var iface interface{}
+		for i := 0; i < b.N; i++ {
+			iface = s
+		}
+		_ = iface
+	})
+
+	b.Run("AssignPointer", func(b *testing.B) {
+		s := &ReflectStruct{Field1: 42, Field2: "test"}
+		var iface interface{}
+		for i := 0; i < b.N; i++ {
+			iface = s
+		}
+		_ = iface
+	})
+
+	b.Run("ExtractInt", func(b *testing.B) {
+		var iface interface{} = 42
+		var result int
+		for i := 0; i < b.N; i++ {
+			result = iface.(int)
+		}
+		_ = result
+	})
+}
+
+// ============================================================================
+// ジェネリクス vs interface{}
+// ============================================================================
+
+func genericMax[T int | float64](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func interfaceMax(a, b interface{}) interface{} {
+	switch av := a.(type) {
+	case int:
+		bv := b.(int)
+		if av > bv {
+			return av
+		}
+		return bv
+	case float64:
+		bv := b.(float64)
+		if av > bv {
+			return av
+		}
+		return bv
+	}
+	return nil
+}
+
+func BenchmarkGenericsVsInterface(b *testing.B) {
+	b.Run("Generics", func(b *testing.B) {
+		var result int
+		for i := 0; i < b.N; i++ {
+			result = genericMax(10, 20)
+		}
+		_ = result
+	})
+
+	b.Run("Interface", func(b *testing.B) {
+		var result interface{}
+		for i := 0; i < b.N; i++ {
+			result = interfaceMax(10, 20)
+		}
+		_ = result
+	})
+}
+
+// ============================================================================
+// 正規表現
+// ============================================================================
+
+var precompiledRegex = regexp.MustCompile(`test\d+`)
+
+func BenchmarkRegex(b *testing.B) {
+	input := "This is test123 string"
+
+	b.Run("CompileEachTime", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			matched, _ := regexp.MatchString(`test\d+`, input)
+			_ = matched
+		}
+	})
+
+	b.Run("Precompiled", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = precompiledRegex.MatchString(input)
+		}
+	})
+
+	b.Run("StringContains", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = strings.Contains(input, "test")
+		}
+	})
+
+	b.Run("StringHasPrefix", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = strings.HasPrefix(input, "This")
+		}
+	})
+}
+
+// ============================================================================
+// エラーラッピング
+// ============================================================================
+
+func BenchmarkErrorWrapping(b *testing.B) {
+	baseErr := errors.New("base error")
+
+	b.Run("Errorf", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = fmt.Errorf("wrapped: %w", baseErr)
+		}
+	})
+
+	b.Run("Join", func(b *testing.B) {
+		err2 := errors.New("second error")
+		for i := 0; i < b.N; i++ {
+			_ = errors.Join(baseErr, err2)
+		}
+	})
+}
+
+// ============================================================================
+// ソート
+// ============================================================================
+
+func BenchmarkSort(b *testing.B) {
+	data := make([]int, 1000)
+	for i := range data {
+		data[i] = 1000 - i
+	}
+
+	b.Run("Ints", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			temp := make([]int, len(data))
+			copy(temp, data)
+			sort.Ints(temp)
+		}
+	})
+
+	b.Run("Slice", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			temp := make([]int, len(data))
+			copy(temp, data)
+			sort.Slice(temp, func(i, j int) bool {
+				return temp[i] < temp[j]
+			})
+		}
+	})
+
+	b.Run("CustomSort", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			temp := make([]int, len(data))
+			copy(temp, data)
+			// 簡易的なバブルソート
+			for j := 0; j < len(temp); j++ {
+				for k := j + 1; k < len(temp); k++ {
+					if temp[j] > temp[k] {
+						temp[j], temp[k] = temp[k], temp[j]
+					}
+				}
+			}
+		}
+	})
+}

@@ -40,7 +40,11 @@ func BenchmarkTypeAssertion(b *testing.B) {
 	b.Run("SuccessWithCheck", func(b *testing.B) {
 		var result int
 		for i := 0; i < b.N; i++ {
-			result = iface.(int)
+			var ok bool
+			result, ok = iface.(int)
+			if !ok {
+				b.Fatal("type assertion failed")
+			}
 		}
 		globalMiscInt = result
 	})
@@ -48,7 +52,11 @@ func BenchmarkTypeAssertion(b *testing.B) {
 	b.Run("FailureWithCheck", func(b *testing.B) {
 		var result string
 		for i := 0; i < b.N; i++ {
-			result = iface.(string)
+			var ok bool
+			result, ok = iface.(string)
+			if ok {
+				b.Fatal("type assertion should have failed")
+			}
 		}
 		globalMiscString = result
 	})
@@ -294,13 +302,19 @@ func genericMax[T int | float64](a, b T) T {
 func interfaceMax(a, b interface{}) interface{} {
 	switch av := a.(type) {
 	case int:
-		bv := b.(int)
+		bv, ok := b.(int)
+		if !ok {
+			return nil
+		}
 		if av > bv {
 			return av
 		}
 		return bv
 	case float64:
-		bv := b.(float64)
+		bv, ok := b.(float64)
+		if !ok {
+			return nil
+		}
 		if av > bv {
 			return av
 		}

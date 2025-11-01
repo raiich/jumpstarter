@@ -51,7 +51,10 @@ func BenchmarkTimeOperations(b *testing.B) {
 
 func BenchmarkTimezoneConversion(b *testing.B) {
 	t := time.Now()
-	loc, _ := time.LoadLocation("America/New_York")
+	loc, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		b.Fatal(err)
+	}
 
 	b.Run("In", func(b *testing.B) {
 		var result time.Time

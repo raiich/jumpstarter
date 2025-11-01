@@ -217,9 +217,11 @@ func BenchmarkSyncPool(b *testing.B) {
 	}
 
 	b.Run("Get", func(b *testing.B) {
+		var result interface{}
 		for i := 0; i < b.N; i++ {
-			globalInterface = pool.Get()
+			result = pool.Get()
 		}
+		globalInterface = result
 	})
 
 	b.Run("Put", func(b *testing.B) {
@@ -269,9 +271,11 @@ func BenchmarkWaitGroup(b *testing.B) {
 func BenchmarkAtomicVsMutex(b *testing.B) {
 	b.Run("AtomicLoad", func(b *testing.B) {
 		var counter int64
+		var result int64
 		for i := 0; i < b.N; i++ {
-			globalCounter = atomic.LoadInt64(&counter)
+			result = atomic.LoadInt64(&counter)
 		}
+		globalCounter = result
 	})
 
 	b.Run("AtomicStore", func(b *testing.B) {

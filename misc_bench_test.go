@@ -150,9 +150,11 @@ func recoverFunction() (recovered bool) {
 }
 
 func BenchmarkPanicRecover(b *testing.B) {
+	var result bool
 	for i := 0; i < b.N; i++ {
-		globalMiscBool = recoverFunction()
+		result = recoverFunction()
 	}
+	globalMiscBool = result
 }
 
 // ============================================================================
@@ -172,15 +174,19 @@ func BenchmarkReflection(b *testing.B) {
 	s := &ReflectStruct{Field1: 42, Field2: "test"}
 
 	b.Run("TypeOf", func(b *testing.B) {
+		var result reflect.Type
 		for i := 0; i < b.N; i++ {
-			globalMiscType = reflect.TypeOf(s)
+			result = reflect.TypeOf(s)
 		}
+		globalMiscType = result
 	})
 
 	b.Run("ValueOf", func(b *testing.B) {
+		var result reflect.Value
 		for i := 0; i < b.N; i++ {
-			globalMiscValue = reflect.ValueOf(s)
+			result = reflect.ValueOf(s)
 		}
+		globalMiscValue = result
 	})
 
 	b.Run("FieldAccess/Direct", func(b *testing.B) {
@@ -193,9 +199,11 @@ func BenchmarkReflection(b *testing.B) {
 
 	b.Run("FieldAccess/Reflection", func(b *testing.B) {
 		v := reflect.ValueOf(s).Elem()
+		var result int
 		for i := 0; i < b.N; i++ {
-			globalMiscInt = int(v.Field(0).Int())
+			result = int(v.Field(0).Int())
 		}
+		globalMiscInt = result
 	})
 
 	b.Run("MethodCall/Direct", func(b *testing.B) {
@@ -209,9 +217,11 @@ func BenchmarkReflection(b *testing.B) {
 	b.Run("MethodCall/Reflection", func(b *testing.B) {
 		v := reflect.ValueOf(s)
 		method := v.MethodByName("Method")
+		var result []reflect.Value
 		for i := 0; i < b.N; i++ {
-			globalMiscValues = method.Call(nil)
+			result = method.Call(nil)
 		}
+		globalMiscValues = result
 	})
 }
 
@@ -363,21 +373,27 @@ func BenchmarkRegex(b *testing.B) {
 	})
 
 	b.Run("Precompiled", func(b *testing.B) {
+		var result bool
 		for i := 0; i < b.N; i++ {
-			globalMiscBool = precompiledRegex.MatchString(input)
+			result = precompiledRegex.MatchString(input)
 		}
+		globalMiscBool = result
 	})
 
 	b.Run("StringContains", func(b *testing.B) {
+		var result bool
 		for i := 0; i < b.N; i++ {
-			globalMiscBool = strings.Contains(input, "test")
+			result = strings.Contains(input, "test")
 		}
+		globalMiscBool = result
 	})
 
 	b.Run("StringHasPrefix", func(b *testing.B) {
+		var result bool
 		for i := 0; i < b.N; i++ {
-			globalMiscBool = strings.HasPrefix(input, "This")
+			result = strings.HasPrefix(input, "This")
 		}
+		globalMiscBool = result
 	})
 }
 
@@ -389,16 +405,20 @@ func BenchmarkErrorWrapping(b *testing.B) {
 	baseErr := errors.New("base error")
 
 	b.Run("Errorf", func(b *testing.B) {
+		var result error
 		for i := 0; i < b.N; i++ {
-			globalMiscErr = fmt.Errorf("wrapped: %w", baseErr)
+			result = fmt.Errorf("wrapped: %w", baseErr)
 		}
+		globalMiscErr = result
 	})
 
 	b.Run("Join", func(b *testing.B) {
 		err2 := errors.New("second error")
+		var result error
 		for i := 0; i < b.N; i++ {
-			globalMiscErr = errors.Join(baseErr, err2)
+			result = errors.Join(baseErr, err2)
 		}
+		globalMiscErr = result
 	})
 }
 

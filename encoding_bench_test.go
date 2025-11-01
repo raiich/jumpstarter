@@ -63,33 +63,39 @@ func BenchmarkJSON(b *testing.B) {
 	}
 
 	b.Run("Marshal/Small", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(small)
+			result, err = json.Marshal(small)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	b.Run("Marshal/Medium", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(medium)
+			result, err = json.Marshal(medium)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	b.Run("Marshal/Large", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(large)
+			result, err = json.Marshal(large)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	smallJSON, err := json.Marshal(small)
@@ -155,33 +161,39 @@ func BenchmarkJSONTags(b *testing.B) {
 	withOmitEmpty := WithOmitEmpty{Name: "Alice", Age: 30, Email: "alice@example.com"}
 
 	b.Run("NoTags", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(noTags)
+			result, err = json.Marshal(noTags)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	b.Run("WithTags", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(withTags)
+			result, err = json.Marshal(withTags)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	b.Run("WithOmitEmpty", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = json.Marshal(withOmitEmpty)
+			result, err = json.Marshal(withOmitEmpty)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 }
 
@@ -226,38 +238,46 @@ func BenchmarkOtherEncodings(b *testing.B) {
 	input := []byte("Hello, World! This is a test string for encoding.")
 
 	b.Run("Base64/Encode", func(b *testing.B) {
+		var result string
 		for i := 0; i < b.N; i++ {
-			globalEncStr = base64.StdEncoding.EncodeToString(input)
+			result = base64.StdEncoding.EncodeToString(input)
 		}
+		globalEncStr = result
 	})
 
 	encoded := base64.StdEncoding.EncodeToString(input)
 
 	b.Run("Base64/Decode", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = base64.StdEncoding.DecodeString(encoded)
+			result, err = base64.StdEncoding.DecodeString(encoded)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 
 	b.Run("Hex/Encode", func(b *testing.B) {
+		var result string
 		for i := 0; i < b.N; i++ {
-			globalEncStr = hex.EncodeToString(input)
+			result = hex.EncodeToString(input)
 		}
+		globalEncStr = result
 	})
 
 	hexEncoded := hex.EncodeToString(input)
 
 	b.Run("Hex/Decode", func(b *testing.B) {
+		var result []byte
 		var err error
 		for i := 0; i < b.N; i++ {
-			globalEncBytes, err = hex.DecodeString(hexEncoded)
+			result, err = hex.DecodeString(hexEncoded)
 			if err != nil {
 				b.Fatal(err)
 			}
 		}
+		globalEncBytes = result
 	})
 }

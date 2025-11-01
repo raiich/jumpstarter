@@ -56,7 +56,10 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 	b.Run("Sscanf", func(b *testing.B) {
 		var result int
 		for i := 0; i < b.N; i++ {
-			fmt.Sscanf(s, "%d", &result)
+			_, err := fmt.Sscanf(s, "%d", &result)
+			if err != nil {
+				b.Fatal(err)
+			}
 		}
 		globalConvInt = result
 	})
@@ -193,9 +196,13 @@ func BenchmarkFormatting(b *testing.B) {
 			var sb strings.Builder
 			for j, part := range parts {
 				if j > 0 {
-					sb.WriteString(" ")
+					if _, err := sb.WriteString(" "); err != nil {
+						b.Fatal(err)
+					}
 				}
-				sb.WriteString(part)
+				if _, err := sb.WriteString(part); err != nil {
+					b.Fatal(err)
+				}
 			}
 			result = sb.String()
 		}

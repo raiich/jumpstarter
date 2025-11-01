@@ -237,9 +237,15 @@ func BenchmarkStringConcatenation(b *testing.B) {
 		var result string
 		for i := 0; i < b.N; i++ {
 			var sb strings.Builder
-			sb.WriteString("Hello")
-			sb.WriteString(" ")
-			sb.WriteString("World")
+			if _, err := sb.WriteString("Hello"); err != nil {
+				b.Fatal(err)
+			}
+			if _, err := sb.WriteString(" "); err != nil {
+				b.Fatal(err)
+			}
+			if _, err := sb.WriteString("World"); err != nil {
+				b.Fatal(err)
+			}
 			result = sb.String()
 		}
 		globalString = result
@@ -249,9 +255,15 @@ func BenchmarkStringConcatenation(b *testing.B) {
 		var result string
 		for i := 0; i < b.N; i++ {
 			var buf bytes.Buffer
-			buf.WriteString("Hello")
-			buf.WriteString(" ")
-			buf.WriteString("World")
+			if _, err := buf.WriteString("Hello"); err != nil {
+				b.Fatal(err)
+			}
+			if _, err := buf.WriteString(" "); err != nil {
+				b.Fatal(err)
+			}
+			if _, err := buf.WriteString("World"); err != nil {
+				b.Fatal(err)
+			}
 			result = buf.String()
 		}
 		globalString = result

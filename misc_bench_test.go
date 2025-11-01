@@ -47,11 +47,10 @@ func BenchmarkTypeAssertion(b *testing.B) {
 
 	b.Run("FailureWithCheck", func(b *testing.B) {
 		var result string
-		var ok bool
 		for i := 0; i < b.N; i++ {
-			result, ok = iface.(string)
+			result = iface.(string)
 		}
-		_, _ = result, ok
+		globalMiscString = result
 	})
 }
 

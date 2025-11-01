@@ -7,12 +7,6 @@ import (
 	"testing"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalCounter int64
-	globalBool    bool
-)
-
 // ============================================================================
 // goroutineの起動と終了
 // ============================================================================
@@ -209,6 +203,9 @@ func BenchmarkSyncOnce(b *testing.B) {
 // sync.PoolのGet/Put操作
 // ============================================================================
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalSyncPoolInterface interface{}
+
 func BenchmarkSyncPool(b *testing.B) {
 	pool := &sync.Pool{
 		New: func() interface{} {
@@ -221,7 +218,7 @@ func BenchmarkSyncPool(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = pool.Get()
 		}
-		globalInterface = result
+		globalSyncPoolInterface = result
 	})
 
 	b.Run("Put", func(b *testing.B) {
@@ -268,6 +265,9 @@ func BenchmarkWaitGroup(b *testing.B) {
 // atomic操作 vs mutex
 // ============================================================================
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalAtomicVsMutexCounter int64
+
 func BenchmarkAtomicVsMutex(b *testing.B) {
 	b.Run("AtomicLoad", func(b *testing.B) {
 		var counter int64
@@ -275,7 +275,7 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = atomic.LoadInt64(&counter)
 		}
-		globalCounter = result
+		globalAtomicVsMutexCounter = result
 	})
 
 	b.Run("AtomicStore", func(b *testing.B) {
@@ -303,11 +303,13 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 	b.Run("MutexLoad", func(b *testing.B) {
 		var mu sync.Mutex
 		var counter int64
+		var result int64
 		for i := 0; i < b.N; i++ {
 			mu.Lock()
-			globalCounter = counter
+			result = counter
 			mu.Unlock()
 		}
+		globalAtomicVsMutexCounter = result
 	})
 
 	b.Run("MutexStore", func(b *testing.B) {
@@ -318,7 +320,7 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 			counter = int64(i)
 			mu.Unlock()
 		}
-		globalCounter = counter
+		globalAtomicVsMutexCounter = counter
 	})
 }
 

@@ -6,16 +6,12 @@ import (
 	"time"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalCtx       context.Context
-	globalCtxValue  interface{}
-	globalCtxCancel context.CancelFunc
-)
-
 // ============================================================================
 // コンテキストの基本操作
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalContextCreationCtx context.Context
 
 func BenchmarkContextCreation(b *testing.B) {
 	b.Run("Background", func(b *testing.B) {
@@ -23,7 +19,7 @@ func BenchmarkContextCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = context.Background()
 		}
-		globalCtx = result
+		globalContextCreationCtx = result
 	})
 
 	b.Run("TODO", func(b *testing.B) {
@@ -31,7 +27,7 @@ func BenchmarkContextCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = context.TODO()
 		}
-		globalCtx = result
+		globalContextCreationCtx = result
 	})
 }
 
@@ -40,6 +36,12 @@ func BenchmarkContextCreation(b *testing.B) {
 // ============================================================================
 
 type contextKey string
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalContextWithValueCtx   context.Context
+	globalContextWithValueValue interface{}
+)
 
 func BenchmarkContextWithValue(b *testing.B) {
 	key := contextKey("key")
@@ -51,7 +53,7 @@ func BenchmarkContextWithValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = context.WithValue(ctx, key, value)
 		}
-		globalCtx = result
+		globalContextWithValueCtx = result
 	})
 
 	ctx := context.WithValue(context.Background(), key, value)
@@ -61,7 +63,7 @@ func BenchmarkContextWithValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = ctx.Value(key)
 		}
-		globalCtxValue = result
+		globalContextWithValueValue = result
 	})
 }
 
@@ -69,12 +71,15 @@ func BenchmarkContextWithValue(b *testing.B) {
 // context.WithCancel / WithTimeout / WithDeadline
 // ============================================================================
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalContextWithCancelCtx context.Context
+
 func BenchmarkContextWithCancel(b *testing.B) {
 	b.Run("WithCancel", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
-			globalCtx = ctx
+			globalContextWithCancelCtx = ctx
 		}
 	})
 
@@ -82,7 +87,7 @@ func BenchmarkContextWithCancel(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
 			cancel()
-			globalCtx = ctx
+			globalContextWithCancelCtx = ctx
 		}
 	})
 
@@ -91,7 +96,7 @@ func BenchmarkContextWithCancel(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			ctx, cancel := context.WithDeadline(context.Background(), deadline)
 			cancel()
-			globalCtx = ctx
+			globalContextWithCancelCtx = ctx
 		}
 	})
 }
@@ -99,6 +104,9 @@ func BenchmarkContextWithCancel(b *testing.B) {
 // ============================================================================
 // ネストしたコンテキストからの値取得
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalNestedContextValueValue interface{}
 
 func BenchmarkNestedContextValue(b *testing.B) {
 	key := contextKey("key")
@@ -110,7 +118,7 @@ func BenchmarkNestedContextValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = ctx.Value(key)
 		}
-		globalCtxValue = result
+		globalNestedContextValueValue = result
 	})
 
 	b.Run("Depth5", func(b *testing.B) {
@@ -124,7 +132,7 @@ func BenchmarkNestedContextValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = ctx.Value(key)
 		}
-		globalCtxValue = result
+		globalNestedContextValueValue = result
 	})
 
 	b.Run("Depth10", func(b *testing.B) {
@@ -138,7 +146,7 @@ func BenchmarkNestedContextValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = ctx.Value(key)
 		}
-		globalCtxValue = result
+		globalNestedContextValueValue = result
 	})
 }
 

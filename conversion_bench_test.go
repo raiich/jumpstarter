@@ -7,18 +7,16 @@ import (
 	"testing"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalConvString  string
-	globalConvInt     int
-	globalConvInt64   int64
-	globalConvFloat64 float64
-	globalConvBytes   []byte
-)
-
 // ============================================================================
 // 数値と文字列の変換
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalNumberStringConversionString string
+	globalNumberStringConversionInt    int
+	globalNumberStringConversionInt64  int64
+)
 
 func BenchmarkNumberStringConversion(b *testing.B) {
 	n := 12345
@@ -28,7 +26,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.Itoa(n)
 		}
-		globalConvString = result
+		globalNumberStringConversionString = result
 	})
 
 	b.Run("Sprintf", func(b *testing.B) {
@@ -36,7 +34,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprintf("%d", n)
 		}
-		globalConvString = result
+		globalNumberStringConversionString = result
 	})
 
 	s := "12345"
@@ -50,7 +48,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalConvInt64 = result
+		globalNumberStringConversionInt64 = result
 	})
 
 	b.Run("Sscanf", func(b *testing.B) {
@@ -61,7 +59,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalConvInt = result
+		globalNumberStringConversionInt = result
 	})
 
 	b.Run("FormatInt/Base2", func(b *testing.B) {
@@ -69,7 +67,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 2)
 		}
-		globalConvString = result
+		globalNumberStringConversionString = result
 	})
 
 	b.Run("FormatInt/Base10", func(b *testing.B) {
@@ -77,7 +75,7 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 10)
 		}
-		globalConvString = result
+		globalNumberStringConversionString = result
 	})
 
 	b.Run("FormatInt/Base16", func(b *testing.B) {
@@ -85,13 +83,20 @@ func BenchmarkNumberStringConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strconv.FormatInt(int64(n), 16)
 		}
-		globalConvString = result
+		globalNumberStringConversionString = result
 	})
 }
 
 // ============================================================================
 // 数値型間の変換
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalNumericConversionInt     int
+	globalNumericConversionInt64   int64
+	globalNumericConversionFloat64 float64
+)
 
 func BenchmarkNumericConversion(b *testing.B) {
 	var i int = 12345
@@ -103,7 +108,7 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = int64(i)
 		}
-		globalConvInt64 = result
+		globalNumericConversionInt64 = result
 	})
 
 	b.Run("Int64ToFloat64", func(b *testing.B) {
@@ -111,7 +116,7 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = float64(i64)
 		}
-		globalConvFloat64 = result
+		globalNumericConversionFloat64 = result
 	})
 
 	b.Run("Float64ToInt", func(b *testing.B) {
@@ -119,13 +124,19 @@ func BenchmarkNumericConversion(b *testing.B) {
 		for j := 0; j < b.N; j++ {
 			result = int(f64)
 		}
-		globalConvInt = result
+		globalNumericConversionInt = result
 	})
 }
 
 // ============================================================================
 // 文字列とバイトスライスの相互変換
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalStringByteSliceConversionBytes  []byte
+	globalStringByteSliceConversionString string
+)
 
 func BenchmarkStringByteSliceConversion(b *testing.B) {
 	s := "Hello, World! This is a test string."
@@ -136,7 +147,7 @@ func BenchmarkStringByteSliceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []byte(s)
 		}
-		globalConvBytes = result
+		globalStringByteSliceConversionBytes = result
 	})
 
 	b.Run("BytesToString", func(b *testing.B) {
@@ -144,13 +155,16 @@ func BenchmarkStringByteSliceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = string(bs)
 		}
-		globalConvString = result
+		globalStringByteSliceConversionString = result
 	})
 }
 
 // ============================================================================
 // フォーマット操作
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalFormattingString string
 
 func BenchmarkFormatting(b *testing.B) {
 	n := 42
@@ -161,7 +175,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprintf("Hello %s %d", s, n)
 		}
-		globalConvString = result
+		globalFormattingString = result
 	})
 
 	b.Run("Sprint", func(b *testing.B) {
@@ -169,7 +183,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Sprint("Hello ", s, " ", n)
 		}
-		globalConvString = result
+		globalFormattingString = result
 	})
 
 	parts := []string{"Hello", "World", "From", "Go"}
@@ -179,7 +193,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strings.Join(parts, " ")
 		}
-		globalConvString = result
+		globalFormattingString = result
 	})
 
 	b.Run("PlusOperator", func(b *testing.B) {
@@ -187,7 +201,7 @@ func BenchmarkFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3]
 		}
-		globalConvString = result
+		globalFormattingString = result
 	})
 
 	b.Run("Builder", func(b *testing.B) {
@@ -206,6 +220,6 @@ func BenchmarkFormatting(b *testing.B) {
 			}
 			result = sb.String()
 		}
-		globalConvString = result
+		globalFormattingString = result
 	})
 }

@@ -5,17 +5,12 @@ import (
 	"testing"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalDsInt    int
-	globalDsBool   bool
-	globalDsSum    int
-	globalDsSlice  []int
-)
-
 // ============================================================================
 // 配列 vs スライスのインデックスアクセス
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalArrayVsSliceAccessInt int
 
 func BenchmarkArrayVsSliceAccess(b *testing.B) {
 	arr := [100]int{}
@@ -30,7 +25,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = arr[i%100]
 		}
-		globalDsInt = result
+		globalArrayVsSliceAccessInt = result
 	})
 
 	b.Run("SliceAccess", func(b *testing.B) {
@@ -38,13 +33,16 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		globalDsInt = result
+		globalArrayVsSliceAccessInt = result
 	})
 }
 
 // ============================================================================
 // スライスのインデックスアクセス vs マップのキーアクセス
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalSliceVsMapAccessInt int
 
 func BenchmarkSliceVsMapAccess(b *testing.B) {
 	slice := make([]int, 100)
@@ -59,7 +57,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		globalDsInt = result
+		globalSliceVsMapAccessInt = result
 	})
 
 	b.Run("MapAccess", func(b *testing.B) {
@@ -67,13 +65,16 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = m[i%100]
 		}
-		globalDsInt = result
+		globalSliceVsMapAccessInt = result
 	})
 }
 
 // ============================================================================
 // スライスのコピー
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalSliceCopySlice []int
 
 func BenchmarkSliceCopy(b *testing.B) {
 	src := make([]int, 1000)
@@ -85,7 +86,7 @@ func BenchmarkSliceCopy(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := make([]int, len(src))
 			copy(dst, src)
-			globalDsSlice = dst
+			globalSliceCopySlice = dst
 		}
 	})
 
@@ -95,14 +96,14 @@ func BenchmarkSliceCopy(b *testing.B) {
 			for j := range src {
 				dst[j] = src[j]
 			}
-			globalDsSlice = dst
+			globalSliceCopySlice = dst
 		}
 	})
 
 	b.Run("AppendVariadic", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := append([]int{}, src...)
-			globalDsSlice = dst
+			globalSliceCopySlice = dst
 		}
 	})
 }
@@ -130,6 +131,9 @@ func BenchmarkMapDelete(b *testing.B) {
 // スライスのイテレーション
 // ============================================================================
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalSliceIterationSum int
+
 func BenchmarkSliceIteration(b *testing.B) {
 	slice := make([]int, 1000)
 	for i := range slice {
@@ -144,7 +148,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		globalDsSum = sum
+		globalSliceIterationSum = sum
 	})
 
 	b.Run("RangeIndex", func(b *testing.B) {
@@ -155,7 +159,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		globalDsSum = sum
+		globalSliceIterationSum = sum
 	})
 
 	b.Run("RangeValue", func(b *testing.B) {
@@ -166,7 +170,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += v
 			}
 		}
-		globalDsSum = sum
+		globalSliceIterationSum = sum
 	})
 
 	b.Run("RangeBoth", func(b *testing.B) {
@@ -177,7 +181,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += j + v
 			}
 		}
-		globalDsSum = sum
+		globalSliceIterationSum = sum
 	})
 }
 
@@ -191,6 +195,9 @@ type CompareStruct struct {
 	C float64
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalStructComparisonBool bool
+
 func BenchmarkStructComparison(b *testing.B) {
 	s1 := CompareStruct{A: 1, B: "test", C: 3.14}
 	s2 := CompareStruct{A: 1, B: "test", C: 3.14}
@@ -200,7 +207,7 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s1 == s2
 		}
-		globalDsBool = result
+		globalStructComparisonBool = result
 	})
 
 	b.Run("DeepEqual", func(b *testing.B) {
@@ -208,6 +215,6 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = reflect.DeepEqual(s1, s2)
 		}
-		globalDsBool = result
+		globalStructComparisonBool = result
 	})
 }

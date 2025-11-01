@@ -2,12 +2,6 @@ package jumpstarter
 
 import "testing"
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalResultInt   int
-	globalResultInt64 int64
-)
-
 // ============================================================================
 // 基本的な関数呼び出し
 // ============================================================================
@@ -32,10 +26,13 @@ func functionWith10Args(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 int) int {
 	return a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalBasicCallsInt int
+
 func BenchmarkBasicCalls(b *testing.B) {
 	b.Run("Baseline", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			globalResultInt = i
+			globalBasicCallsInt = i
 		}
 	})
 
@@ -44,7 +41,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = simpleFunction()
 		}
-		globalResultInt = result
+		globalBasicCallsInt = result
 	})
 
 	b.Run("With1Arg", func(b *testing.B) {
@@ -52,7 +49,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith1Arg(42)
 		}
-		globalResultInt = result
+		globalBasicCallsInt = result
 	})
 
 	b.Run("With3Args", func(b *testing.B) {
@@ -60,7 +57,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith3Args(1, 2, 3)
 		}
-		globalResultInt = result
+		globalBasicCallsInt = result
 	})
 
 	b.Run("With10Args", func(b *testing.B) {
@@ -68,7 +65,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWith10Args(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		}
-		globalResultInt = result
+		globalBasicCallsInt = result
 	})
 }
 
@@ -88,6 +85,9 @@ func (c *concreteCalculator) Calculate() int {
 	return c.value
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalInterfaceAndMethodInt int
+
 func BenchmarkInterfaceAndMethod(b *testing.B) {
 	b.Run("InterfaceCall", func(b *testing.B) {
 		var calc Calculator = &concreteCalculator{value: 42}
@@ -95,7 +95,7 @@ func BenchmarkInterfaceAndMethod(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = calc.Calculate()
 		}
-		globalResultInt = result
+		globalInterfaceAndMethodInt = result
 	})
 
 	b.Run("DirectMethodCall", func(b *testing.B) {
@@ -104,7 +104,7 @@ func BenchmarkInterfaceAndMethod(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = calc.Calculate()
 		}
-		globalResultInt = result
+		globalInterfaceAndMethodInt = result
 	})
 }
 
@@ -151,6 +151,9 @@ func (s *LargeStruct) PointerReceiverLarge() int64 {
 	return s.a + s.b + s.c + s.d
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalReceiverTypesInt64 int64
+
 func BenchmarkReceiverTypes(b *testing.B) {
 	b.Run("ValueReceiver/Small", func(b *testing.B) {
 		s := SmallStruct{a: 1}
@@ -158,7 +161,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverSmall()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 
 	b.Run("PointerReceiver/Small", func(b *testing.B) {
@@ -167,7 +170,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverSmall()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 
 	b.Run("ValueReceiver/Medium", func(b *testing.B) {
@@ -176,7 +179,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverMedium()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 
 	b.Run("PointerReceiver/Medium", func(b *testing.B) {
@@ -185,7 +188,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverMedium()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 
 	b.Run("ValueReceiver/Large", func(b *testing.B) {
@@ -194,7 +197,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverLarge()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 
 	b.Run("PointerReceiver/Large", func(b *testing.B) {
@@ -203,7 +206,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverLarge()
 		}
-		globalResultInt64 = result
+		globalReceiverTypesInt64 = result
 	})
 }
 
@@ -223,6 +226,9 @@ type Embedded struct {
 	Base
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalEmbeddingInt int
+
 func BenchmarkEmbedding(b *testing.B) {
 	b.Run("DirectFieldAccess", func(b *testing.B) {
 		e := Embedded{Base: Base{value: 42}}
@@ -230,7 +236,7 @@ func BenchmarkEmbedding(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = e.value
 		}
-		globalResultInt = result
+		globalEmbeddingInt = result
 	})
 
 	b.Run("PromotedMethodCall", func(b *testing.B) {
@@ -239,7 +245,7 @@ func BenchmarkEmbedding(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = e.BaseMethod()
 		}
-		globalResultInt = result
+		globalEmbeddingInt = result
 	})
 }
 
@@ -258,13 +264,16 @@ func functionWithoutDefer() int {
 	return 42
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalDeferInt int
+
 func BenchmarkDefer(b *testing.B) {
 	b.Run("WithDefer", func(b *testing.B) {
 		var result int
 		for i := 0; i < b.N; i++ {
 			result = functionWithDefer()
 		}
-		globalResultInt = result
+		globalDeferInt = result
 	})
 
 	b.Run("WithoutDefer", func(b *testing.B) {
@@ -272,7 +281,7 @@ func BenchmarkDefer(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = functionWithoutDefer()
 		}
-		globalResultInt = result
+		globalDeferInt = result
 	})
 }
 
@@ -297,6 +306,9 @@ func variadicFunction(args ...int) int {
 	return sum
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalSpecialCallsInt int
+
 func BenchmarkSpecialCalls(b *testing.B) {
 	b.Run("Closure", func(b *testing.B) {
 		value := 42
@@ -307,7 +319,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		globalResultInt = result
+		globalSpecialCallsInt = result
 	})
 
 	b.Run("Recursion", func(b *testing.B) {
@@ -315,7 +327,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fibonacci(10)
 		}
-		globalResultInt = result
+		globalSpecialCallsInt = result
 	})
 
 	b.Run("Variadic", func(b *testing.B) {
@@ -323,7 +335,7 @@ func BenchmarkSpecialCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = variadicFunction(1, 2, 3, 4, 5)
 		}
-		globalResultInt = result
+		globalSpecialCallsInt = result
 	})
 }
 
@@ -340,13 +352,16 @@ func nonInlinableFunction() int {
 	return 42
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalInliningInt int
+
 func BenchmarkInlining(b *testing.B) {
 	b.Run("Inlinable", func(b *testing.B) {
 		var result int
 		for i := 0; i < b.N; i++ {
 			result = inlinableFunction()
 		}
-		globalResultInt = result
+		globalInliningInt = result
 	})
 
 	b.Run("NonInlinable", func(b *testing.B) {
@@ -354,13 +369,16 @@ func BenchmarkInlining(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = nonInlinableFunction()
 		}
-		globalResultInt = result
+		globalInliningInt = result
 	})
 }
 
 // ============================================================================
 // 間接呼び出し
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalIndirectCallsInt int
 
 func BenchmarkIndirectCalls(b *testing.B) {
 	b.Run("FunctionPointer", func(b *testing.B) {
@@ -369,7 +387,7 @@ func BenchmarkIndirectCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		globalResultInt = result
+		globalIndirectCallsInt = result
 	})
 
 	b.Run("MethodValue", func(b *testing.B) {
@@ -379,6 +397,6 @@ func BenchmarkIndirectCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fn()
 		}
-		globalResultInt = result
+		globalIndirectCallsInt = result
 	})
 }

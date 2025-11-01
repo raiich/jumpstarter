@@ -9,13 +9,6 @@ import (
 	"testing"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalEncBytes []byte
-	globalEncStr   string
-	globalEncErr   error
-)
-
 // ============================================================================
 // JSON エンコーディング
 // ============================================================================
@@ -52,6 +45,9 @@ type LargeJSON struct {
 	Field46, Field47, Field48, Field49, Field50 int
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalJSONBytes []byte
+
 func BenchmarkJSON(b *testing.B) {
 	small := SmallJSON{Name: "Alice", Age: 30, Email: "alice@example.com"}
 	medium := MediumJSON{
@@ -71,7 +67,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONBytes = result
 	})
 
 	b.Run("Marshal/Medium", func(b *testing.B) {
@@ -83,7 +79,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONBytes = result
 	})
 
 	b.Run("Marshal/Large", func(b *testing.B) {
@@ -95,7 +91,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONBytes = result
 	})
 
 	smallJSON, err := json.Marshal(small)
@@ -155,6 +151,9 @@ type WithOmitEmpty struct {
 	Email string `json:"email,omitempty"`
 }
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalJSONTagsBytes []byte
+
 func BenchmarkJSONTags(b *testing.B) {
 	noTags := NoTags{Name: "Alice", Age: 30, Email: "alice@example.com"}
 	withTags := WithTags{Name: "Alice", Age: 30, Email: "alice@example.com"}
@@ -169,7 +168,7 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONTagsBytes = result
 	})
 
 	b.Run("WithTags", func(b *testing.B) {
@@ -181,7 +180,7 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONTagsBytes = result
 	})
 
 	b.Run("WithOmitEmpty", func(b *testing.B) {
@@ -193,13 +192,19 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalJSONTagsBytes = result
 	})
 }
 
 // ============================================================================
 // その他のエンコーディング
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalOtherEncodingsBytes []byte
+	globalOtherEncodingsStr   string
+)
 
 func BenchmarkOtherEncodings(b *testing.B) {
 	data := SmallJSON{Name: "Alice", Age: 30, Email: "alice@example.com"}
@@ -242,7 +247,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = base64.StdEncoding.EncodeToString(input)
 		}
-		globalEncStr = result
+		globalOtherEncodingsStr = result
 	})
 
 	encoded := base64.StdEncoding.EncodeToString(input)
@@ -256,7 +261,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalOtherEncodingsBytes = result
 	})
 
 	b.Run("Hex/Encode", func(b *testing.B) {
@@ -264,7 +269,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = hex.EncodeToString(input)
 		}
-		globalEncStr = result
+		globalOtherEncodingsStr = result
 	})
 
 	hexEncoded := hex.EncodeToString(input)
@@ -278,6 +283,6 @@ func BenchmarkOtherEncodings(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalEncBytes = result
+		globalOtherEncodingsBytes = result
 	})
 }

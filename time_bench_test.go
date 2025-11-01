@@ -5,17 +5,15 @@ import (
 	"time"
 )
 
-// グローバル変数（コンパイラ最適化を防ぐため）
-var (
-	globalTime     time.Time
-	globalDuration time.Duration
-	globalTimeStr  string
-	globalTimeChan <-chan time.Time
-)
-
 // ============================================================================
 // 時刻操作
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalTimeOperationsTime     time.Time
+	globalTimeOperationsDuration time.Duration
+)
 
 func BenchmarkTimeOperations(b *testing.B) {
 	b.Run("Now", func(b *testing.B) {
@@ -23,7 +21,7 @@ func BenchmarkTimeOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = time.Now()
 		}
-		globalTime = result
+		globalTimeOperationsTime = result
 	})
 
 	start := time.Now()
@@ -33,7 +31,7 @@ func BenchmarkTimeOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = time.Since(start)
 		}
-		globalDuration = result
+		globalTimeOperationsDuration = result
 	})
 
 	b.Run("NowSub", func(b *testing.B) {
@@ -41,13 +39,16 @@ func BenchmarkTimeOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = time.Now().Sub(start)
 		}
-		globalDuration = result
+		globalTimeOperationsDuration = result
 	})
 }
 
 // ============================================================================
 // タイムゾーン変換
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalTimezoneConversionTime time.Time
 
 func BenchmarkTimezoneConversion(b *testing.B) {
 	t := time.Now()
@@ -61,13 +62,16 @@ func BenchmarkTimezoneConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = t.In(loc)
 		}
-		globalTime = result
+		globalTimezoneConversionTime = result
 	})
 }
 
 // ============================================================================
 // フォーマット
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalTimeFormattingStr string
 
 func BenchmarkTimeFormatting(b *testing.B) {
 	t := time.Now()
@@ -77,7 +81,7 @@ func BenchmarkTimeFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = t.Format(time.RFC3339)
 		}
-		globalTimeStr = result
+		globalTimeFormattingStr = result
 	})
 
 	b.Run("String", func(b *testing.B) {
@@ -85,13 +89,16 @@ func BenchmarkTimeFormatting(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = t.String()
 		}
-		globalTimeStr = result
+		globalTimeFormattingStr = result
 	})
 }
 
 // ============================================================================
 // タイマー操作
 // ============================================================================
+
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalTimerChan <-chan time.Time
 
 func BenchmarkTimer(b *testing.B) {
 	b.Run("NewTimer", func(b *testing.B) {
@@ -105,7 +112,7 @@ func BenchmarkTimer(b *testing.B) {
 	b.Run("After", func(b *testing.B) {
 		b.Skip("time.After creates timers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
-			globalTimeChan = time.After(time.Hour)
+			globalTimerChan = time.After(time.Hour)
 		}
 	})
 
@@ -125,6 +132,9 @@ func BenchmarkTimer(b *testing.B) {
 // ティッカー操作
 // ============================================================================
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var globalTickerChan <-chan time.Time
+
 func BenchmarkTicker(b *testing.B) {
 	b.Run("NewTicker", func(b *testing.B) {
 		ticker := time.NewTicker(time.Nanosecond)
@@ -139,7 +149,7 @@ func BenchmarkTicker(b *testing.B) {
 	b.Run("Tick", func(b *testing.B) {
 		b.Skip("time.Tick creates tickers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
-			globalTimeChan = time.Tick(time.Hour)
+			globalTickerChan = time.Tick(time.Hour)
 		}
 	})
 }

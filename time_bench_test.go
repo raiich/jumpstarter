@@ -5,6 +5,14 @@ import (
 	"time"
 )
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalTime     time.Time
+	globalDuration time.Duration
+	globalTimeStr  string
+	globalTimeChan <-chan time.Time
+)
+
 // ============================================================================
 // 時刻操作
 // ============================================================================

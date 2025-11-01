@@ -10,6 +10,17 @@ import (
 	"testing"
 )
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalMiscInt       int
+	globalMiscString    string
+	globalMiscBool      bool
+	globalMiscInterface interface{}
+	globalMiscType      reflect.Type
+	globalMiscValue     reflect.Value
+	globalMiscErr       error
+)
+
 // ============================================================================
 // 型アサーション
 // ============================================================================

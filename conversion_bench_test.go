@@ -7,6 +7,15 @@ import (
 	"testing"
 )
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalConvString  string
+	globalConvInt     int
+	globalConvInt64   int64
+	globalConvFloat64 float64
+	globalConvBytes   []byte
+)
+
 // ============================================================================
 // 数値と文字列の変換
 // ============================================================================

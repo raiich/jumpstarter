@@ -6,6 +6,23 @@ import (
 	"testing"
 )
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalInt        int
+	globalIntPtr     *int
+	globalSlice      []int
+	globalMap        map[int]int
+	globalString     string
+	globalBytes      []byte
+	globalInterface  interface{}
+	globalSmallPtr   *SmallStructAlloc
+	globalMediumPtr  *MediumStructAlloc
+	globalLargePtr   *LargeStructAlloc
+	globalSmallVal   SmallStructAlloc
+	globalMediumVal  MediumStructAlloc
+	globalLargeVal   LargeStructAlloc
+)
+
 // ============================================================================
 // スタック vs ヒープ割り当て
 // ============================================================================
@@ -28,7 +45,7 @@ func BenchmarkStackVsHeap(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = allocateOnStack()
 		}
-		_ = result
+		globalInt = result
 	})
 
 	b.Run("Heap", func(b *testing.B) {
@@ -36,7 +53,7 @@ func BenchmarkStackVsHeap(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = allocateOnHeap()
 		}
-		_ = result
+		globalIntPtr = result
 	})
 }
 

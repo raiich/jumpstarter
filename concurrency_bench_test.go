@@ -30,80 +30,102 @@ func BenchmarkGoroutine(b *testing.B) {
 func BenchmarkChannel(b *testing.B) {
 	b.Run("Unbuffered", func(b *testing.B) {
 		ch := make(chan int)
+		done := make(chan struct{})
 		go func() {
 			for {
-				<-ch
+				select {
+				case <-ch:
+				case <-done:
+					return
+				}
 			}
 		}()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			ch <- i
 		}
-	})
-
-	b.Run("Buffered/Size10", func(b *testing.B) {
-		ch := make(chan int, 10)
-		go func() {
-			for {
-				<-ch
-			}
-		}()
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
-			ch <- i
-		}
+		b.StopTimer()
+		close(done)
 	})
 
 	b.Run("BufferSize/1", func(b *testing.B) {
 		ch := make(chan int, 1)
+		done := make(chan struct{})
 		go func() {
 			for {
-				<-ch
+				select {
+				case <-ch:
+				case <-done:
+					return
+				}
 			}
 		}()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			ch <- i
 		}
+		b.StopTimer()
+		close(done)
 	})
 
 	b.Run("BufferSize/10", func(b *testing.B) {
 		ch := make(chan int, 10)
+		done := make(chan struct{})
 		go func() {
 			for {
-				<-ch
+				select {
+				case <-ch:
+				case <-done:
+					return
+				}
 			}
 		}()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			ch <- i
 		}
+		b.StopTimer()
+		close(done)
 	})
 
 	b.Run("BufferSize/100", func(b *testing.B) {
 		ch := make(chan int, 100)
+		done := make(chan struct{})
 		go func() {
 			for {
-				<-ch
+				select {
+				case <-ch:
+				case <-done:
+					return
+				}
 			}
 		}()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			ch <- i
 		}
+		b.StopTimer()
+		close(done)
 	})
 
 	b.Run("BufferSize/1000", func(b *testing.B) {
 		ch := make(chan int, 1000)
+		done := make(chan struct{})
 		go func() {
 			for {
-				<-ch
+				select {
+				case <-ch:
+				case <-done:
+					return
+				}
 			}
 		}()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			ch <- i
 		}
+		b.StopTimer()
+		close(done)
 	})
 }
 

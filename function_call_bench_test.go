@@ -2,6 +2,12 @@ package jumpstarter
 
 import "testing"
 
+// グローバル変数（コンパイラ最適化を防ぐため）
+var (
+	globalResultInt   int
+	globalResultInt64 int64
+)
+
 // ============================================================================
 // 基本的な関数呼び出し
 // ============================================================================
@@ -38,7 +44,7 @@ func BenchmarkBasicCalls(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = simpleFunction()
 		}
-		_ = result
+		globalResultInt = result
 	})
 
 	b.Run("With1Arg", func(b *testing.B) {

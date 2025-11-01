@@ -79,6 +79,7 @@ func BenchmarkTimer(b *testing.B) {
 	})
 
 	b.Run("After", func(b *testing.B) {
+		b.Skip("time.After creates timers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
 			ch := time.After(time.Hour)
 			_ = ch
@@ -110,6 +111,7 @@ func BenchmarkTicker(b *testing.B) {
 	})
 
 	b.Run("Tick", func(b *testing.B) {
+		b.Skip("time.Tick creates tickers that cannot be stopped, causing memory leaks in benchmarks")
 		for i := 0; i < b.N; i++ {
 			ch := time.Tick(time.Hour)
 			_ = ch

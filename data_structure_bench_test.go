@@ -105,17 +105,15 @@ func BenchmarkSliceCopy(b *testing.B) {
 
 func BenchmarkMapDelete(b *testing.B) {
 	b.Run("Delete", func(b *testing.B) {
-		b.StopTimer()
+		m := make(map[int]int, 100)
+		for i := 0; i < 100; i++ {
+			m[i] = i
+		}
+		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			m := make(map[int]int)
-			for j := 0; j < 100; j++ {
-				m[j] = j
-			}
-			b.StartTimer()
-			for j := 0; j < 100; j++ {
-				delete(m, j)
-			}
-			b.StopTimer()
+			key := i % 100
+			delete(m, key)
+			m[key] = key // 次の測定のために再度追加
 		}
 	})
 }

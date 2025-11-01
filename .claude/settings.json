@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'mkdir -p .claude/logs && echo \"========================================\" >> .claude/logs/conversation.log && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] USER PROMPT\" >> .claude/logs/conversation.log && echo \"========================================\" >> .claude/logs/conversation.log && cat >> .claude/logs/conversation.log && echo \"\" >> .claude/logs/conversation.log'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'mkdir -p .claude/logs && echo \"----------------------------------------\" >> .claude/logs/conversation.log && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] TOOL EXECUTED\" >> .claude/logs/conversation.log && echo \"----------------------------------------\" >> .claude/logs/conversation.log && cat >> .claude/logs/conversation.log && echo \"\" >> .claude/logs/conversation.log'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -4,7 +4,7 @@
 
 ## 設定内容
 
-`config.yaml` に定義されたフックにより、以下が自動的にログに記録されます：
+`settings.json` に定義されたフックにより、以下が自動的にログに記録されます：
 
 - **ユーザープロンプト**: あなたが Claude Code に送信した質問や指示
 - **ツール実行**: Claude Code が使用したツール（ファイル読み込み、編集、コマンド実行など）
@@ -55,5 +55,11 @@ grep "TOOL:" .claude/logs/conversation.log | sort | uniq -c
 
 ## カスタマイズ
 
-`config.yaml` を編集することで、ログの形式や記録する情報を変更できます。
-詳細は [Claude Code ドキュメント](https://docs.claude.com/claude-code) を参照してください。
+`settings.json` を編集することで、ログの形式や記録する情報を変更できます。
+詳細は [Claude Code Hooks ドキュメント](https://docs.claude.com/en/docs/claude-code/hooks) を参照してください。
+
+### 設定ファイルについて
+
+- `.claude/settings.json`: プロジェクト固有の設定（このリポジトリで使用）
+- `~/.claude/settings.json`: グローバル設定（全プロジェクトに適用）
+- `.claude/settings.local.json`: ローカル設定（Gitにコミットしない個人用設定）

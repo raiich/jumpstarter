@@ -12,11 +12,10 @@ Go言語の各種機能がどれだけのオーバーヘッドを持つかを計
 - インターフェース経由の関数呼び出し
 - 直接メソッド呼び出し
 - 値レシーバ vs ポインタレシーバ
-  - 小さい構造体（8バイト以下）
+  - 小さい構造体（8バイト）
   - 中程度の構造体（32バイト）
-  - 大きい構造体（256バイト以上）
-- 型埋め込み（embedding）のメソッド呼び出し
-- 昇格されたメソッドの呼び出しコスト
+  - 大きい構造体（256バイト）
+- 型埋め込み（embedding）の直接フィールドアクセス vs 昇格メソッド呼び出し
 - defer付き関数 vs deferなし関数
 - クロージャ呼び出し
 - 再帰関数
@@ -27,91 +26,123 @@ Go言語の各種機能がどれだけのオーバーヘッドを持つかを計
 
 ### 2. メモリ割り当て (allocation_bench_test.go)
 - スタック割り当て vs ヒープ割り当て
-- 小さい構造体の割り当て vs 大きい構造体の割り当て
+- 構造体の割り当て（サイズ別）
+  - 小さい構造体（8バイト）
+  - 中程度の構造体（32バイト）
+  - 大きい構造体（256バイト）
 - スライスの事前確保 vs 動的拡張
-  - `make([]int, 0, cap)` vs `make([]int, 0)` + append
+  - `make([]int, 0, 1000)` vs `make([]int, 0)` + append 1000回
 - スライスの作成（make vs リテラル）
-- スライスの append（容量あり vs 容量なし）
 - マップの事前容量指定 vs 指定なし
-  - `make(map[K]V, cap)` vs `make(map[K]V)`
+  - `make(map[K]V, 1000)` vs `make(map[K]V)` + 1000要素追加
 - マップの操作（追加、検索、削除）
 - 文字列の連結（+ vs strings.Builder vs bytes.Buffer）
-- 文字列とバイトスライスの変換コスト
-- インターフェース変換のコスト
-- ポインタ vs 値のコピー
-- 構造体のゼロ値初期化 vs フィールド指定
+- 文字列とバイトスライスの変換（`string([]byte)` vs `[]byte(string)`）
+- interface{}への代入と型アサーション
+- ポインタ vs 値のコピー（サイズ別: 8バイト、32バイト、256バイト）
+- 構造体のゼロ値初期化 vs フィールド指定初期化
 
 ### 3. 並行処理 (concurrency_bench_test.go)
-- goroutineの起動オーバーヘッド
-- channelの送受信
-- unbuffered channel vs buffered channel
+- goroutineの起動と終了
+- channelの送受信（unbuffered）
+- unbuffered channel vs buffered channel（バッファサイズ10）
 - 異なるバッファサイズのchannel（1, 10, 100, 1000）
-- mutexのロック/アンロック
+- mutexのロック/アンロック（競合なし vs 競合あり）
 - RWMutexの読み込みロック vs 書き込みロック
-- sync.Once
-- sync.Pool
-- sync.WaitGroup のオーバーヘッド
-- atomic操作 vs mutex
+- sync.Onceの初回実行 vs 2回目以降の呼び出し
+- sync.PoolのGet/Put操作
+- sync.WaitGroupのAdd/Done/Wait操作
+- atomic操作（Load/Store/Add/CompareAndSwap）vs mutex
 - select文のオーバーヘッド（2-way, 4-way, 8-way）
-- context によるキャンセル伝播
+- contextによるキャンセル伝播（goroutine数: 1, 10, 100）
 
 ### 4. 型変換とフォーマット (conversion_bench_test.go)
 - 数値と文字列の変換
-  - `strconv.Itoa` vs `fmt.Sprintf`
+  - `strconv.Itoa` vs `fmt.Sprintf("%d", n)`
   - `strconv.ParseInt` vs `fmt.Sscanf`
   - `strconv.FormatInt` の各種ベース（2, 10, 16）
-- 型変換のコスト
-  - `int` → `int64` → `float64`
-  - `[]byte` ↔ `string`
+- 数値型間の変換
+  - `int` → `int64`
+  - `int64` → `float64`
+  - `float64` → `int` (切り捨て)
+- 文字列とバイトスライスの相互変換
+  - `[]byte(string)` のコスト
+  - `string([]byte)` のコスト
 - フォーマット操作
   - `fmt.Sprintf` vs `fmt.Sprint`
-  - `strings.Join` vs 手動連結
+  - `strings.Join` vs 手動連結（+演算子）vs strings.Builder
 
 ### 5. データ構造 (data_structure_bench_test.go)
-- 配列 vs スライス（アクセス速度）
-- スライスのアクセス vs マップのアクセス
-- スライスのコピー: `copy()` vs ループ vs `append([]T{}, slice...)`
+- 配列 vs スライスのインデックスアクセス（要素数: 100）
+- スライスのインデックスアクセス vs マップのキーアクセス
+- スライスのコピー: `copy()` vs forループ vs `append([]T{}, slice...)`
 - マップの削除: `delete()` のコスト
-- range によるイテレーション（インデックス vs 値）
-- for文 vs range文
+- スライスのイテレーション
+  - `for i := 0; i < len(s); i++`
+  - `for i := range s` (インデックスのみ)
+  - `for _, v := range s` (値のみ)
+  - `for i, v := range s` (両方)
 - 構造体の比較: `==` vs `reflect.DeepEqual`
 
 ### 6. エンコーディング (encoding_bench_test.go)
 - JSON
   - `json.Marshal` / `json.Unmarshal`
   - `json.Encoder` / `json.Decoder` (ストリーム処理)
-  - 構造体タグの有無による影響
-  - 小さい構造体 vs 大きい構造体
+  - 構造体タグの影響（タグなし vs `json:"name"` vs `json:"name,omitempty"`）
+  - 構造体のサイズ別（3フィールド vs 10フィールド vs 50フィールド）
 - その他のエンコーディング
   - `gob.Encode` / `gob.Decode`
-  - `base64.StdEncoding`
-  - `hex.EncodeToString`
+  - `base64.StdEncoding.EncodeToString` / `DecodeString`
+  - `hex.EncodeToString` / `DecodeString`
 
 ### 7. 時刻操作 (time_bench_test.go)
 - `time.Now()` の呼び出しコスト
-- `time.Since()` vs 手動計算
-- タイムゾーン変換のオーバーヘッド
-- `time.Format` vs `time.String`
-- タイマーとティッカーの作成/破棄
+- `time.Since(t)` vs `time.Now().Sub(t)`
+- タイムゾーン変換（`time.In(loc)` のコスト）
+- `time.Format(layout)` vs `time.String()`
+- タイマー操作
+  - `time.NewTimer` の作成と停止
+  - `time.After` のチャネル受信
+  - `time.AfterFunc` のコールバック実行
+- ティッカー操作
+  - `time.NewTicker` の作成と停止
+  - `time.Tick` のチャネル受信
 
 ### 8. コンテキスト (context_bench_test.go)
 - `context.Background()` vs `context.TODO()`
-- `context.WithValue` のオーバーヘッド
+- `context.WithValue` のコンテキスト作成コスト
 - `context.WithCancel` / `WithTimeout` / `WithDeadline` の作成コスト
-- コンテキスト値の取得コスト
-- 深くネストしたコンテキストからの値取得
+- コンテキスト値の取得（`ctx.Value(key)`）
+- ネストしたコンテキストからの値取得
+  - ネスト深度: 1階層 vs 5階層 vs 10階層
+- コンテキストキャンセルの検出（`ctx.Done()` のselect）
 
 ### 9. その他の機能 (misc_bench_test.go)
-- 型アサーション（成功 vs 失敗）
-- 型switch（2-way, 5-way, 10-way）
-- panic/recover のオーバーヘッド
-- reflectionの使用（TypeOf, ValueOf, フィールドアクセス）
-- エラーハンドリング（error返却 vs panic）
-- 空インターフェースの使用
-- ジェネリクス vs インターフェース（Go 1.18+）
-- 正規表現: コンパイル vs プリコンパイル vs 文字列操作
-- エラーラッピング: `fmt.Errorf` vs `errors.Join` (Go 1.20+)
-- sort パッケージ: `sort.Slice` vs カスタム実装
+- 型アサーション
+  - 成功ケース: `v := x.(T)`
+  - 失敗ケース（panicなし）: `v, ok := x.(T)`
+- 型switch（case数: 2, 5, 10）
+- panic/recoverのオーバーヘッド
+- reflection操作
+  - `reflect.TypeOf` / `reflect.ValueOf` の呼び出し
+  - リフレクション経由のフィールドアクセス vs 直接アクセス
+  - リフレクション経由のメソッド呼び出し vs 直接呼び出し
+- エラーハンドリング
+  - error返却とチェック vs panic/recover
+- interface{}の操作
+  - 値の代入（基本型、構造体、ポインタ）
+  - 型アサーションでの取り出し
+- ジェネリクス vs interface{}（Go 1.18+）
+- 正規表現
+  - 毎回コンパイル: `regexp.Match`
+  - プリコンパイル（グローバル変数）: `regexp.Compile` + `MatchString`
+  - 文字列操作: `strings.Contains` / `strings.HasPrefix`
+- エラーラッピング
+  - `fmt.Errorf("%w", err)`
+  - `errors.Join(err1, err2)` (Go 1.20+)
+- ソート
+  - `sort.Slice` vs カスタムソート実装
+  - `sort.Ints` vs `sort.Slice`
 
 ## ファイル構成
 ```

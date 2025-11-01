@@ -11,6 +11,12 @@ Go言語の各種機能がどれだけのオーバーヘッドを持つかを計
 - 引数ありの関数呼び出し（1個、3個、10個）
 - インターフェース経由の関数呼び出し
 - 直接メソッド呼び出し
+- 値レシーバ vs ポインタレシーバ
+  - 小さい構造体（8バイト以下）
+  - 中程度の構造体（32バイト）
+  - 大きい構造体（256バイト以上）
+- 型埋め込み（embedding）のメソッド呼び出し
+- 昇格されたメソッドの呼び出しコスト
 - defer付き関数 vs deferなし関数
 - クロージャ呼び出し
 - 再帰関数
@@ -107,39 +113,19 @@ Go言語の各種機能がどれだけのオーバーヘッドを持つかを計
 - エラーラッピング: `fmt.Errorf` vs `errors.Join` (Go 1.20+)
 - sort パッケージ: `sort.Slice` vs カスタム実装
 
-## ベンチマークの実行方法
-
-```bash
-# すべてのベンチマークを実行
-go test -bench=. -benchmem
-
-# 特定のベンチマークを実行
-go test -bench=BenchmarkFunctionCall -benchmem
-
-# 詳細な統計情報を表示
-go test -bench=. -benchmem -benchtime=10s
-
-# CPUプロファイルを取得
-go test -bench=. -cpuprofile=cpu.prof
-
-# メモリプロファイルを取得
-go test -bench=. -memprofile=mem.prof
-```
-
-## 期待される出力
-各ベンチマークで以下の情報を取得:
-- 操作あたりの実行時間 (ns/op)
-- 操作あたりのメモリ割り当て量 (B/op)
-- 操作あたりの割り当て回数 (allocs/op)
-
 ## ファイル構成
 ```
 jumpstarter/
 ├── BENCHMARK_PLAN.md              # この計画書
+├── BENCHMARK_GUIDE.md             # 実行方法とプロファイリングガイド
 ├── BENCHMARK_RESULTS.md           # ベンチマーク結果（実行後に作成）
 ├── function_call_bench_test.go    # 関数呼び出しのベンチマーク
 ├── allocation_bench_test.go       # メモリ割り当てのベンチマーク
 ├── concurrency_bench_test.go      # 並行処理のベンチマーク
+├── conversion_bench_test.go       # 型変換とフォーマットのベンチマーク
 ├── data_structure_bench_test.go   # データ構造のベンチマーク
+├── encoding_bench_test.go         # エンコーディングのベンチマーク
+├── time_bench_test.go             # 時刻操作のベンチマーク
+├── context_bench_test.go          # コンテキストのベンチマーク
 └── misc_bench_test.go             # その他の機能のベンチマーク
 ```

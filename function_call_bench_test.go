@@ -158,7 +158,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverSmall()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 
 	b.Run("PointerReceiver/Small", func(b *testing.B) {
@@ -167,7 +167,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverSmall()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 
 	b.Run("ValueReceiver/Medium", func(b *testing.B) {
@@ -176,7 +176,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverMedium()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 
 	b.Run("PointerReceiver/Medium", func(b *testing.B) {
@@ -185,7 +185,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverMedium()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 
 	b.Run("ValueReceiver/Large", func(b *testing.B) {
@@ -194,7 +194,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.ValueReceiverLarge()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 
 	b.Run("PointerReceiver/Large", func(b *testing.B) {
@@ -203,7 +203,7 @@ func BenchmarkReceiverTypes(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.PointerReceiverLarge()
 		}
-		globalResultInt = result
+		globalResultInt64 = result
 	})
 }
 

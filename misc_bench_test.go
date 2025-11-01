@@ -324,7 +324,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = interfaceMax(10, 20)
 		}
-		globalMiscInt = result
+		globalMiscInterface = result
 	})
 }
 

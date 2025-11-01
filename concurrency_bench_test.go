@@ -9,9 +9,8 @@ import (
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalCounter   int64
-	globalBool      bool
-	globalInterface interface{}
+	globalCounter int64
+	globalBool    bool
 )
 
 // ============================================================================
@@ -315,6 +314,7 @@ func BenchmarkAtomicVsMutex(b *testing.B) {
 			counter = int64(i)
 			mu.Unlock()
 		}
+		globalCounter = counter
 	})
 }
 

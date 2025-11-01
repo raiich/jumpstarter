@@ -8,6 +8,10 @@
 - ✅ MapDeleteベンチマークの測定範囲を修正（data_structure_bench_test.go）
 - ✅ メモリリークを起こすベンチマークをスキップ設定（time_bench_test.go）
 - ✅ 全ファイルにグローバル変数を定義
+- ✅ Timer/Tickerベンチマークを修正（time_bench_test.go）
+  - NewTimer: duration 0 でタイマー登録のオーバーヘッドを計測
+  - AfterFunc: duration 0 で計測
+  - NewTicker: time.Nanosecond で Tick ごとのオーバーヘッドを計測
 
 ## 実装中
 

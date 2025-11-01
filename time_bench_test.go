@@ -81,7 +81,8 @@ func BenchmarkTimeFormatting(b *testing.B) {
 func BenchmarkTimer(b *testing.B) {
 	b.Run("NewTimer", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			timer := time.NewTimer(time.Hour)
+			timer := time.NewTimer(0)
+			<-timer.C
 			timer.Stop()
 		}
 	})
@@ -97,7 +98,7 @@ func BenchmarkTimer(b *testing.B) {
 	b.Run("AfterFunc", func(b *testing.B) {
 		done := make(chan bool, 1)
 		for i := 0; i < b.N; i++ {
-			timer := time.AfterFunc(time.Nanosecond, func() {
+			timer := time.AfterFunc(0, func() {
 				done <- true
 			})
 			<-done
@@ -112,9 +113,12 @@ func BenchmarkTimer(b *testing.B) {
 
 func BenchmarkTicker(b *testing.B) {
 	b.Run("NewTicker", func(b *testing.B) {
+		ticker := time.NewTicker(time.Nanosecond)
+		defer ticker.Stop()
+		b.ResetTimer()
+
 		for i := 0; i < b.N; i++ {
-			ticker := time.NewTicker(time.Hour)
-			ticker.Stop()
+			<-ticker.C
 		}
 	})
 

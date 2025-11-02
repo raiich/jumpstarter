@@ -10,7 +10,7 @@ import (
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalArrayVsSliceAccessInt int
+var GlobalArrayVsSliceAccessInt int
 
 func BenchmarkArrayVsSliceAccess(b *testing.B) {
 	arr := [100]int{}
@@ -25,7 +25,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = arr[i%100]
 		}
-		globalArrayVsSliceAccessInt = result
+		GlobalArrayVsSliceAccessInt = result
 	})
 
 	b.Run("SliceAccess", func(b *testing.B) {
@@ -33,7 +33,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		globalArrayVsSliceAccessInt = result
+		GlobalArrayVsSliceAccessInt = result
 	})
 }
 
@@ -42,7 +42,7 @@ func BenchmarkArrayVsSliceAccess(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalSliceVsMapAccessInt int
+var GlobalSliceVsMapAccessInt int
 
 func BenchmarkSliceVsMapAccess(b *testing.B) {
 	slice := make([]int, 100)
@@ -57,7 +57,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = slice[i%100]
 		}
-		globalSliceVsMapAccessInt = result
+		GlobalSliceVsMapAccessInt = result
 	})
 
 	b.Run("MapAccess", func(b *testing.B) {
@@ -65,7 +65,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = m[i%100]
 		}
-		globalSliceVsMapAccessInt = result
+		GlobalSliceVsMapAccessInt = result
 	})
 }
 
@@ -74,7 +74,7 @@ func BenchmarkSliceVsMapAccess(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalSliceCopySlice []int
+var GlobalSliceCopySlice []int
 
 func BenchmarkSliceCopy(b *testing.B) {
 	src := make([]int, 1000)
@@ -86,7 +86,7 @@ func BenchmarkSliceCopy(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := make([]int, len(src))
 			copy(dst, src)
-			globalSliceCopySlice = dst
+			GlobalSliceCopySlice = dst
 		}
 	})
 
@@ -96,14 +96,14 @@ func BenchmarkSliceCopy(b *testing.B) {
 			for j := range src {
 				dst[j] = src[j]
 			}
-			globalSliceCopySlice = dst
+			GlobalSliceCopySlice = dst
 		}
 	})
 
 	b.Run("AppendVariadic", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			dst := append([]int{}, src...)
-			globalSliceCopySlice = dst
+			GlobalSliceCopySlice = dst
 		}
 	})
 }
@@ -132,7 +132,7 @@ func BenchmarkMapDelete(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalSliceIterationSum int
+var GlobalSliceIterationSum int
 
 func BenchmarkSliceIteration(b *testing.B) {
 	slice := make([]int, 1000)
@@ -148,7 +148,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		globalSliceIterationSum = sum
+		GlobalSliceIterationSum = sum
 	})
 
 	b.Run("RangeIndex", func(b *testing.B) {
@@ -159,7 +159,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += slice[j]
 			}
 		}
-		globalSliceIterationSum = sum
+		GlobalSliceIterationSum = sum
 	})
 
 	b.Run("RangeValue", func(b *testing.B) {
@@ -170,7 +170,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += v
 			}
 		}
-		globalSliceIterationSum = sum
+		GlobalSliceIterationSum = sum
 	})
 
 	b.Run("RangeBoth", func(b *testing.B) {
@@ -181,7 +181,7 @@ func BenchmarkSliceIteration(b *testing.B) {
 				sum += j + v
 			}
 		}
-		globalSliceIterationSum = sum
+		GlobalSliceIterationSum = sum
 	})
 }
 
@@ -196,7 +196,7 @@ type CompareStruct struct {
 }
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalStructComparisonBool bool
+var GlobalStructComparisonBool bool
 
 func BenchmarkStructComparison(b *testing.B) {
 	s1 := CompareStruct{A: 1, B: "test", C: 3.14}
@@ -207,7 +207,7 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s1 == s2
 		}
-		globalStructComparisonBool = result
+		GlobalStructComparisonBool = result
 	})
 
 	b.Run("DeepEqual", func(b *testing.B) {
@@ -215,6 +215,6 @@ func BenchmarkStructComparison(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = reflect.DeepEqual(s1, s2)
 		}
-		globalStructComparisonBool = result
+		GlobalStructComparisonBool = result
 	})
 }

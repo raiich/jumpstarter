@@ -16,8 +16,8 @@ import (
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalTypeAssertionInt    int
-	globalTypeAssertionString string
+	GlobalTypeAssertionInt    int
+	GlobalTypeAssertionString string
 )
 
 func BenchmarkTypeAssertion(b *testing.B) {
@@ -28,7 +28,7 @@ func BenchmarkTypeAssertion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		globalTypeAssertionInt = result
+		GlobalTypeAssertionInt = result
 	})
 
 	b.Run("SuccessWithCheck", func(b *testing.B) {
@@ -40,7 +40,7 @@ func BenchmarkTypeAssertion(b *testing.B) {
 				b.Fatal("type assertion failed")
 			}
 		}
-		globalTypeAssertionInt = result
+		GlobalTypeAssertionInt = result
 	})
 
 	b.Run("FailureWithCheck", func(b *testing.B) {
@@ -52,7 +52,7 @@ func BenchmarkTypeAssertion(b *testing.B) {
 				b.Fatal("type assertion should have failed")
 			}
 		}
-		globalTypeAssertionString = result
+		GlobalTypeAssertionString = result
 	})
 }
 
@@ -61,7 +61,7 @@ func BenchmarkTypeAssertion(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalTypeSwitchInt int
+var GlobalTypeSwitchInt int
 
 func BenchmarkTypeSwitch(b *testing.B) {
 	var iface interface{} = 42
@@ -76,7 +76,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = len(v)
 			}
 		}
-		globalTypeSwitchInt = result
+		GlobalTypeSwitchInt = result
 	})
 
 	b.Run("5Way", func(b *testing.B) {
@@ -95,7 +95,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = len(v)
 			}
 		}
-		globalTypeSwitchInt = result
+		GlobalTypeSwitchInt = result
 	})
 
 	b.Run("10Way", func(b *testing.B) {
@@ -124,7 +124,7 @@ func BenchmarkTypeSwitch(b *testing.B) {
 				result = *v
 			}
 		}
-		globalTypeSwitchInt = result
+		GlobalTypeSwitchInt = result
 	})
 }
 
@@ -147,14 +147,14 @@ func recoverFunction() (recovered bool) {
 }
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalPanicRecoverBool bool
+var GlobalPanicRecoverBool bool
 
 func BenchmarkPanicRecover(b *testing.B) {
 	var result bool
 	for i := 0; i < b.N; i++ {
 		result = recoverFunction()
 	}
-	globalPanicRecoverBool = result
+	GlobalPanicRecoverBool = result
 }
 
 // ============================================================================
@@ -172,10 +172,10 @@ func (r *ReflectStruct) Method() int {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalReflectionType   reflect.Type
-	globalReflectionValue  reflect.Value
-	globalReflectionInt    int
-	globalReflectionValues []reflect.Value
+	GlobalReflectionType   reflect.Type
+	GlobalReflectionValue  reflect.Value
+	GlobalReflectionInt    int
+	GlobalReflectionValues []reflect.Value
 )
 
 func BenchmarkReflection(b *testing.B) {
@@ -186,7 +186,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = reflect.TypeOf(s)
 		}
-		globalReflectionType = result
+		GlobalReflectionType = result
 	})
 
 	b.Run("ValueOf", func(b *testing.B) {
@@ -194,7 +194,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = reflect.ValueOf(s)
 		}
-		globalReflectionValue = result
+		GlobalReflectionValue = result
 	})
 
 	b.Run("FieldAccess/Direct", func(b *testing.B) {
@@ -202,7 +202,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.Field1
 		}
-		globalReflectionInt = result
+		GlobalReflectionInt = result
 	})
 
 	b.Run("FieldAccess/Reflection", func(b *testing.B) {
@@ -211,7 +211,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = int(v.Field(0).Int())
 		}
-		globalReflectionInt = result
+		GlobalReflectionInt = result
 	})
 
 	b.Run("MethodCall/Direct", func(b *testing.B) {
@@ -219,7 +219,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s.Method()
 		}
-		globalReflectionInt = result
+		GlobalReflectionInt = result
 	})
 
 	b.Run("MethodCall/Reflection", func(b *testing.B) {
@@ -229,7 +229,7 @@ func BenchmarkReflection(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = method.Call(nil)
 		}
-		globalReflectionValues = result
+		GlobalReflectionValues = result
 	})
 }
 
@@ -243,8 +243,8 @@ func returnError() error {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalErrorHandlingErr       error
-	globalErrorHandlingInterface interface{}
+	GlobalErrorHandlingErr       error
+	GlobalErrorHandlingInterface interface{}
 )
 
 func BenchmarkErrorHandling(b *testing.B) {
@@ -252,7 +252,7 @@ func BenchmarkErrorHandling(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			err := returnError()
 			if err != nil {
-				globalErrorHandlingErr = err
+				GlobalErrorHandlingErr = err
 			}
 		}
 	})
@@ -262,7 +262,7 @@ func BenchmarkErrorHandling(b *testing.B) {
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
-						globalErrorHandlingInterface = r
+						GlobalErrorHandlingInterface = r
 					}
 				}()
 				panic("error")
@@ -277,8 +277,8 @@ func BenchmarkErrorHandling(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalInterfaceOperationsInterface interface{}
-	globalInterfaceOperationsInt       int
+	GlobalInterfaceOperationsInterface interface{}
+	GlobalInterfaceOperationsInt       int
 )
 
 func BenchmarkInterfaceOperations(b *testing.B) {
@@ -287,7 +287,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = 42
 		}
-		globalInterfaceOperationsInterface = iface
+		GlobalInterfaceOperationsInterface = iface
 	})
 
 	b.Run("AssignStruct", func(b *testing.B) {
@@ -296,7 +296,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = s
 		}
-		globalInterfaceOperationsInterface = iface
+		GlobalInterfaceOperationsInterface = iface
 	})
 
 	b.Run("AssignPointer", func(b *testing.B) {
@@ -305,7 +305,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			iface = s
 		}
-		globalInterfaceOperationsInterface = iface
+		GlobalInterfaceOperationsInterface = iface
 	})
 
 	b.Run("ExtractInt", func(b *testing.B) {
@@ -314,7 +314,7 @@ func BenchmarkInterfaceOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		globalInterfaceOperationsInt = result
+		GlobalInterfaceOperationsInt = result
 	})
 }
 
@@ -355,8 +355,8 @@ func interfaceMax(a, b interface{}) interface{} {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalGenericsVsInterfaceInt       int
-	globalGenericsVsInterfaceInterface interface{}
+	GlobalGenericsVsInterfaceInt       int
+	GlobalGenericsVsInterfaceInterface interface{}
 )
 
 func BenchmarkGenericsVsInterface(b *testing.B) {
@@ -365,7 +365,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = genericMax(10, 20)
 		}
-		globalGenericsVsInterfaceInt = result
+		GlobalGenericsVsInterfaceInt = result
 	})
 
 	b.Run("Interface", func(b *testing.B) {
@@ -373,7 +373,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = interfaceMax(10, 20)
 		}
-		globalGenericsVsInterfaceInterface = result
+		GlobalGenericsVsInterfaceInterface = result
 	})
 }
 
@@ -384,7 +384,7 @@ func BenchmarkGenericsVsInterface(b *testing.B) {
 var precompiledRegex = regexp.MustCompile(`test\d+`)
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalRegexBool bool
+var GlobalRegexBool bool
 
 func BenchmarkRegex(b *testing.B) {
 	input := "This is test123 string"
@@ -398,7 +398,7 @@ func BenchmarkRegex(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalRegexBool = matched
+		GlobalRegexBool = matched
 	})
 
 	b.Run("Precompiled", func(b *testing.B) {
@@ -406,7 +406,7 @@ func BenchmarkRegex(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = precompiledRegex.MatchString(input)
 		}
-		globalRegexBool = result
+		GlobalRegexBool = result
 	})
 
 	b.Run("StringContains", func(b *testing.B) {
@@ -414,7 +414,7 @@ func BenchmarkRegex(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strings.Contains(input, "test")
 		}
-		globalRegexBool = result
+		GlobalRegexBool = result
 	})
 
 	b.Run("StringHasPrefix", func(b *testing.B) {
@@ -422,7 +422,7 @@ func BenchmarkRegex(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = strings.HasPrefix(input, "This")
 		}
-		globalRegexBool = result
+		GlobalRegexBool = result
 	})
 }
 
@@ -431,7 +431,7 @@ func BenchmarkRegex(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalErrorWrappingErr error
+var GlobalErrorWrappingErr error
 
 func BenchmarkErrorWrapping(b *testing.B) {
 	baseErr := errors.New("base error")
@@ -441,7 +441,7 @@ func BenchmarkErrorWrapping(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = fmt.Errorf("wrapped: %w", baseErr)
 		}
-		globalErrorWrappingErr = result
+		GlobalErrorWrappingErr = result
 	})
 
 	b.Run("Join", func(b *testing.B) {
@@ -450,7 +450,7 @@ func BenchmarkErrorWrapping(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = errors.Join(baseErr, err2)
 		}
-		globalErrorWrappingErr = result
+		GlobalErrorWrappingErr = result
 	})
 }
 

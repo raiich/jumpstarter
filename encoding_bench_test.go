@@ -46,7 +46,7 @@ type LargeJSON struct {
 }
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalJSONBytes []byte
+var GlobalJSONBytes []byte
 
 func BenchmarkJSON(b *testing.B) {
 	small := SmallJSON{Name: "Alice", Age: 30, Email: "alice@example.com"}
@@ -67,7 +67,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONBytes = result
+		GlobalJSONBytes = result
 	})
 
 	b.Run("Marshal/Medium", func(b *testing.B) {
@@ -79,7 +79,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONBytes = result
+		GlobalJSONBytes = result
 	})
 
 	b.Run("Marshal/Large", func(b *testing.B) {
@@ -91,7 +91,7 @@ func BenchmarkJSON(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONBytes = result
+		GlobalJSONBytes = result
 	})
 
 	smallJSON, err := json.Marshal(small)
@@ -152,7 +152,7 @@ type WithOmitEmpty struct {
 }
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalJSONTagsBytes []byte
+var GlobalJSONTagsBytes []byte
 
 func BenchmarkJSONTags(b *testing.B) {
 	noTags := NoTags{Name: "Alice", Age: 30, Email: "alice@example.com"}
@@ -168,7 +168,7 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONTagsBytes = result
+		GlobalJSONTagsBytes = result
 	})
 
 	b.Run("WithTags", func(b *testing.B) {
@@ -180,7 +180,7 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONTagsBytes = result
+		GlobalJSONTagsBytes = result
 	})
 
 	b.Run("WithOmitEmpty", func(b *testing.B) {
@@ -192,7 +192,7 @@ func BenchmarkJSONTags(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalJSONTagsBytes = result
+		GlobalJSONTagsBytes = result
 	})
 }
 
@@ -202,8 +202,8 @@ func BenchmarkJSONTags(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalOtherEncodingsBytes []byte
-	globalOtherEncodingsStr   string
+	GlobalOtherEncodingsBytes []byte
+	GlobalOtherEncodingsStr   string
 )
 
 func BenchmarkOtherEncodings(b *testing.B) {
@@ -247,7 +247,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = base64.StdEncoding.EncodeToString(input)
 		}
-		globalOtherEncodingsStr = result
+		GlobalOtherEncodingsStr = result
 	})
 
 	encoded := base64.StdEncoding.EncodeToString(input)
@@ -261,7 +261,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalOtherEncodingsBytes = result
+		GlobalOtherEncodingsBytes = result
 	})
 
 	b.Run("Hex/Encode", func(b *testing.B) {
@@ -269,7 +269,7 @@ func BenchmarkOtherEncodings(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = hex.EncodeToString(input)
 		}
-		globalOtherEncodingsStr = result
+		GlobalOtherEncodingsStr = result
 	})
 
 	hexEncoded := hex.EncodeToString(input)
@@ -283,6 +283,6 @@ func BenchmarkOtherEncodings(b *testing.B) {
 				b.Fatal(err)
 			}
 		}
-		globalOtherEncodingsBytes = result
+		GlobalOtherEncodingsBytes = result
 	})
 }

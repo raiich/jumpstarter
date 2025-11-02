@@ -24,8 +24,8 @@ func allocateOnHeap() *int {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalStackVsHeapInt    int
-	globalStackVsHeapIntPtr *int
+	GlobalStackVsHeapInt    int
+	GlobalStackVsHeapIntPtr *int
 )
 
 func BenchmarkStackVsHeap(b *testing.B) {
@@ -34,7 +34,7 @@ func BenchmarkStackVsHeap(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = allocateOnStack()
 		}
-		globalStackVsHeapInt = result
+		GlobalStackVsHeapInt = result
 	})
 
 	b.Run("Heap", func(b *testing.B) {
@@ -42,7 +42,7 @@ func BenchmarkStackVsHeap(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = allocateOnHeap()
 		}
-		globalStackVsHeapIntPtr = result
+		GlobalStackVsHeapIntPtr = result
 	})
 }
 
@@ -67,9 +67,9 @@ type LargeStructAlloc struct {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalStructAllocationSmallPtr  *SmallStructAlloc
-	globalStructAllocationMediumPtr *MediumStructAlloc
-	globalStructAllocationLargePtr  *LargeStructAlloc
+	GlobalStructAllocationSmallPtr  *SmallStructAlloc
+	GlobalStructAllocationMediumPtr *MediumStructAlloc
+	GlobalStructAllocationLargePtr  *LargeStructAlloc
 )
 
 func BenchmarkStructAllocation(b *testing.B) {
@@ -78,7 +78,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &SmallStructAlloc{a: 1}
 		}
-		globalStructAllocationSmallPtr = result
+		GlobalStructAllocationSmallPtr = result
 	})
 
 	b.Run("Medium", func(b *testing.B) {
@@ -86,7 +86,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &MediumStructAlloc{a: 1, b: 2, c: 3, d: 4}
 		}
-		globalStructAllocationMediumPtr = result
+		GlobalStructAllocationMediumPtr = result
 	})
 
 	b.Run("Large", func(b *testing.B) {
@@ -94,7 +94,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = &LargeStructAlloc{a: 1, b: 2, c: 3, d: 4}
 		}
-		globalStructAllocationLargePtr = result
+		GlobalStructAllocationLargePtr = result
 	})
 }
 
@@ -103,7 +103,7 @@ func BenchmarkStructAllocation(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalSlicePreallocationSlice []int
+var GlobalSlicePreallocationSlice []int
 
 func BenchmarkSlicePreallocation(b *testing.B) {
 	b.Run("Preallocated", func(b *testing.B) {
@@ -112,7 +112,7 @@ func BenchmarkSlicePreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				s = append(s, j)
 			}
-			globalSlicePreallocationSlice = s
+			GlobalSlicePreallocationSlice = s
 		}
 	})
 
@@ -122,7 +122,7 @@ func BenchmarkSlicePreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				s = append(s, j)
 			}
-			globalSlicePreallocationSlice = s
+			GlobalSlicePreallocationSlice = s
 		}
 	})
 }
@@ -132,7 +132,7 @@ func BenchmarkSlicePreallocation(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalSliceCreationSlice []int
+var GlobalSliceCreationSlice []int
 
 func BenchmarkSliceCreation(b *testing.B) {
 	b.Run("MakeWithCapacity", func(b *testing.B) {
@@ -140,7 +140,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = make([]int, 0, 10)
 		}
-		globalSliceCreationSlice = result
+		GlobalSliceCreationSlice = result
 	})
 
 	b.Run("Literal", func(b *testing.B) {
@@ -148,7 +148,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []int{}
 		}
-		globalSliceCreationSlice = result
+		GlobalSliceCreationSlice = result
 	})
 
 	b.Run("LiteralWithValues", func(b *testing.B) {
@@ -156,7 +156,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 		}
-		globalSliceCreationSlice = result
+		GlobalSliceCreationSlice = result
 	})
 }
 
@@ -165,7 +165,7 @@ func BenchmarkSliceCreation(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalMapPreallocationMap map[int]int
+var GlobalMapPreallocationMap map[int]int
 
 func BenchmarkMapPreallocation(b *testing.B) {
 	b.Run("Preallocated", func(b *testing.B) {
@@ -174,7 +174,7 @@ func BenchmarkMapPreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				m[j] = j
 			}
-			globalMapPreallocationMap = m
+			GlobalMapPreallocationMap = m
 		}
 	})
 
@@ -184,7 +184,7 @@ func BenchmarkMapPreallocation(b *testing.B) {
 			for j := 0; j < 1000; j++ {
 				m[j] = j
 			}
-			globalMapPreallocationMap = m
+			GlobalMapPreallocationMap = m
 		}
 	})
 }
@@ -195,8 +195,8 @@ func BenchmarkMapPreallocation(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalMapOperationsMap map[int]int
-	globalMapOperationsInt int
+	GlobalMapOperationsMap map[int]int
+	GlobalMapOperationsInt int
 )
 
 func BenchmarkMapOperations(b *testing.B) {
@@ -204,7 +204,7 @@ func BenchmarkMapOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			m := make(map[int]int)
 			m[42] = 100
-			globalMapOperationsMap = m
+			GlobalMapOperationsMap = m
 		}
 	})
 
@@ -216,7 +216,7 @@ func BenchmarkMapOperations(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = m[42]
 		}
-		globalMapOperationsInt = result
+		GlobalMapOperationsInt = result
 	})
 
 	b.Run("Delete", func(b *testing.B) {
@@ -236,7 +236,7 @@ func BenchmarkMapOperations(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalStringConcatenationString string
+var GlobalStringConcatenationString string
 
 func BenchmarkStringConcatenation(b *testing.B) {
 	b.Run("PlusOperator", func(b *testing.B) {
@@ -244,7 +244,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = "Hello" + " " + "World"
 		}
-		globalStringConcatenationString = result
+		GlobalStringConcatenationString = result
 	})
 
 	b.Run("StringsBuilder", func(b *testing.B) {
@@ -262,7 +262,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 			}
 			result = sb.String()
 		}
-		globalStringConcatenationString = result
+		GlobalStringConcatenationString = result
 	})
 
 	b.Run("BytesBuffer", func(b *testing.B) {
@@ -280,7 +280,7 @@ func BenchmarkStringConcatenation(b *testing.B) {
 			}
 			result = buf.String()
 		}
-		globalStringConcatenationString = result
+		GlobalStringConcatenationString = result
 	})
 }
 
@@ -290,8 +290,8 @@ func BenchmarkStringConcatenation(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalStringByteConversionBytes  []byte
-	globalStringByteConversionString string
+	GlobalStringByteConversionBytes  []byte
+	GlobalStringByteConversionString string
 )
 
 func BenchmarkStringByteConversion(b *testing.B) {
@@ -303,7 +303,7 @@ func BenchmarkStringByteConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = []byte(s)
 		}
-		globalStringByteConversionBytes = result
+		GlobalStringByteConversionBytes = result
 	})
 
 	b.Run("BytesToString", func(b *testing.B) {
@@ -311,7 +311,7 @@ func BenchmarkStringByteConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = string(bs)
 		}
-		globalStringByteConversionString = result
+		GlobalStringByteConversionString = result
 	})
 }
 
@@ -321,8 +321,8 @@ func BenchmarkStringByteConversion(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalInterfaceConversionInterface interface{}
-	globalInterfaceConversionInt       int
+	GlobalInterfaceConversionInterface interface{}
+	GlobalInterfaceConversionInt       int
 )
 
 func BenchmarkInterfaceConversion(b *testing.B) {
@@ -331,7 +331,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = 42
 		}
-		globalInterfaceConversionInterface = result
+		GlobalInterfaceConversionInterface = result
 	})
 
 	b.Run("StructToInterface", func(b *testing.B) {
@@ -340,7 +340,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalInterfaceConversionInterface = result
+		GlobalInterfaceConversionInterface = result
 	})
 
 	b.Run("PointerToInterface", func(b *testing.B) {
@@ -349,7 +349,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalInterfaceConversionInterface = result
+		GlobalInterfaceConversionInterface = result
 	})
 
 	b.Run("TypeAssertion", func(b *testing.B) {
@@ -358,7 +358,7 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = iface.(int)
 		}
-		globalInterfaceConversionInt = result
+		GlobalInterfaceConversionInt = result
 	})
 }
 
@@ -368,12 +368,12 @@ func BenchmarkInterfaceConversion(b *testing.B) {
 
 // グローバル変数（コンパイラ最適化を防ぐため）
 var (
-	globalPointerVsValueSmallVal   SmallStructAlloc
-	globalPointerVsValueSmallPtr   *SmallStructAlloc
-	globalPointerVsValueMediumVal  MediumStructAlloc
-	globalPointerVsValueMediumPtr  *MediumStructAlloc
-	globalPointerVsValueLargeVal   LargeStructAlloc
-	globalPointerVsValueLargePtr   *LargeStructAlloc
+	GlobalPointerVsValueSmallVal   SmallStructAlloc
+	GlobalPointerVsValueSmallPtr   *SmallStructAlloc
+	GlobalPointerVsValueMediumVal  MediumStructAlloc
+	GlobalPointerVsValueMediumPtr  *MediumStructAlloc
+	GlobalPointerVsValueLargeVal   LargeStructAlloc
+	GlobalPointerVsValueLargePtr   *LargeStructAlloc
 )
 
 func BenchmarkPointerVsValue(b *testing.B) {
@@ -383,7 +383,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueSmallVal = result
+		GlobalPointerVsValueSmallVal = result
 	})
 
 	b.Run("PointerCopy/Small", func(b *testing.B) {
@@ -392,7 +392,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueSmallPtr = result
+		GlobalPointerVsValueSmallPtr = result
 	})
 
 	b.Run("ValueCopy/Medium", func(b *testing.B) {
@@ -401,7 +401,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueMediumVal = result
+		GlobalPointerVsValueMediumVal = result
 	})
 
 	b.Run("PointerCopy/Medium", func(b *testing.B) {
@@ -410,7 +410,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueMediumPtr = result
+		GlobalPointerVsValueMediumPtr = result
 	})
 
 	b.Run("ValueCopy/Large", func(b *testing.B) {
@@ -419,7 +419,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueLargeVal = result
+		GlobalPointerVsValueLargeVal = result
 	})
 
 	b.Run("PointerCopy/Large", func(b *testing.B) {
@@ -428,7 +428,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = s
 		}
-		globalPointerVsValueLargePtr = result
+		GlobalPointerVsValueLargePtr = result
 	})
 }
 
@@ -437,7 +437,7 @@ func BenchmarkPointerVsValue(b *testing.B) {
 // ============================================================================
 
 // グローバル変数（コンパイラ最適化を防ぐため）
-var globalStructInitializationSmallVal SmallStructAlloc
+var GlobalStructInitializationSmallVal SmallStructAlloc
 
 func BenchmarkStructInitialization(b *testing.B) {
 	b.Run("ZeroValue", func(b *testing.B) {
@@ -445,7 +445,7 @@ func BenchmarkStructInitialization(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = SmallStructAlloc{}
 		}
-		globalStructInitializationSmallVal = result
+		GlobalStructInitializationSmallVal = result
 	})
 
 	b.Run("FieldSpecified", func(b *testing.B) {
@@ -453,6 +453,6 @@ func BenchmarkStructInitialization(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			result = SmallStructAlloc{a: 0}
 		}
-		globalStructInitializationSmallVal = result
+		GlobalStructInitializationSmallVal = result
 	})
 }

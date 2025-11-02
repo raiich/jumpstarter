@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'mkdir -p .claude/logs && echo \"========================================\" >> .claude/logs/conversation.log && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] USER PROMPT\" >> .claude/logs/conversation.log && echo \"========================================\" >> .claude/logs/conversation.log && cat >> .claude/logs/conversation.log && echo \"\" >> .claude/logs/conversation.log'",
+            "command": "bash -c 'REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd) && mkdir -p \"$REPO_ROOT/.claude/logs\" && echo \"========================================\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] USER PROMPT\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"========================================\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && cat >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"\" >> \"$REPO_ROOT/.claude/logs/conversation.log\"'",
             "timeout": 5
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'mkdir -p .claude/logs && echo \"----------------------------------------\" >> .claude/logs/conversation.log && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] TOOL EXECUTED\" >> .claude/logs/conversation.log && echo \"----------------------------------------\" >> .claude/logs/conversation.log && cat >> .claude/logs/conversation.log && echo \"\" >> .claude/logs/conversation.log'",
+            "command": "bash -c 'REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd) && mkdir -p \"$REPO_ROOT/.claude/logs\" && echo \"----------------------------------------\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"[$(date \"+%Y-%m-%d %H:%M:%S\")] TOOL EXECUTED\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"----------------------------------------\" >> \"$REPO_ROOT/.claude/logs/conversation.log\" && cat >> \"$REPO_ROOT/.claude/logs/conversation.log\" && echo \"\" >> \"$REPO_ROOT/.claude/logs/conversation.log\"'",
             "timeout": 5
           }
         ]

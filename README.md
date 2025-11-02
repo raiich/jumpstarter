@@ -24,12 +24,6 @@ go test -bench=BenchmarkFunctionCall -benchmem
 go test -bench=BenchmarkAllocation -benchmem
 ```
 
-### 結果をファイルに保存
-
-```bash
-go test -bench=. -benchmem -benchtime=1s > results.txt
-```
-
 ## ベンチマークカテゴリ
 
 - **関数呼び出し** - 関数、メソッド、インターフェース、defer、クロージャなど
@@ -46,20 +40,8 @@ go test -bench=. -benchmem -benchtime=1s > results.txt
 
 - **[ベンチマークカタログ](docs/CATALOG.md)** - 実装済みベンチマークの全一覧
 - **[ベンチマークの書き方](docs/WRITING_BENCHMARKS.md)** - 新しいベンチマークを追加する方法
-- **[実行ガイド](docs/RUNNING_BENCHMARKS.md)** - 詳細な実行方法とプロファイリング
-
-## ベンチマーク結果の見方
-
-```
-BenchmarkSimpleFunction-8    100000000    10.5 ns/op    0 B/op    0 allocs/op
-```
-
-- `BenchmarkSimpleFunction`: ベンチマーク名
-- `-8`: 使用したCPU数（GOMAXPROCS）
-- `100000000`: 実行された反復回数
-- `10.5 ns/op`: 操作あたりの平均実行時間（ナノ秒）
-- `0 B/op`: 操作あたりの平均メモリ割り当て量（バイト）
-- `0 allocs/op`: 操作あたりの平均割り当て回数
+- **[実行ガイド](docs/RUNNING_BENCHMARKS.md)** - 実行方法と結果の見方
+- **[プロファイリング](docs/PROFILING.md)** - 詳細な性能分析
 
 ## 動作環境
 

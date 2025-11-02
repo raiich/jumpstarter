@@ -129,66 +129,6 @@ FunctionCall/NoArgs  1.23ns ± 2%  0.98ns ± 1%  -20.33%  (p=0.000 n=10+10)
 - `p`: 統計的有意性（p<0.05で有意）
 - `n`: サンプル数
 
-## プロファイリング
-
-### CPUプロファイル
-
-```bash
-# プロファイル取得
-go test -bench=. -cpuprofile=cpu.prof
-
-# コマンドラインで確認
-go tool pprof cpu.prof
-(pprof) top10       # 上位10個の関数を表示
-(pprof) list FuncName  # 特定の関数の詳細
-
-# Webブラウザで可視化
-go tool pprof -http=:8080 cpu.prof
-```
-
-ブラウザで以下の情報が確認できます：
-- **Graph**: 呼び出しグラフ
-- **Flame Graph**: フレームグラフ
-- **Top**: 時間を消費している関数のランキング
-- **Source**: ソースコード別の時間
-
-### メモリプロファイル
-
-```bash
-# プロファイル取得
-go test -bench=. -memprofile=mem.prof
-
-# 割り当て量で分析
-go tool pprof -alloc_space mem.prof
-
-# 割り当て回数で分析
-go tool pprof -alloc_objects mem.prof
-
-# 使用中のメモリで分析
-go tool pprof -inuse_space mem.prof
-
-# Webブラウザで可視化
-go tool pprof -http=:8080 mem.prof
-```
-
-### ブロックプロファイル（並行処理の競合分析）
-
-```bash
-go test -bench=. -blockprofile=block.prof
-go tool pprof -http=:8080 block.prof
-```
-
-チャネル操作やmutexでのブロック時間を確認できます。
-
-### ミューテックスプロファイル
-
-```bash
-go test -bench=. -mutexprofile=mutex.prof
-go tool pprof -http=:8080 mutex.prof
-```
-
-mutexの競合状況を分析できます。
-
 ## ベンチマーク結果の見方
 
 ### 出力例
@@ -309,21 +249,9 @@ benchstat previous.txt current.txt
 benchstat -alpha=0.05 previous.txt current.txt
 ```
 
-### トレース取得
-
-```bash
-# 実行トレースを取得
-go test -bench=. -trace=trace.out
-
-# トレースを可視化
-go tool trace trace.out
-```
-
-ブラウザでgoroutineのスケジューリング、システムコール、GCイベントなどを確認できます。
+詳細な性能分析については [プロファイリング](PROFILING.md) を参照してください。
 
 ## 参考資料
 
 - [Go公式: Benchmarks](https://pkg.go.dev/testing#hdr-Benchmarks)
 - [benchstat ドキュメント](https://pkg.go.dev/golang.org/x/perf/cmd/benchstat)
-- [pprof ドキュメント](https://pkg.go.dev/net/http/pprof)
-- [Go execution tracer](https://pkg.go.dev/runtime/trace)

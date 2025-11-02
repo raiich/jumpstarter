@@ -346,26 +346,6 @@ context パッケージの操作コストを計測します。
 - **Slice**: `sort.Slice()` でのソート
 - **CustomSort**: カスタムソート実装
 
-## 実行例
+---
 
-### 特定カテゴリのみ実行
-
-```bash
-# 関数呼び出しのみ
-go test -bench=BenchmarkBasicCalls -benchmem
-
-# メモリ割り当てのみ
-go test -bench=BenchmarkAllocation -benchmem
-
-# 並行処理のみ
-go test -bench=BenchmarkConcurrency -benchmem
-```
-
-### ファイル指定
-
-```bash
-# 関数呼び出しベンチマークのみ実行
-go test -bench=. -benchmem function_call_bench_test.go
-```
-
-詳細な実行方法は [実行ガイド](RUNNING_BENCHMARKS.md) を参照してください。
+実行方法は [実行ガイド](RUNNING_BENCHMARKS.md) を参照してください。

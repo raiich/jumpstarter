@@ -249,7 +249,7 @@ benchstat previous.txt current.txt
 benchstat -alpha=0.05 previous.txt current.txt
 ```
 
-詳細な性能分析については [プロファイリング](PROFILING.md) を参照してください。
+詳細な性能分析については [プロファイリング](profiling.md) を参照してください。
 
 ## 参考資料
 

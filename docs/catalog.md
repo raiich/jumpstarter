@@ -348,4 +348,4 @@ context パッケージの操作コストを計測します。
 
 ---
 
-実行方法は [実行ガイド](RUNNING_BENCHMARKS.md) を参照してください。
+実行方法は [実行ガイド](running-benchmarks.md) を参照してください。

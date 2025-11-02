@@ -38,10 +38,10 @@ go test -bench=BenchmarkAllocation -benchmem
 
 ## ドキュメント
 
-- **[ベンチマークカタログ](docs/CATALOG.md)** - 実装済みベンチマークの全一覧
-- **[ベンチマークの書き方](docs/WRITING_BENCHMARKS.md)** - 新しいベンチマークを追加する方法
-- **[実行ガイド](docs/RUNNING_BENCHMARKS.md)** - 実行方法と結果の見方
-- **[プロファイリング](docs/PROFILING.md)** - 詳細な性能分析
+- **[ベンチマークカタログ](docs/catalog.md)** - 実装済みベンチマークの全一覧
+- **[ベンチマークの書き方](docs/writing-benchmarks.md)** - 新しいベンチマークを追加する方法
+- **[実行ガイド](docs/running-benchmarks.md)** - 実行方法と結果の見方
+- **[プロファイリング](docs/profiling.md)** - 詳細な性能分析
 
 ## 動作環境
 

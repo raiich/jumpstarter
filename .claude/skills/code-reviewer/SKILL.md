@@ -1,5 +1,5 @@
 ---
-name: auto-reviewer
+name: code-reviewer
 description: Automatically check documentation-code consistency after implementation. Verifies README.md and docs/*.md match actual code.
 allowed-tools: Read, Grep, Glob
 ---

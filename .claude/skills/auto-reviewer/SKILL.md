@@ -1,33 +1,36 @@
 ---
 name: auto-reviewer
-description: Automatically review Go benchmark code after implementation. Checks compliance with docs/writing-benchmarks.md standards.
+description: Automatically check documentation-code consistency after implementation. Verifies README.md and docs/*.md match actual code.
 allowed-tools: Read, Grep, Glob
 ---
 
-# Auto Code Reviewer
+# Documentation Consistency Checker
 
-ベンチマーク実装後、`docs/writing-benchmarks.md` の基準に基づいて自動レビューを実行します。
+コード実装後、ドキュメントと実装の整合性を自動確認します。
 
 ## Instructions
 
-1. `docs/writing-benchmarks.md` を参照してレビュー基準を確認
-2. 最近編集された `*_test.go` ファイルを特定
-3. ドキュメントのチェックリストに基づいてレビュー実行
+1. README.md と docs/*.md を参照して記載内容を確認
+2. 最近編集された Go ファイルを特定
+3. 以下を検証：
+   - README.md に記載されたベンチマークカテゴリが実装されているか
+   - 実装された機能がドキュメントに記載されているか
+   - docs/*.md のリンクが有効か
 
 ## Output Format
 
 ```
-## ベンチマークレビュー結果
+## ドキュメント整合性チェック結果
 
-### ✓ 適合
-- グローバル変数への代入
-- goroutine クリーンアップ
+### ✓ 整合性あり
+- README.md のカテゴリ記載と実装が一致
+- 新機能がドキュメント化済み
 
-### ✗ 要修正
-- file.go:45 - グローバル変数への代入なし
-- file.go:89 - globalResult → GlobalResult（エクスポート必須）
+### ✗ 要確認
+- README.md:28 - 記載されているが未実装: "XXX機能"
+- file.go:123 - 実装されているが未ドキュメント: BenchmarkNewFeature
 
-📚 詳細: docs/writing-benchmarks.md
+📚 参照: README.md, docs/*.md
 ```
 
 ## Notes

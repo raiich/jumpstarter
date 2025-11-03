@@ -4,6 +4,16 @@
 
 簡潔で必要十分なドキュメントを作成し、冗長性を排除する。
 
+## ファイル命名規則
+
+**lowercase-with-hyphens (kebab-case)** を使用
+
+- ✅ `writing-benchmarks.md`, `running-benchmarks.md`
+- ❌ `WRITING_BENCHMARKS.md`, `Writing_Benchmarks.md`
+
+**例外:**
+- `README.md` - 大文字のまま
+
 ## 作成プロセス（3ステップ）
 
 ### 1. 章立ての検討

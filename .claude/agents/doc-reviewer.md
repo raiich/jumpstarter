@@ -1,7 +1,11 @@
 ---
 name: doc-reviewer
-description: Review markdown documentation for naming conventions, conciseness, consistency, and completeness. Use when creating or editing documentation files.
-allowed-tools: Read, Grep, Glob
+description: Use PROACTIVELY when creating or editing documentation files. Reviews markdown documentation following .claude/guidelines/documentation.md standards.
+model: haiku
+tools:
+  - Read
+  - Grep
+  - Glob
 ---
 
 # Documentation Reviewer
@@ -32,5 +36,4 @@ allowed-tools: Read, Grep, Glob
 
 ## Notes
 
-- Read, Grep, Glob のみ使用（変更不可）
-- 問題発見時はファイル名:行番号で報告
+- レビューのみ実行、修正はメインエージェントが担当

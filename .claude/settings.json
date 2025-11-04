@@ -1,4 +1,18 @@
 {
+  "env": {
+    "CLAUDE_DEFAULT_PERMISSION_MODE": "plan"
+  },
+  "permissions": {
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(rm -rf:*)"
+    ],
+    "ask": [
+      "Bash(git commit --amend:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {

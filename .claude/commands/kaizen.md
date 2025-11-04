@@ -9,9 +9,14 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
    - ユーザーからのフィードバック、要望、不満を抽出
    - 繰り返し指摘される問題を特定
 
-2. **改善案の作成**
-   - フィードバックに基づいた設定変更案を作成
-   - Claude Code最新機能の活用を検討（WebSearchで最新情報を確認）
+2. **Claude Code機能の確認**
+   - WebFetchを使用してClaude Code公式ドキュメントを確認
+   - 確認URL: https://docs.claude.com/en/docs/claude-code/claude_code_docs_map.md
+   - フィードバックパターンを解決できるClaude Code機能を特定
+   - 既存の設定で活用できていない機能がないかチェック
+
+3. **改善案の作成**
+   - フィードバックとClaude Code機能を組み合わせた改善案を作成
    - 以下の設定ファイルを対象：
      - `.claude/settings.json`
      - `.claude/hooks/`
@@ -19,7 +24,7 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
      - `.claude/commands/`
      - `.claude/guidelines/`
 
-3. **改善の実施**
+4. **改善の実施**
    - 改善案をユーザーに提示
    - 承認後、設定ファイルを更新
 

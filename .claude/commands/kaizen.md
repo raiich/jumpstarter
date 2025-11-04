@@ -19,7 +19,7 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
    - フィードバックとClaude Code機能を組み合わせた改善案を作成
    - 以下の設定ファイルを対象：
      - `.claude/settings.json`
-     - `.claude/hooks/`
+     - `.claude/agents/`
      - `.claude/skills/`
      - `.claude/commands/`
      - `.claude/guidelines/`
@@ -50,6 +50,25 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
 ### Claude Code 最新機能の活用
 - [機能名]: [活用方法]
 ```
+
+## 改善の実例
+
+このテンプレート自体も `/kaizen` により継続的に改善していきます:
+
+### 第1回 kaizen
+- Guidelines: 4種類を生成
+- 対話ログ記録機能を追加
+
+### 第2回 kaizen
+- Guidelines を統合・簡素化
+- 冗長性を排除
+
+### 第3回 kaizen
+- Sub-Agents: 4種類を追加
+- Settings: Plan Mode、安全制限を強化
+- Skills: doc-reviewer を簡素化
+
+各改善で conversation.log からユーザーフィードバックを抽出し、設定に反映しています。
 
 ## 注意事項
 

@@ -10,9 +10,9 @@
 あなた: 「新機能を実装して」
 Claude: [実装]
 あなた: 「冗長すぎます」
-Claude: [修正]
+Claude: [指摘箇所の修正]
 あなた: 「他に漏れはないですか？」
-Claude: [追加修正]
+Claude: [修正してすぐに実行]
 あなた: 「すぐに実行しようとしないでください。まずはレビューをしてください」
 ...
 ```
@@ -71,7 +71,7 @@ conversation.logを分析し、改善提案を自動生成します。
 
 ## 実証結果
 
-このテンプレートは、 [Goベンチマーク実装プロジェクト](/tree/feature/kaizen) で作成・検証しました。
+このテンプレートは、 [Goベンチマーク実装プロジェクト](/jumpstarter/tree/feature/kaizen) で作成・検証しました。
 
 ### Before（改善前）
 
@@ -85,7 +85,9 @@ conversation.logを分析し、改善提案を自動生成します。
 
 ```
 🤖 自動生成された改善策
-- Guidelines: 4種類（セルフレビュー、ドキュメント作成、実行前確認、テスト失敗時対応）
+- Guidelines: 5種類（process, communication, quality, documentation, git）
+- Sub-Agents: 4種類（包括的検索、計画作成、コード整合性、ドキュメント品質）
+- Settings: 安全性向上（Plan Mode、危険操作制限）
 - Skills: 2種類（コード整合性チェック、ドキュメント品質チェック）
 ```
 
@@ -94,8 +96,10 @@ conversation.logを分析し、改善提案を自動生成します。
 ```
 ✅ 効果
 - フィードバックループが激減（2-3往復 → 1往復）
+- 並列実行による開発速度向上（30-50%の時間短縮）
+- 修正漏れの削減（包括的検索の自動化）
+- 危険操作の技術的制限（force push、rm -rf拒否）
 - 冗長なドキュメントの自動抑制
-- 事前セルフレビュー機能の追加
 ```
 
 ---
@@ -111,7 +115,9 @@ conversation.logを分析し、改善提案を自動生成します。
 conversation.logを分析し、繰り返しパターンから改善策を自動生成：
 
 - **Guidelines**: Claude Codeの振る舞いルール（`.claude/guidelines/`）
+- **Sub-Agents**: 専門タスクの並列実行（`.claude/agents/`）
 - **Skills**: 自動実行される品質チェック機能（`.claude/skills/`）
+- **Settings**: 安全性制限とデフォルト設定（`.claude/settings.json`）
 - **Hooks**: イベント駆動の自動処理（`.claude/settings.json`）
 
 ### 📝 すぐに使えるテンプレート
@@ -119,19 +125,14 @@ conversation.logを分析し、繰り返しパターンから改善策を自動�
 ```
 .claude/
 ├── commands/kaizen.md          # 継続的改善コマンド
+├── agents/                     # サブエージェント（専門タスク並列実行）
 ├── guidelines/                 # 振る舞いルール
 ├── skills/                     # 自動実行機能
 ├── logs/conversation.log       # 対話履歴（自動生成）
-└── settings.json               # メイン設定
+└── settings.json               # メイン設定（Plan Mode、安全制限）
 ```
 
 ---
-
-## なぜconversation.logなのか？
-
-AIアシスタントは毎回まっさらな状態で会話を始めます。過去の失敗を覚えていません。
-
-conversation.logを分析することで、繰り返される問題を特定し、Claude Codeの設定で根本的に修正できます。
 
 ## 本テンプレートと同等のことを実現するプロンプト
 

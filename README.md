@@ -71,7 +71,7 @@ conversation.logを分析し、改善提案を自動生成します。
 
 ## 実証結果
 
-このテンプレートは、 [Goベンチマーク実装プロジェクト](/jumpstarter/tree/feature/kaizen) で作成・検証しました。
+このテンプレートは、 [Goベンチマーク実装プロジェクト](../../tree/feature/kaizen/) で作成・検証しました。
 
 ### Before（改善前）
 

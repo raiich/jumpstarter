@@ -2,6 +2,8 @@
 
 **A template repository for continuously improving development efficiency based on conversation history with Claude Code**
 
+[日本語版](https://github.com/raiich/jumpstarter/blob/main.ja/README.md)
+
 ---
 
 ## Have You Experienced This?

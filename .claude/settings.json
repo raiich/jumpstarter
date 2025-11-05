@@ -1,7 +1,4 @@
 {
-  "env": {
-    "CLAUDE_DEFAULT_PERMISSION_MODE": "plan"
-  },
   "permissions": {
     "deny": [
       "Bash(git push --force:*)",

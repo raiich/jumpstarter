@@ -1,72 +1,72 @@
-# ドキュメント作成ガイドライン
+# Documentation Creation Guidelines
 
-## 目的
+## Purpose
 
-簡潔で必要十分なドキュメントを作成し、冗長性を排除する。
+Create concise and necessary documentation while eliminating verbosity.
 
-## ファイル命名規則
+## File Naming Convention
 
-**lowercase-with-hyphens (kebab-case)** を使用
+Use **lowercase-with-hyphens (kebab-case)**
 
 - ✅ `writing-benchmarks.md`, `running-benchmarks.md`
 - ❌ `WRITING_BENCHMARKS.md`, `Writing_Benchmarks.md`
 
-**例外:**
-- 慣習的に大文字で記述される重要なファイル（例: README.md, CLAUDE.md, LICENSE など）はそのまま
+**Exceptions:**
+- Important files conventionally written in uppercase (e.g., README.md, CLAUDE.md, LICENSE) remain as-is
 
-## 作成プロセス（3ステップ）
+## Creation Process (3 Steps)
 
-### 1. 章立ての検討
+### 1. Consider Chapter Structure
 
-- 対象読者と前提知識を明確化
-- 情報の階層構造を設計
-- ファイル分割の必要性を判断（目的や読者が異なる場合は分ける）
+- Clarify target audience and prerequisite knowledge
+- Design information hierarchy
+- Decide if file splitting is needed (split when purpose or audience differs)
 
-### 2. 章立てのレビュー
+### 2. Review Chapter Structure
 
-本文を書く前に、構成をユーザーに提示してフィードバックを得る。
+Present structure to user for feedback before writing body.
 
-### 3. 本文の作成
+### 3. Write Body
 
-承認された構成に従って執筆する。
+Write according to approved structure.
 
-## 簡潔さの原則
+## Principle of Conciseness
 
-### 避けるべきもの
+### Things to Avoid
 
-- 過度な説明（基本概念の詳細すぎる説明、読者が既知の情報）
-- 重複情報
+- Excessive explanation (overly detailed basic concepts, information readers already know)
+- Duplicate information
 
-### 目指すべきもの
+### Things to Aim For
 
-- 必要十分な情報のみ
-- 短い文章、明確な用語、箇条書きの活用
-- コードとコメントのバランス
+- Only necessary and sufficient information
+- Short sentences, clear terminology, use of bullet points
+- Balance of code and comments
 
-## ドキュメント作成後のセルフレビューチェックリスト
+## Self-Review Checklist After Documentation Creation
 
-各セクションで以下を自問:
+Ask yourself for each section:
 
-- [ ] **削除テスト**: この段落は本当に必要か？削除しても理解できないか？
-- [ ] **前提知識**: 読者が既に知っている内容を説明していないか？
-- [ ] **重複チェック**: 同じ情報を別の場所で既に述べていないか？
-- [ ] **コード優先**: コード例で十分説明できることを長文で書いていないか？
-- [ ] **文字数確認**: 説明が長いと感じたら半分に削れないか検討
+- [ ] **Deletion Test**: Is this paragraph truly necessary? Can it still be understood if deleted?
+- [ ] **Prerequisite Knowledge**: Am I explaining content readers already know?
+- [ ] **Duplication Check**: Have I already mentioned the same information elsewhere?
+- [ ] **Code First**: Am I writing long text for what can be sufficiently explained with code examples?
+- [ ] **Character Count Check**: If explanation feels long, consider if it can be cut in half
 
-**目標**: 内容に対して最小限の文字数で最大限の情報を提供する
+**Goal**: Provide maximum information with minimum character count for the content
 
-## 実践例
+## Practical Examples
 
-**冗長な例**:
+**Verbose Example**:
 ```
-コンパイラは非常に賢く、使用されていない変数を自動的に削除する
-最適化を行います。これは通常は望ましいですが、ベンチマークでは
-問題となります。なぜなら測定したい処理が削除されてしまうからです。
-この問題を解決するために、グローバル変数への代入を使用します。
+The compiler is very smart and performs optimizations that automatically
+remove unused variables. This is usually desirable, but in benchmarks it
+becomes a problem because the processing we want to measure gets removed.
+To solve this problem, we use assignment to global variables.
 ```
 
-**簡潔な例**:
+**Concise Example**:
 ```
-ベンチマーク対象の処理が最適化で削除されないよう、
-結果をグローバル変数に代入する。
+To prevent the benchmark target from being removed by optimization,
+assign the result to a global variable.
 ```

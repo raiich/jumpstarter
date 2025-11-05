@@ -1,77 +1,77 @@
-# Claude Code 改善コマンド
+# Claude Code Improvement Command
 
-conversation.logからユーザーフィードバックを分析し、Claude Code設定を改善します。
+Analyzes user feedback from conversation.log and improves Claude Code settings.
 
-## 実行手順
+## Execution Steps
 
-1. **フィードバック分析**
-   - `.claude/logs/conversation.log` を読み込む
-   - ユーザーからのフィードバック、要望、不満を抽出
-   - 繰り返し指摘される問題を特定
+1. **Feedback Analysis**
+   - Read `.claude/logs/conversation.log`
+   - Extract user feedback, requests, and complaints
+   - Identify repeatedly pointed out issues
 
-2. **Claude Code機能の確認**
-   - WebFetchを使用してClaude Code公式ドキュメントを確認
-   - 確認URL: https://docs.claude.com/en/docs/claude-code/claude_code_docs_map.md
-   - フィードバックパターンを解決できるClaude Code機能を特定
-   - 既存の設定で活用できていない機能がないかチェック
+2. **Verify Claude Code Features**
+   - Check Claude Code official documentation using WebFetch
+   - Check URL: https://docs.claude.com/en/docs/claude-code/claude_code_docs_map.md
+   - Identify Claude Code features that can resolve feedback patterns
+   - Check if there are any unutilized features in existing settings
 
-3. **改善案の作成**
-   - フィードバックとClaude Code機能を組み合わせた改善案を作成
-   - 以下の設定ファイルを対象：
+3. **Create Improvement Proposals**
+   - Create improvement proposals combining feedback and Claude Code features
+   - Target the following configuration files:
      - `.claude/settings.json`
      - `.claude/agents/`
      - `.claude/skills/`
      - `.claude/commands/`
      - `.claude/guidelines/`
 
-4. **改善の実施**
-   - 改善案をユーザーに提示
-   - 承認後、設定ファイルを更新
+4. **Implement Improvements**
+   - Present improvement proposals to user
+   - Update configuration files after approval
 
-## 出力フォーマット
+## Output Format
 
 ```
-## フィードバック分析結果
+## Feedback Analysis Results
 
-### 主要なフィードバック
-- [フィードバック1: 頻度X回]
-- [フィードバック2: 頻度Y回]
+### Key Feedback
+- [Feedback 1: Frequency X times]
+- [Feedback 2: Frequency Y times]
 
-### 改善提案
+### Improvement Proposals
 
-#### 提案1: [タイトル]
-- **対象**: [ファイル名]
-- **内容**: [変更内容]
-- **効果**: [期待される改善]
+#### Proposal 1: [Title]
+- **Target**: [Filename]
+- **Content**: [Change details]
+- **Effect**: [Expected improvement]
 
-#### 提案2: [タイトル]
+#### Proposal 2: [Title]
 ...
 
-### Claude Code 最新機能の活用
-- [機能名]: [活用方法]
+### Utilizing Latest Claude Code Features
+- [Feature name]: [How to utilize]
 ```
 
-## 改善の実例
+## Improvement Examples
 
-このテンプレート自体も `/kaizen` により継続的に改善していきます:
+This template itself is continuously improved through `/kaizen`:
 
-### 第1回 kaizen
-- Guidelines: 4種類を生成
-- 対話ログ記録機能を追加
+### 1st Kaizen
+- Guidelines: Generated 4 types
+- Added conversation log recording feature
 
-### 第2回 kaizen
-- Guidelines を統合・簡素化
-- 冗長性を排除
+### 2nd Kaizen
+- Consolidated and simplified Guidelines
+- Eliminated verbosity
 
-### 第3回 kaizen
-- Sub-Agents: 4種類を追加
-- Settings: Plan Mode、安全制限を強化
-- Skills: doc-reviewer を簡素化
+### 3rd Kaizen
+- Sub-Agents: Added 4 types
+- Settings: Enhanced Plan Mode and safety restrictions
+- Skills: Simplified doc-reviewer
 
-各改善で conversation.log からユーザーフィードバックを抽出し、設定に反映しています。
+Each improvement extracts user feedback from conversation.log and reflects it in settings.
 
-## 注意事項
+## Important Notes
 
-- 既存設定を破壊しないよう注意
-- 変更前にバックアップを推奨
-- ユーザー承認後に変更を実施
+- Be careful not to break existing settings
+- Backup before changes is recommended
+- Implement changes after user approval

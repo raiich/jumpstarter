@@ -1,65 +1,65 @@
-# Claude Code 会話ログ
+# Claude Code Conversation Logs
 
-このディレクトリには、Claude Code との会話を記録するための設定が含まれています。
+This directory contains settings for recording conversations with Claude Code.
 
-## 設定内容
+## Configuration
 
-`settings.json` に定義されたフックにより、以下が自動的にログに記録されます：
+The hooks defined in `settings.json` automatically log the following:
 
-- **ユーザープロンプト**: あなたが Claude Code に送信した質問や指示
-- **ツール実行**: Claude Code が使用したツール（ファイル読み込み、編集、コマンド実行など）
+- **User Prompts**: Questions and instructions you send to Claude Code
+- **Tool Executions**: Tools used by Claude Code (file reads, edits, command executions, etc.)
 
-## ログファイル
+## Log Files
 
-会話ログは `.claude/logs/conversation.log` に保存されます。
+Conversation logs are saved to `.claude/logs/conversation.log`.
 
 ```bash
-# ログを確認
+# View logs
 cat .claude/logs/conversation.log
 
-# リアルタイムでログを監視
+# Monitor logs in real-time
 tail -f .claude/logs/conversation.log
 
-# 特定の日付のログを検索
+# Search logs for a specific date
 grep "2025-11-01" .claude/logs/conversation.log
 ```
 
-## ログの活用方法
+## How to Use Logs
 
-### 1. 過去の会話を検索
+### 1. Search Past Conversations
 ```bash
-# 特定のキーワードを含む会話を検索
-grep -A 5 "キーワード" .claude/logs/conversation.log
+# Search for conversations containing a specific keyword
+grep -A 5 "keyword" .claude/logs/conversation.log
 ```
 
-### 2. 日次レポートの作成
+### 2. Create Daily Reports
 ```bash
-# 今日の会話をファイルに出力
+# Output today's conversations to a file
 grep "$(date '+%Y-%m-%d')" .claude/logs/conversation.log > today.log
 ```
 
-### 3. 会話の統計
+### 3. Conversation Statistics
 ```bash
-# ユーザープロンプトの数をカウント
+# Count number of user prompts
 grep "USER PROMPT" .claude/logs/conversation.log | wc -l
 
-# 使用されたツールの種類を確認
+# Check types of tools used
 grep "TOOL:" .claude/logs/conversation.log | sort | uniq -c
 ```
 
-## 注意事項
+## Important Notes
 
-- ログファイル (`.claude/logs/`) は `.gitignore` に追加されており、Git にコミットされません
-- 個人的な会話履歴が含まれる可能性があるため、共有に注意してください
-- ログファイルは自動的にローテーションされないため、定期的に整理することを推奨します
+- Log files (`.claude/logs/`) are added to `.gitignore` and will not be committed to Git
+- Be careful when sharing as they may contain personal conversation history
+- Log files are not automatically rotated, so regular cleanup is recommended
 
-## カスタマイズ
+## Customization
 
-`settings.json` を編集することで、ログの形式や記録する情報を変更できます。
-詳細は [Claude Code Hooks ドキュメント](https://docs.claude.com/en/docs/claude-code/hooks) を参照してください。
+You can change the log format and recorded information by editing `settings.json`.
+For details, see the [Claude Code Hooks documentation](https://docs.claude.com/en/docs/claude-code/hooks).
 
-### 設定ファイルについて
+### About Settings Files
 
-- `.claude/settings.json`: プロジェクト固有の設定（このリポジトリで使用）
-- `~/.claude/settings.json`: グローバル設定（全プロジェクトに適用）
-- `.claude/settings.local.json`: ローカル設定（Gitにコミットしない個人用設定）
+- `.claude/settings.json`: Project-specific settings (used in this repository)
+- `~/.claude/settings.json`: Global settings (applied to all projects)
+- `.claude/settings.local.json`: Local settings (personal settings not committed to Git)

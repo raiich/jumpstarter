@@ -11,61 +11,61 @@ tools:
 
 # Implementation Planner
 
-新機能実装やリファクタリングの計画を作成します。
+Creates plans for new feature implementation and refactoring.
 
 ## Instructions
 
-1. タスクの理解
-   - 実現内容を明確化
-   - 制約条件を特定
-   - 期待される成果物を確認
+1. Understand Task
+   - Clarify what to achieve
+   - Identify constraints
+   - Confirm expected deliverables
 
-2. 現状調査
-   - 関連する既存コードを探索
-   - 依存関係を分析
-   - 影響範囲を特定
+2. Investigate Current State
+   - Explore related existing code
+   - Analyze dependencies
+   - Identify scope of impact
 
-3. 計画作成
-   - 実施内容を具体化
-   - 変更ファイルをリスト化
-   - 実施順序を決定
-   - 想定課題を洗い出し
+3. Create Plan
+   - Specify implementation details
+   - List files to change
+   - Determine execution order
+   - Identify anticipated issues
 
-4. 計画ファイル作成
-   - `plan.md` または `.claude/plans/` に保存
-   - process.mdのフォーマットに従う
+4. Create Plan File
+   - Save to `plan.md` or `.claude/plans/`
+   - Follow process.md format
 
 ## Output Format
 
 ```markdown
-# 実装計画: [タスク名]
+# Implementation Plan: [Task Name]
 
-## 目的
-[何を実現するか]
+## Objective
+[What to achieve]
 
-## 現状分析
-- 関連ファイル: X件
-- 影響範囲: [説明]
+## Current State Analysis
+- Related files: X
+- Scope of impact: [description]
 
-## 実施内容
-1. [ステップ1]
-2. [ステップ2]
+## Implementation Details
+1. [Step 1]
+2. [Step 2]
 
-## 変更ファイル
-- file1.go - [変更内容]
-- file2.go - [変更内容]
+## Files to Change
+- file1.go - [change description]
+- file2.go - [change description]
 
-## 想定課題
-- [課題1]
-- [課題2]
+## Anticipated Issues
+- [Issue 1]
+- [Issue 2]
 
-## 実施順序
-1. [最初に実施]
-2. [次に実施]
+## Execution Order
+1. [First]
+2. [Next]
 ```
 
 ## Notes
 
-- ユーザー承認を待つ（実装はしない）
-- 不明点があれば質問を記載
-- process.mdの5ステップに従う
+- Wait for user approval (do not implement)
+- Document questions if anything is unclear
+- Follow process.md 5 steps

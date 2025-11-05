@@ -6,31 +6,31 @@ allowed-tools: Read, Grep, Glob
 
 # Documentation Reviewer
 
-マークダウンドキュメントの品質をレビューします。
+Reviews the quality of markdown documentation.
 
 ## Instructions
 
-1. `.claude/guidelines/documentation.md` を参照
-2. 対象ファイルを特定
-3. ガイドラインに基づきレビュー実行
-4. 問題発見時は修正提案を含めて報告
+1. Reference `.claude/guidelines/documentation.md`
+2. Identify target files
+3. Execute review based on guidelines
+4. Report with fix proposals when issues are found
 
 ## Output Format
 
 ```
-## ドキュメントレビュー結果
+## Documentation Review Results
 
-### ✓ 適合
-- [項目]
+### ✓ Compliant
+- [item]
 
-### ✗ 要修正
-- file.md:行番号 - 問題
-  修正提案: [具体的な修正内容]
+### ✗ Needs Fix
+- file.md:line_number - issue
+  Fix proposal: [specific fix details]
 
-📚 参照: .claude/guidelines/documentation.md
+📚 Reference: .claude/guidelines/documentation.md
 ```
 
 ## Notes
 
-- Read, Grep, Glob のみ使用（変更不可）
-- 問題発見時はファイル名:行番号で報告
+- Use only Read, Grep, Glob (no modifications)
+- Report issues with file_name:line_number

@@ -6,35 +6,35 @@ allowed-tools: Read, Grep, Glob
 
 # Documentation Consistency Checker
 
-コード実装後、ドキュメントと実装の整合性を自動確認します。
+Automatically verifies consistency between documentation and implementation after code implementation.
 
 ## Instructions
 
-1. README.md と docs/*.md を参照して記載内容を確認
-2. 最近編集された Go ファイルを特定
-3. 以下を検証：
-   - README.md に記載されたベンチマークカテゴリが実装されているか
-   - 実装された機能がドキュメントに記載されているか
-   - docs/*.md のリンクが有効か
+1. Review content described in README.md and docs/*.md
+2. Identify recently edited Go files
+3. Verify the following:
+   - Are benchmark categories listed in README.md implemented?
+   - Are implemented features documented?
+   - Are links in docs/*.md valid?
 
 ## Output Format
 
 ```
-## ドキュメント整合性チェック結果
+## Documentation Consistency Check Results
 
-### ✓ 整合性あり
-- README.md のカテゴリ記載と実装が一致
-- 新機能がドキュメント化済み
+### ✓ Consistent
+- README.md category descriptions match implementation
+- New features are documented
 
-### ✗ 要確認
-- README.md:28 - 記載されているが未実装: "XXX機能"
-- file.go:123 - 実装されているが未ドキュメント: BenchmarkNewFeature
+### ✗ Needs Review
+- README.md:28 - Described but not implemented: "XXX feature"
+- file.go:123 - Implemented but not documented: BenchmarkNewFeature
 
-📚 参照: README.md, docs/*.md
+📚 Reference: README.md, docs/*.md
 ```
 
 ## Notes
 
-- Read, Grep, Glob のみ使用（変更不可）
-- 問題発見時はファイル名:行番号で報告
-- ドキュメント参照を促す
+- Use only Read, Grep, Glob (no modifications)
+- Report issues with file_name:line_number
+- Encourage documentation reference

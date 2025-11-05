@@ -1,151 +1,151 @@
-# Jumpstarter - Claude Code 継続的改善テンプレート
+# Jumpstarter - Claude Code Continuous Improvement Template
 
-**Claude Codeとの対話履歴をもとに、開発効率を継続的に改善していくためのテンプレートリポジトリ**
+**A template repository for continuously improving development efficiency based on conversation history with Claude Code**
 
 ---
 
-## こんな経験ありませんか？
+## Have You Experienced This?
 
 ```
-あなた: 「新機能を実装して」
-Claude: [実装]
-あなた: 「冗長すぎます」
-Claude: [指摘箇所の修正]
-あなた: 「他に漏れはないですか？」
-Claude: [修正してすぐに実行]
-あなた: 「すぐに実行しようとしないでください。まずはレビューをしてください」
+You: "Implement a new feature"
+Claude: [implements]
+You: "Too verbose"
+Claude: [fixes only the pointed out section]
+You: "Are there any other occurrences?"
+Claude: [fixes and immediately executes]
+You: "Don't execute immediately. Review first"
 ...
 ```
 
-**同じフィードバックを何度も繰り返していませんか？**
+**Are you repeating the same feedback over and over?**
 
-Jumpstarterは、この問題を `/kaizen` コマンド一つで解決します。
+Jumpstarter solves this problem with a single `/kaizen` command.
 
 ---
 
-## コアコンセプト
+## Core Concept
 
-**AIとの対話履歴から、設定を改善**
+**Improve configuration from AI conversation history**
 
-1. **conversation.log** に対話履歴を自動記録
-2. **`/kaizen`** でログを分析し、繰り返しパターンを抽出
-3. **Guidelines / Skills / Hooks** を自動生成してClaude Codeを最適化
+1. Automatically record conversation history in **conversation.log**
+2. Analyze logs with **`/kaizen`** to extract repetitive patterns
+3. Auto-generate **Guidelines / Skills / Hooks** to optimize Claude Code
 
 ```mermaid
 flowchart TD
-    A[開発作業] --> B[conversation.log に自動で蓄積]
-    B --> C[ /kaizen 実行]
-    C --> D[改善策を自動適用]
+    A[Development Work] --> B[Automatically accumulate in conversation.log]
+    B --> C[Run /kaizen]
+    C --> D[Auto-apply improvements]
     D --> A
 ```
 
 ---
 
-## クイックスタート
+## Quick Start
 
-### 1. このテンプレートを使う
+### 1. Use This Template
 
 ```bash
-# GitHub上で "Use this template" をクリック、または
+# Click "Use this template" on GitHub, or
 git clone https://github.com/your-org/jumpstarter.git my-project
 cd my-project
 ```
 
-### 2. Claude Codeで開発
+### 2. Develop with Claude Code
 
 ```bash
 claude .
-# 普段通り開発。conversation.logに対話履歴が自動記録されます
+# Develop as usual. Conversation history is automatically recorded in conversation.log
 ```
 
-### 3. 定期的に改善
+### 3. Improve Regularly
 
 ```bash
-# Claude Codeセッション内で
+# Within Claude Code session
 /kaizen
 ```
 
-conversation.logを分析し、改善提案を自動生成します。
+Analyzes conversation.log and automatically generates improvement proposals.
 
 ---
 
-## 実証結果
+## Proof of Results
 
-このテンプレートは、 [Goベンチマーク実装プロジェクト](../../tree/feature/kaizen/) で作成・検証しました。
+This template was created and validated in the [Go Benchmark Implementation Project](../../tree/feature/kaizen/).
 
-### Before（改善前）
-
-```
-📊 conversation.log分析結果
-- 繰り返されたフィードバック: 217パターン
-  「冗長すぎます」「他に漏れは...」「実行しないで」など
-```
-
-### `/kaizen`実行
+### Before (Pre-improvement)
 
 ```
-🤖 自動生成された改善策
-- Guidelines: 5種類（process, communication, quality, documentation, git）
-- Sub-Agents: 4種類（包括的検索、計画作成、コード整合性、ドキュメント品質）
-- Settings: 安全性向上（Plan Mode、危険操作制限）
-- Skills: 2種類（コード整合性チェック、ドキュメント品質チェック）
+📊 conversation.log Analysis Results
+- Repeated feedback patterns: 217
+  "Too verbose", "Are there any other...", "Don't execute", etc.
 ```
 
-### After（改善後）
+### Running `/kaizen`
 
 ```
-✅ 効果
-- フィードバックループが激減（2-3往復 → 1往復）
-- 並列実行による開発速度向上（30-50%の時間短縮）
-- 修正漏れの削減（包括的検索の自動化）
-- 危険操作の技術的制限（force push、rm -rf拒否）
-- 冗長なドキュメントの自動抑制
+🤖 Auto-generated Improvements
+- Guidelines: 5 types (process, communication, quality, documentation, git)
+- Sub-Agents: 4 types (comprehensive search, planning, code consistency, doc quality)
+- Settings: Enhanced safety (Plan Mode, dangerous operation restrictions)
+- Skills: 2 types (code consistency check, doc quality check)
+```
+
+### After (Post-improvement)
+
+```
+✅ Effects
+- Dramatically reduced feedback loops (2-3 rounds → 1 round)
+- Faster development with parallel execution (30-50% time savings)
+- Reduced fix omissions (automated comprehensive search)
+- Technical restrictions on dangerous operations (force push, rm -rf rejection)
+- Automatic suppression of verbose documentation
 ```
 
 ---
 
-## メインの機能
+## Main Features
 
-### 📊 対話ログ自動記録
+### 📊 Automatic Conversation Logging
 
-`.claude/settings.json` に設定されたhooksにより、全ての対話を `.claude/logs/conversation.log` に記録。
+Records all conversations to `.claude/logs/conversation.log` via hooks configured in `.claude/settings.json`.
 
-### 🔍 `/kaizen` コマンド
+### 🔍 `/kaizen` Command
 
-conversation.logを分析し、繰り返しパターンから改善策を自動生成：
+Analyzes conversation.log and auto-generates improvements from repetitive patterns:
 
-- **Guidelines**: Claude Codeの振る舞いルール（`.claude/guidelines/`）
-- **Sub-Agents**: 専門タスクの並列実行（`.claude/agents/`）
-- **Skills**: 自動実行される品質チェック機能（`.claude/skills/`）
-- **Settings**: 安全性制限とデフォルト設定（`.claude/settings.json`）
-- **Hooks**: イベント駆動の自動処理（`.claude/settings.json`）
+- **Guidelines**: Behavioral rules for Claude Code (`.claude/guidelines/`)
+- **Sub-Agents**: Parallel execution of specialized tasks (`.claude/agents/`)
+- **Skills**: Auto-executed quality check functions (`.claude/skills/`)
+- **Settings**: Safety restrictions and defaults (`.claude/settings.json`)
+- **Hooks**: Event-driven automated processing (`.claude/settings.json`)
 
-### 📝 すぐに使えるテンプレート
+### 📝 Ready-to-Use Template
 
 ```
 .claude/
-├── commands/kaizen.md          # 継続的改善コマンド
-├── agents/                     # サブエージェント（専門タスク並列実行）
-├── guidelines/                 # 振る舞いルール
-├── skills/                     # 自動実行機能
-├── logs/conversation.log       # 対話履歴（自動生成）
-└── settings.json               # メイン設定（Plan Mode、安全制限）
+├── commands/kaizen.md          # Continuous improvement command
+├── agents/                     # Sub-agents (parallel specialized tasks)
+├── guidelines/                 # Behavioral rules
+├── skills/                     # Auto-execution features
+├── logs/conversation.log       # Conversation history (auto-generated)
+└── settings.json               # Main settings (Plan Mode, safety restrictions)
 ```
 
 ---
 
-## 本テンプレートと同等のことを実現するプロンプト
+## Prompts to Achieve Equivalent Configuration
 
-下記のようなプロンプトにより、本テンプレートと同等の設定が実現できそうです:
-
-```
-ユーザーとClaude Codeの対話履歴をログに残したいです。どのようなやり方がありますか？
-# → Hooksが良さそうです。
-```
+The following prompts can achieve equivalent configuration to this template:
 
 ```
-`/kaizen` というスラッシュコマンドを作成して、下記のようなことを実現できたらと考えています:
+I want to log conversation history with Claude Code. What are the available approaches?
+# → Hooks seem to be a good option.
+```
 
-1. ユーザーとClaude Codeの対話履歴のログを読み込み、ユーザーからClaude Codeに対するフィードバックをまとめる
-2. フィードバックを元にClaude Code 設定を変更し、Claude Code を使ったソフトウェア開発を改善する
+```
+I want to create a slash command called `/kaizen` that achieves the following:
+
+1. Read the conversation history log between the user and Claude Code, and summarize user feedback to Claude Code
+2. Modify Claude Code settings based on the feedback to improve software development with Claude Code
 ```

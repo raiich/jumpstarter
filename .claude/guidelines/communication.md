@@ -1,127 +1,127 @@
-# コミュニケーションガイドライン
+# Communication Guidelines
 
-## 目的
+## Purpose
 
-ユーザーとのコミュニケーションパターンを標準化し、スムーズなコラボレーションを実現する。
+Standardize communication patterns with users to achieve smooth collaboration.
 
-## 基本原則
+## Core Principle
 
-タスク実行は以下のフローに従う:
-1. タスク理解 → 2. 計画作成 → 3. ユーザー確認 → 4. 実装 → 5. セルフレビュー → 6. 完了報告
+Task execution follows this flow:
+1. Understand Task → 2. Create Plan → 3. User Confirmation → 4. Implementation → 5. Self-Review → 6. Completion Report
 
-## 避けるべきパターン
+## Patterns to Avoid
 
-### ❌ いきなり実装
-
-```
-ユーザー: 「機能Xを追加して」
-Claude: [いきなり実装] → 「実装しました」
-問題: ユーザーの意図と異なる可能性
-```
-
-### ❌ 計画なしで進める
+### ❌ Immediate Implementation
 
 ```
-ユーザー: 「大規模なリファクタリングを」
-Claude: [計画なしで実装開始]
-問題: 方向性の確認ができない
+User: "Add feature X"
+Claude: [Implements immediately] → "Implemented"
+Problem: May not match user's intent
 ```
 
-### ❌ ユーザー確認なしで次のステップへ
+### ❌ Proceeding Without a Plan
 
 ```
-ユーザー: 「レビューをお願いします」
-Claude: [レビュー] → [勝手に修正実行]
-問題: ユーザーが準備できていない
+User: "Do a large refactoring"
+Claude: [Starts implementation without planning]
+Problem: Cannot confirm direction
 ```
 
-### ❌ 段階的な修正を繰り返す
+### ❌ Moving to Next Step Without User Confirmation
 
 ```
-Claude: 「1箇所修正しました」
-ユーザー: 「他にもないですか？」
-Claude: 「2箇所目を修正しました」
-ユーザー: 「まだあります...」
-問題: 効率が悪い、ユーザーの時間を浪費
+User: "Please review"
+Claude: [Reviews] → [Executes fixes without asking]
+Problem: User is not ready
 ```
 
-## 推奨パターン
-
-### ✅ 計画 → 確認 → 実装 → レビュー → 報告
+### ❌ Repeating Incremental Fixes
 
 ```
-ユーザー: 「機能Xを追加して」
+Claude: "Fixed 1 location"
+User: "Are there any others?"
+Claude: "Fixed 2nd location"
+User: "Still more..."
+Problem: Inefficient, wastes user's time
+```
+
+## Recommended Patterns
+
+### ✅ Plan → Confirm → Implement → Review → Report
+
+```
+User: "Add feature X"
 Claude:
-  1. [計画作成]
-  2. 「この計画で進めてよろしいでしょうか？」
-ユーザー: 「承認します」
+  1. [Create plan]
+  2. "May I proceed with this plan?"
+User: "Approved"
 Claude:
-  3. [実装]
-  4. [セルフレビュー]
-  5. 「実装完了しました。テストも通過しています」
+  3. [Implementation]
+  4. [Self-review]
+  5. "Implementation complete. Tests are passing"
 ```
 
-### ✅ 一度の実装で完全な結果を提供
+### ✅ Provide Complete Results in One Implementation
 
 ```
-ユーザー: 「err変数の未使用を修正して」
+User: "Fix unused err variables"
 Claude:
-  1. [Grepで全検索]
-  2. [全箇所を一度に修正]
-  3. 「5箇所の未使用err変数を修正しました」
+  1. [Search all with Grep]
+  2. [Fix all locations at once]
+  3. "Fixed unused err variables in 5 locations"
 ```
 
-### ✅ 各フェーズでユーザー確認
+### ✅ User Confirmation at Each Phase
 
 ```
-ユーザー: 「ドキュメントを作成して」
-Claude: 「章立てを検討しました。レビューをお願いします」
-ユーザー: 「承認します」
-Claude: [本文作成] → 「ドキュメントを作成しました」
+User: "Create documentation"
+Claude: "Reviewed chapter structure. Please review"
+User: "Approved"
+Claude: [Create body] → "Documentation created"
 ```
 
-## フェーズ別コミュニケーション
+## Phase-Specific Communication
 
-### タスク受領時
-- タスクを理解する
-- 必要に応じて計画を作成
-- **ユーザーに確認**: 「この計画で進めてよろしいでしょうか？」
-- 承認を待つ
+### When Receiving Tasks
+- Understand the task
+- Create a plan if needed
+- **Confirm with user**: "May I proceed with this plan?"
+- Wait for approval
 
-### 実装中
-- 長時間かかる場合は中間報告
-- 不明点は実装前に質問（実装後ではない）
-- 問題発生時は即座に報告・相談
-- 黙って進めない
+### During Implementation
+- Provide interim reports for long-running tasks
+- Ask questions before implementation (not after)
+- Report and consult immediately when issues arise
+- Don't proceed silently
 
-### 完了時
-- セルフレビュー実施
-- テスト・ビルド確認（該当する場合）
-- **完了報告**: 実施内容と結果を簡潔に（例: テスト通過、ビルド成功）
-- 次のアクションが必要な場合は提案
+### Upon Completion
+- Conduct self-review
+- Verify tests and builds (when applicable)
+- **Completion Report**: Briefly report what was done and results (e.g., tests passed, build succeeded)
+- Suggest next actions if needed
 
-## ユーザー指示の解釈
+## Interpreting User Instructions
 
-### 「レビューして」「チェックして」
+### "Review" or "Check"
 
-→ レビューのみ実施、修正は待つ
+→ Only conduct review, wait for fix instruction
 
-### 「修正して」
+### "Fix"
 
-→ 修正のみ、実行は指示があるまで待つ
+→ Only fix, wait for execution instruction
 
-### 「実装して」「追加して」
+### "Implement" or "Add"
 
-→ 計画を立ててから実装
+→ Create a plan, then implement
 
-### 「すぐに〜」「今すぐ〜」
+### "Immediately ~" or "Right now ~"
 
-→ 承認済みとみなして実行可
+→ Consider approved and execute
 
-## 期待される効果
+## Expected Benefits
 
-- ユーザーとの認識齟齬の削減
-- 手戻りの削減
-- フィードバックループの短縮
-- ユーザーの時間節約
-- スムーズなコラボレーション
+- Reduce misalignment with user
+- Reduce rework
+- Shorten feedback loops
+- Save user's time
+- Smooth collaboration

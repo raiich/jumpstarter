@@ -1,144 +1,144 @@
-# 品質保証ガイドライン
+# Quality Assurance Guidelines
 
-## 目的
+## Purpose
 
-コードやドキュメントを作成・修正した後、ユーザーに提示する前に必ず自己レビューを実施し、品質と完全性を確保する。
+After creating or modifying code or documentation, always conduct self-review before presenting to users to ensure quality and completeness.
 
-## 実装後の必須チェックリスト
+## Post-Implementation Checklist
 
-### 1. 完全性チェック
+### 1. Completeness Check
 
-実装が完了したら、以下を自問自答する：
+After implementation, ask yourself:
 
-- [ ] 全ての要件を満たしているか
-- [ ] ユーザーの指示に対して漏れはないか
-- [ ] 「他に漏れはないか」と自分自身に問いかける
-- [ ] 同様のパターンが他にもないか確認した
+- [ ] Does it meet all requirements?
+- [ ] Are there any omissions from user's instructions?
+- [ ] Ask yourself "Are there any other omissions?"
+- [ ] Have I confirmed there are no similar patterns elsewhere?
 
-**重要**: 一度の実装で全ての問題を解決することを目指す。段階的な修正を繰り返すのではなく、包括的なレビューで一度に完了させる。
+**Important**: Aim to solve all problems in one implementation. Complete with comprehensive review at once, rather than repeating incremental fixes.
 
-#### 包括的検索の実施
+#### Conducting Comprehensive Search
 
-修正・実装後は必ず以下を実行:
+Always execute the following after fixes/implementation:
 
-**1. パターン検索**: 同じ問題が他にもないかGrepで検索
-   - 例: エラーハンドリングの修正 → 同じパターンを全て検索
-   - 例: 変数名の修正 → 同じ名前の使用箇所を全て検索
+**1. Pattern Search**: Search with Grep for similar issues elsewhere
+   - Example: Error handling fix → Search for all similar patterns
+   - Example: Variable name fix → Search for all usage locations of same name
 
-**2. 関連ファイル確認**: 影響範囲の特定
-   - 例: 関数名変更 → 全ての呼び出し箇所を確認
-   - 例: 型定義変更 → 使用している全てのファイルを確認
+**2. Related File Check**: Identify scope of impact
+   - Example: Function name change → Check all call sites
+   - Example: Type definition change → Check all files using it
 
-**3. 一括修正**: 見つかった箇所を一度に全て修正
-   - 段階的な修正は避ける
-   - 同じ問題は1回の修正で全て解決
+**3. Batch Fix**: Fix all found locations at once
+   - Avoid incremental fixes
+   - Resolve all same issues in one fix
 
-**目標**: ユーザーからの「他に漏れはないか」の質問をゼロにする
+**Goal**: Eliminate "Are there any other omissions?" questions from users
 
-#### 実践例
-
-```
-修正タスク: "err変数の未使用を修正"
-
-❌ 悪いアプローチ:
-1. 指摘された1箇所を修正
-2. ユーザーに報告
-3. ユーザー: 「他にもないですか？」
-4. 再検索して追加修正...
-
-✅ 良いアプローチ:
-1. Grepで "err" の未使用パターンを全検索
-2. 見つかった全ての箇所を一度に修正
-3. ユーザーに報告: 「X箇所を修正しました」
-```
-
-### 2. 品質チェック
-
-実装の品質を確認する：
-
-- [ ] **ビルドチェック**: コードがコンパイル・ビルドできるか
-- [ ] **テストチェック**: 全てのテストが通るか
-- [ ] **整合性チェック**: ドキュメントと実装が一致しているか
-- [ ] **エラーハンドリング**: エラー処理が適切に実装されているか
-- [ ] **命名規則**: プロジェクトの命名規則に従っているか
-
-### 3. 一貫性チェック
-
-コードベース全体との一貫性を確認する：
-
-- [ ] 既存のコードスタイルに従っているか
-- [ ] 同様の機能と同じパターンを使用しているか
-- [ ] エラーハンドリングのパターンが統一されているか
-- [ ] 命名規則が他のコードと一致しているか
-
-## テスト失敗時の対応プロセス
-
-### 1. 失敗原因の分析
-
-- エラーメッセージを読む
-- どのテストが失敗したか特定
-- 失敗の根本原因を理解
-
-### 2. 修正方針の再プランニング
-
-すぐに修正せず、以下を検討：
-- 修正が必要な箇所の特定
-- 同様の問題が他にもないか確認
-- 修正による影響範囲の評価
-
-### 3. ユーザーへの確認
-
-修正方針をユーザーに提示：
-- 失敗原因の説明
-- 修正案の提示
-- 影響範囲の報告
-
-### 4. 修正の実施
-
-ユーザーの承認後：
-- 計画に従って修正
-- 全ての関連箇所を一度に修正
-- セルフレビューを実施
-- 再テスト
-
-## 重要な原則
-
-- すぐに修正せず、まず計画を立てる
-- ユーザーに確認を取る
-- 同様の問題を一度に修正する
-
-## セルフレビューのタイミング
-
-- コード実装が完了した時
-- ドキュメントを作成した時
-- バグ修正を行った時
-- リファクタリングを実施した時
-- ユーザーに結果を報告する前
-
-## 実践例
-
-### コード修正の場合
+#### Practical Example
 
 ```
-1. 修正を実施
-2. 同じパターンが他にもないか検索（Grep使用）
-3. 全ての該当箇所を一度に修正
-4. ビルドとテストを実行
-5. 問題がなければユーザーに報告
+Fix Task: "Fix unused err variables"
+
+❌ Bad Approach:
+1. Fix 1 pointed out location
+2. Report to user
+3. User: "Are there any others?"
+4. Re-search and fix more...
+
+✅ Good Approach:
+1. Search all unused "err" patterns with Grep
+2. Fix all found locations at once
+3. Report to user: "Fixed X locations"
 ```
 
-### ドキュメント作成の場合
+### 2. Quality Check
+
+Verify implementation quality:
+
+- [ ] **Build Check**: Can the code compile/build?
+- [ ] **Test Check**: Do all tests pass?
+- [ ] **Consistency Check**: Do documentation and implementation match?
+- [ ] **Error Handling**: Is error handling properly implemented?
+- [ ] **Naming Conventions**: Does it follow project naming conventions?
+
+### 3. Consistency Check
+
+Verify consistency with entire codebase:
+
+- [ ] Does it follow existing code style?
+- [ ] Does it use same patterns as similar features?
+- [ ] Are error handling patterns unified?
+- [ ] Do naming conventions match other code?
+
+## Response Process for Test Failures
+
+### 1. Analyze Failure Cause
+
+- Read error messages
+- Identify which tests failed
+- Understand root cause of failure
+
+### 2. Re-plan Fix Strategy
+
+Don't fix immediately, consider:
+- Identify locations needing fixes
+- Check if similar issues exist elsewhere
+- Evaluate scope of impact from fixes
+
+### 3. Confirm with User
+
+Present fix strategy to user:
+- Explain failure cause
+- Present fix proposal
+- Report scope of impact
+
+### 4. Execute Fix
+
+After user approval:
+- Fix according to plan
+- Fix all related locations at once
+- Conduct self-review
+- Re-test
+
+## Important Principles
+
+- Don't fix immediately, create a plan first
+- Get confirmation from user
+- Fix similar issues all at once
+
+## Self-Review Timing
+
+- When code implementation is complete
+- When documentation is created
+- When bug fix is performed
+- When refactoring is done
+- Before reporting results to user
+
+## Practical Examples
+
+### For Code Fixes
 
 ```
-1. ドキュメントを作成
-2. 実装との整合性を確認
-3. 簡潔さを確認（冗長な部分を削除）
-4. ユーザーに提示
+1. Implement fixes
+2. Search for similar patterns elsewhere (use Grep)
+3. Fix all applicable locations at once
+4. Run build and tests
+5. Report to user if no issues
 ```
 
-## 期待される効果
+### For Documentation Creation
 
-- ユーザーからの「他に漏れはないですか？」の質問を削減
-- フィードバックループの短縮
-- 一度の実装でより完全な結果を提供
-- ユーザーの時間を節約
+```
+1. Create documentation
+2. Verify consistency with implementation
+3. Verify conciseness (remove verbose parts)
+4. Present to user
+```
+
+## Expected Benefits
+
+- Reduce "Are there any other omissions?" questions from users
+- Shorten feedback loops
+- Provide more complete results in one implementation
+- Save user's time

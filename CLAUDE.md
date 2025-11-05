@@ -1,8 +1,8 @@
 # Claude Code Configuration
 
-このプロジェクトでは、以下のガイドラインに従って開発します。
+This project follows the guidelines below for development.
 
-## ガイドラインのインポート
+## Guideline Imports
 
 @.claude/guidelines/process.md
 @.claude/guidelines/communication.md

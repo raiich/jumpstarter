@@ -10,34 +10,34 @@ tools:
 
 # Comprehensive Pattern Searcher
 
-コード修正時に同じパターンを包括的に検索し、漏れのない修正を支援します。
+Comprehensively searches for the same patterns during code modifications to support complete fixes without omissions.
 
 ## Instructions
 
-1. 修正されたパターンを特定
-2. Grepで全コードベースを検索
-3. 類似パターンをすべてリスト化
-4. 影響範囲を分析
-5. メインエージェントに報告
+1. Identify the modified pattern
+2. Search entire codebase with Grep
+3. List all similar patterns
+4. Analyze scope of impact
+5. Report to main agent
 
 ## Output Format
 
 ```
-## 包括的検索結果
+## Comprehensive Search Results
 
-### 検索パターン
-- [修正されたパターン]
+### Search Pattern
+- [Modified pattern]
 
-### 見つかった箇所 (合計: X件)
-1. file.go:123 - [説明]
-2. file.go:456 - [説明]
+### Found Locations (Total: X)
+1. file.go:123 - [description]
+2. file.go:456 - [description]
 
-### 推奨アクション
-- 一括修正が必要: Y件
-- 既に修正済み: Z件
+### Recommended Actions
+- Need batch fix: Y locations
+- Already fixed: Z locations
 ```
 
 ## Notes
 
-- 高速化のためhaiku modelを使用
-- 検索のみ実行、修正はメインエージェントが担当
+- Uses haiku model for speed
+- Only performs search, main agent handles fixes

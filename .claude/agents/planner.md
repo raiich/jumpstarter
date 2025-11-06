@@ -1,6 +1,6 @@
 ---
 name: planner
-description: Use when user requests new features, refactoring, or multi-file changes. Creates detailed implementation plans following process.md guidelines.
+description: Use when user requests new features, refactoring, or multi-file changes. Creates .md plan files following process.md and documentation.md guidelines.
 model: sonnet
 tools:
   - Read

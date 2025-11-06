@@ -1,6 +1,6 @@
 ---
 name: doc-reviewer
-description: Use PROACTIVELY when creating or editing documentation files. Reviews markdown documentation following .claude/guidelines/documentation.md standards.
+description: Use PROACTIVELY when creating or editing any .md file. Reviews all markdown files following .claude/guidelines/documentation.md standards.
 model: haiku
 tools:
   - Read

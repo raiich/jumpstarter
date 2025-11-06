@@ -1,5 +1,9 @@
 # Documentation Creation Guidelines
 
+## Scope
+
+This guideline applies to all files with `.md` extension, including those under `.claude/`.
+
 ## Purpose
 
 Create concise and necessary documentation while eliminating verbosity.

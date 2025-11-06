@@ -1,6 +1,6 @@
 ---
 name: doc-reviewer
-description: Review markdown documentation for naming conventions, conciseness, consistency, and completeness. Use when creating or editing documentation files.
+description: Review all .md files for naming conventions, conciseness, consistency, and completeness. Use when creating or editing any markdown file.
 allowed-tools: Read, Grep, Glob
 ---
 

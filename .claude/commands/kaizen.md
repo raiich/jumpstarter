@@ -11,7 +11,7 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
 
 2. **Claude Code機能の確認**
    - WebFetchを使用してClaude Code公式ドキュメントを確認
-   - 確認URL: https://docs.claude.com/en/docs/claude-code/claude_code_docs_map.md
+   - 確認URL: https://code.claude.com/docs/en/claude_code_docs_map.md
    - フィードバックパターンを解決できるClaude Code機能を特定
    - 既存の設定で活用できていない機能がないかチェック
 

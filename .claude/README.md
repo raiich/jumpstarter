@@ -56,7 +56,7 @@ grep "TOOL:" .claude/logs/conversation.log | sort | uniq -c
 ## カスタマイズ
 
 `settings.json` を編集することで、ログの形式や記録する情報を変更できます。
-詳細は [Claude Code Hooks ドキュメント](https://docs.claude.com/en/docs/claude-code/hooks) を参照してください。
+詳細は [Claude Code Hooks ドキュメント](https://code.claude.com/docs/en/hooks) を参照してください。
 
 ### 設定ファイルについて
 

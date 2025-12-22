@@ -43,12 +43,15 @@ flowchart TD
 
 ## クイックスタート
 
-### 1. このテンプレートを使う
+### 1. このテンプレートをコピー
 
 ```bash
-# GitHub上で "Use this template" をクリック、または
-git clone https://github.com/your-org/jumpstarter.git my-project
-cd my-project
+# jumpstarterをクローン
+git clone https://github.com/raiich/jumpstarter.git
+
+# 既存プロジェクトに .claude/ と .github/ をコピー
+cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
+cp -R jumpstarter/.github "${YOUR_PROJECT}/"
 ```
 
 ### 2. Claude Codeで開発

@@ -10,7 +10,7 @@ allowed-tools: Read, Grep, Glob
 
 ## Instructions
 
-1. `.claude/guidelines/documentation.md` を参照
+1. `.claude/rules/documentation.md` を参照
 2. 対象ファイルを特定
 3. ガイドラインに基づきレビュー実行
 4. 問題発見時は修正提案を含めて報告
@@ -27,7 +27,7 @@ allowed-tools: Read, Grep, Glob
 - file.md:行番号 - 問題
   修正提案: [具体的な修正内容]
 
-📚 参照: .claude/guidelines/documentation.md
+📚 参照: .claude/rules/documentation.md
 ```
 
 ## Notes

@@ -22,7 +22,7 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
      - `.claude/agents/`
      - `.claude/skills/`
      - `.claude/commands/`
-     - `.claude/guidelines/`
+     - `.claude/rules/`
 
 4. **改善の実施**
    - 改善案をユーザーに提示

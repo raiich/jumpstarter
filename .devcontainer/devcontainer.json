@@ -1,6 +1,6 @@
 {
 	"name": "my-devcontainer",
-	"image": "mcr.microsoft.com/devcontainers/base:debian",
+	"image": "mcr.microsoft.com/devcontainers/go:1.25",
 
 	// Claude Code: locally referenced feature — native installer, no Node.js dependency
 	"features": {
@@ -23,7 +23,7 @@
 
 	"containerEnv": {
 		// Space-separated list of extra domains to permit in the firewall
-		"FIREWALL_EXTRA_DOMAINS": "code.claude.com claude.ai",
+		"FIREWALL_EXTRA_DOMAINS": "proxy.golang.org sum.golang.org pkg.go.dev",
 
 		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
 	},
@@ -32,5 +32,11 @@
 
 	// Apply outbound network restrictions on every container start
 	"postStartCommand": "sudo env FIREWALL_EXTRA_DOMAINS=\"$FIREWALL_EXTRA_DOMAINS\" /usr/local/bin/init-firewall.sh",
-	"waitFor": "postStartCommand"
+	"waitFor": "postStartCommand",
+
+	"customizations": {
+		"jetbrains": {
+			"backend": "GoLand"
+		}
+	}
 }

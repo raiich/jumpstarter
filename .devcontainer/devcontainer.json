@@ -1,4 +1,22 @@
 {
 	"name": "my-devcontainer",
-	"image": "mcr.microsoft.com/devcontainers/base:debian"
+	"image": "mcr.microsoft.com/devcontainers/base:debian",
+
+	// Claude Code: locally referenced feature — native installer, no Node.js dependency
+	"features": {
+		"./claude-code": {
+			"version": "latest"
+		}
+	},
+
+	// Persist Claude config across container rebuilds
+	"mounts": [
+		"source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
+	],
+
+	"containerEnv": {
+		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+	},
+
+	"remoteUser": "vscode"
 }

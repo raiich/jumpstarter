@@ -1,0 +1,14 @@
+{
+    "id": "claude-code",
+    "version": "0.0.1",
+    "name": "Claude Code",
+    "description": "Installs Claude Code CLI using the native installer (no Node.js dependency)",
+    "documentationURL": "https://code.claude.com/docs/en/setup",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Version to install: 'latest', 'stable', or a specific version number (e.g. '1.0.58')"
+        }
+    }
+}

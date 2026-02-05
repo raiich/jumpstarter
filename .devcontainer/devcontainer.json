@@ -6,8 +6,15 @@
 	"features": {
 		"./claude-code": {
 			"version": "latest"
-		}
+		},
+		"./firewall": {}
 	},
+
+	// Required by init-firewall.sh to manage iptables rules
+	"runArgs": [
+		"--cap-add=NET_ADMIN",
+		"--cap-add=NET_RAW"
+	],
 
 	// Persist Claude config across container rebuilds
 	"mounts": [
@@ -15,8 +22,15 @@
 	],
 
 	"containerEnv": {
+		// Space-separated list of extra domains to permit in the firewall
+		"FIREWALL_EXTRA_DOMAINS": "code.claude.com claude.ai",
+
 		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
 	},
 
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+
+	// Apply outbound network restrictions on every container start
+	"postStartCommand": "sudo env FIREWALL_EXTRA_DOMAINS=\"$FIREWALL_EXTRA_DOMAINS\" /usr/local/bin/init-firewall.sh",
+	"waitFor": "postStartCommand"
 }

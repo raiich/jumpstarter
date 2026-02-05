@@ -1,0 +1,6 @@
+{
+    "id": "firewall",
+    "version": "0.0.1",
+    "name": "Firewall",
+    "description": "Outbound network restriction via iptables. Requires NET_ADMIN and NET_RAW capabilities in runArgs."
+}

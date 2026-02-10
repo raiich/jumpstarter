@@ -1,5 +1,5 @@
 #!/bin/bash
-# Logs stdin to .claude/logs/conversation.log with a timestamp and header in markdown format
+# Logs stdin to .local/claude/conversation.log with a timestamp and header in markdown format
 # Usage: echo "content" | log-to-file.sh "HEADER TEXT"
 
 set -euo pipefail
@@ -13,7 +13,7 @@ if [ -z "$HEADER_TEXT" ]; then
 fi
 
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-LOG_FILE="$REPO_ROOT/.claude/logs/conversation.log"
+LOG_FILE="$REPO_ROOT/.local/claude/conversation.log"
 mkdir -p "$(dirname "$LOG_FILE")"
 
 echo "" >> "$LOG_FILE"

@@ -5,7 +5,7 @@ conversation.logからユーザーフィードバックを分析し、Claude Cod
 ## 実行手順
 
 1. **フィードバック分析**
-   - `.claude/logs/conversation.log` を読み込む
+   - `.local/claude/conversation.log` を読み込む
    - ユーザーからのフィードバック、要望、不満を抽出
    - 繰り返し指摘される問題を特定
 

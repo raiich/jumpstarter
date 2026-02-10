@@ -11,17 +11,17 @@
 
 ## ログファイル
 
-会話ログは `.claude/logs/conversation.log` に保存されます。
+会話ログは `.local/claude/conversation.log` に保存されます。
 
 ```bash
 # ログを確認
-cat .claude/logs/conversation.log
+cat .local/claude/conversation.log
 
 # リアルタイムでログを監視
-tail -f .claude/logs/conversation.log
+tail -f .local/claude/conversation.log
 
 # 特定の日付のログを検索
-grep "2025-11-01" .claude/logs/conversation.log
+grep "2025-11-01" .local/claude/conversation.log
 ```
 
 ## ログの活用方法
@@ -29,27 +29,27 @@ grep "2025-11-01" .claude/logs/conversation.log
 ### 1. 過去の会話を検索
 ```bash
 # 特定のキーワードを含む会話を検索
-grep -A 5 "キーワード" .claude/logs/conversation.log
+grep -A 5 "キーワード" .local/claude/conversation.log
 ```
 
 ### 2. 日次レポートの作成
 ```bash
 # 今日の会話をファイルに出力
-grep "$(date '+%Y-%m-%d')" .claude/logs/conversation.log > today.log
+grep "$(date '+%Y-%m-%d')" .local/claude/conversation.log > today.log
 ```
 
 ### 3. 会話の統計
 ```bash
 # ユーザープロンプトの数をカウント
-grep "USER PROMPT" .claude/logs/conversation.log | wc -l
+grep "USER PROMPT" .local/claude/conversation.log | wc -l
 
 # 使用されたツールの種類を確認
-grep "TOOL:" .claude/logs/conversation.log | sort | uniq -c
+grep "TOOL:" .local/claude/conversation.log | sort | uniq -c
 ```
 
 ## 注意事項
 
-- ログファイル (`.claude/logs/`) は `.gitignore` に追加されており、Git にコミットされません
+- ログファイル (`.local/claude/`) は `.gitignore` に追加されており、Git にコミットされません
 - 個人的な会話履歴が含まれる可能性があるため、共有に注意してください
 - ログファイルは自動的にローテーションされないため、定期的に整理することを推奨します
 

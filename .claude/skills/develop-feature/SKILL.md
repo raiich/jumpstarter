@@ -1,26 +1,26 @@
 ---
 name: develop-feature
-description: Guide feature development with structured investigation, design, and TDD implementation workflow.
-allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, ExitPlanMode, TaskCreate, TaskUpdate, TaskList, TaskGet
+description: Guide feature development with planning, design, and TDD implementation workflow.
+allowed-tools: Read, Grep, Glob, Edit, Write, Bash(go test:*), Task, AskUserQuestion, EnterPlanMode, ExitPlanMode, TaskCreate, TaskUpdate, TaskList, TaskGet, Skill
 ---
 
-# Feature Development Guide
+# Feature Development
 
-機能開発を構造的に進めるスキルです。Plan modeで調査・設計を行い、承認後にTDD実装を進めます。
+機能開発を構造的に進めるスキルです。実装計画 → 設計（承認ゲート） → TDD実装の順に進めます。
 
 ## 前提
 
-- ユーザーは初期段階で全要件を伝えるとは限らず、不明点は適宜ヒアリング
-- 小さい単位でTDDサイクルを回す
+- 入力は `clarify-requirements` スキルの成果物（`requirements.md`）またはユーザーからの直接入力
+- 小さい単位で TDD サイクルを回す
+- **承認ゲート**: Design Doc・テストケースはユーザーの明示的な承認なしに次フェーズに進まない
 
 ## 保存先
 
-`.local/docs/feature-[名前]/` 配下：
-
-- `knowledge-base.md` - ナレッジベース
-- `design-doc.md` - Design Doc
-- `test-cases.md` - テストケース設計
-- `summary.md` - 作業サマリ
+- **ナレッジベース**: `docs/` 配下にトピックごとのファイル
+- **フィーチャー固有ドキュメント**: `docs/features/[名前]/` 配下
+  - `design-doc.md` - Design Doc
+  - `test-cases.md` - テストケース設計
+- **作業要点**: `.local/claude/learnings.md`（追記式）
 
 ## タスクの粒度
 
@@ -33,58 +33,71 @@ allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, Ex
 2. **Claude: 自己レビュー** - 必要に応じて修正
 3. **ユーザー: レビュー** - 自己レビュー後は必ずユーザーレビューを実施
 4. **Claude: 修正** - フィードバックがあれば修正
+5. **繰り返し**: ユーザーが承認するまで上記を繰り返す
 
-フローで「（基本パターン）」と記載された箇所はこのパターンに従います。
+フローで**基本パターン**と言及された箇所はこのパターンに従います。
 
 ## フロー
 
-### [調査・設計フェーズ] — Plan mode
+### [入力の確認]
 
-**EnterPlanMode** でPlan modeに入り、調査・設計を行います。Plan modeではファイルの読み取り・検索のみ可能で、書き込みはできません。設計内容はプランファイルにまとめます。
+#### 1. 要件の確認
 
-#### 1. ユーザー: 機能開発方針の入力
+`requirements.md` がある場合はそれを読み込む。ない場合はユーザーの入力から要件を把握する。
+不明点があればヒアリングする。
 
-#### 2. Plan modeに入る
+**ツール**: Read, AskUserQuestion
+
+### [実装計画フェーズ] — Plan mode
+
+#### 2. Plan mode に入る
 
 **ツール**: EnterPlanMode
 
-#### 3. コードベース調査
+#### 3. コードベース調査と実装計画
 
-既存コードベースとドキュメントを調査し、ナレッジベースの内容をプランファイルに記録。
+要件を踏まえて、既存コードベースを調査し、実装方針をプランファイルに記録。
+広範な探索が必要な場合は Task（Explore エージェント）を活用。
 
-**ツール**: Read, Glob, Grep を使用してコードベースを探索
+**ツール**: Read, Glob, Grep, Task
 
-**プランファイルに記録する内容（ナレッジベース）:**
+**プランファイルに記録する内容:**
 ```markdown
-# ナレッジベース
+# 実装計画
 
-## 関連する既存機能
-- 機能A: src/features/a/handler.gd
-- 機能B: src/features/b/processor.gd
+## 要件サマリ
+- requirements.md またはユーザー入力からの要約
 
-## 重要なアーキテクチャパターン
-- パターン1: 説明
+## 技術的アプローチ
+- 選択したアプローチと理由
+- 代替案を却下した理由
 
-## 参考ドキュメント
-- docs/architecture.md
+## 影響範囲
+- 変更対象ファイル
+- 影響を受ける既存機能
 
-## 調査メモ
-- 重要な発見事項
+## 実装ステップ概要
+- ステップ1: ...
+- ステップ2: ...
 ```
 
-#### 4. 要件のヒアリング
+#### 4. 自己レビューと Plan mode 終了
 
-ナレッジベースを活用して、効率的にユーザーにヒアリング。
+プランファイルを自己レビューし、ExitPlanMode でユーザー承認を求める。
 
-**ツール**: AskUserQuestion
+**ツール**: ExitPlanMode
 
-ヒアリング内容にもとづいてプランファイルのナレッジベースを更新。
+### [設計フェーズ] — 通常 mode（承認ゲート）
 
-#### 5. Design Doc作成
+**重要**: このフェーズでは TaskCreate を使用しない。ユーザーの明示的な承認があるまで次フェーズに絶対に進まない。
 
-プランファイルにDesign Docセクションを追加。
+#### 5. Design Doc 作成
 
-**プランファイルに記録する内容（Design Doc）:**
+Design Doc を作成。作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従い、ユーザー承認を得る。
+
+**保存先**: `docs/features/[名前]/design-doc.md`
+
+**内容:**
 ```markdown
 # Design Doc
 
@@ -96,17 +109,22 @@ allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, Ex
 ## 考慮事項（セキュリティなど）
 ```
 
-**重要:**
+**注意:**
 - 長い具体的なコードは書かない
 - 重要箇所のみコード例
-- 必要に応じてダミーコードで簡潔に処理フローを表現
-- 図表はmermaid形式を優先
+- 図表は Mermaid 形式を優先
+
+**ツール**: Write, Edit, AskUserQuestion
+
+**⛔ ユーザーの承認なしに次へ進まない**
 
 #### 6. テストケース設計
 
-プランファイルにテストケースセクションを追加。
+テストケースを設計。作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従い、ユーザー承認を得る。
 
-**プランファイルに記録する内容（テストケース）:**
+**保存先**: `docs/features/[名前]/test-cases.md`
+
+**内容:**
 ```markdown
 # テストケース設計
 
@@ -121,51 +139,33 @@ allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, Ex
 - Then: [期待されるエラー処理]
 ```
 
-#### 7. 実装タスクリスト
+**ツール**: Write, Edit, AskUserQuestion
 
-プランファイルに実装タスクの一覧を追加。タスクの粒度に従い、小さい単位に分解。
+**⛔ ユーザーの承認なしに次へ進まない**
 
-#### 8. 自己レビューと Plan mode 終了
+### [実装フェーズ] — タスクごとに繰り返し
 
-プランファイル全体を自己レビューし、問題なければ ExitPlanMode でユーザー承認を求める。
+#### 7. 実装タスクリスト作成
 
-**ツール**: ExitPlanMode
-
-### [ドキュメント作成フェーズ] — 通常mode
-
-ユーザー承認後、プランの内容をドキュメントファイルとして保存。
-
-#### 9. ドキュメントファイル作成
-
-承認されたプランの内容を各ファイルに保存：
-
-- `.local/docs/feature-[名前]/knowledge-base.md`
-- `.local/docs/feature-[名前]/design-doc.md`
-- `.local/docs/feature-[名前]/test-cases.md`
-
-**ツール**: Write
-
-#### 10. TODOリスト作成
-
-プランの実装タスクリストに基づいてTODOを作成。
+承認済みの Design Doc とテストケースに基づいてタスクを作成。
 
 **ツール**: TaskCreate
 
-### [実装フェーズ - タスクごとに繰り返し]
-
-#### 11. TDDサイクル実施
+#### 8. TDDサイクル実施
 
 **ツール**: TaskUpdate でタスクを in_progress に設定
 
 各タスクについて以下を実施：
 
-**11.1. テストコード作成（基本パターン）**
+**8.1. テストコード作成（基本パターン）**
 - テストケース設計に基づいてテストコードを実装
 
-**11.2. 機能実装（基本パターン）**
+**8.2. 機能実装（基本パターン）**
 - テストが通るように機能を実装
 
-**11.3. テスト実行と失敗時の対応**
+**8.3. テスト実行と失敗時の対応**
+
+**ツール**: Bash (go test)
 
 失敗時の対応：
 
@@ -174,10 +174,11 @@ allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, Ex
 3. **要件の認識違い** → Design Doc を見直し、design-doc.md を更新
 4. **判断不可** → ユーザーにヒアリング
 
-**11.4. ナレッジベース更新（必要時）**
-- 実装中に判明した新しい知識を追加
+**8.4. リファクタリング**
+- テストが通った後、実装コードを整理（重複排除、命名改善、構造の簡素化など）
+- リファクタリング後にテストを再実行し、既存テストが通ることを確認
 
-**11.5. タスク完了**
+**8.5. タスク完了**
 
 **ツール**: TaskUpdate で completed に設定、TaskList で次タスク確認
 
@@ -187,30 +188,53 @@ allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, EnterPlanMode, Ex
 
 ### [完了フェーズ]
 
-#### 12. ナレッジベース全体整理
+#### 9. ナレッジベース更新
 
-全タスク完了後、実装フェーズで追加した知識を整理。
+実装で得た知見を `docs/` 配下にファイルとして保存・更新。
 
-#### 13. 作業サマリ保存
+**対象となる知見:**
+- 要件、背景、設計方針、機能とコードの対応
+- 検討して採用しなかった代替案とその理由
+- 技術的制約・既知の制限事項
 
-**内容**:
-- 実装した機能概要
-- 主要な技術的意思決定と理由
-- ハマった箇所と解決方法
-- 残課題・改善点
+※ `.local/claude/learnings.md`（ステップ10）は Claude の作業プロセスに関する学びを記録する場であり、棲み分けること。
+
+**ツール**: Write, Edit
+
+#### 10. 作業要点の保存
+
+ユーザーとのやり取りから得た要点を `.local/claude/learnings.md` に追記：
+
+- **方針**: ユーザーが示した開発方針や意思決定の背景
+- **考慮すべき観点**: ユーザーが重視する観点や判断基準
+- **進め方のコツ**: タスク進行で効果的だったやり方や段取り
+- **注意点**: 避けるべきこと、見落としやすいポイント
+
+**ツール**: Write, Edit
+
+#### 11. /kaizen 実行
+
+スキルやワークフローの改善点を振り返り、フィードバックする。
+
+**ツール**: Skill (kaizen)
 
 ## 自己レビュー観点
 
-### プラン（調査・設計フェーズ）
-- ナレッジベースの網羅性（関連する既存機能を見落としていないか）
-- Design Docの妥当性（技術的アプローチは適切か）
-- テストケースの網羅性（正常系・異常系・エッジケース）
-- タスク分割の粒度（大きすぎ・小さすぎないか）
+### プラン（実装計画フェーズ）
+- 要件の解釈は正しいか
+- 技術的アプローチは適切か
+- 影響範囲を見落としていないか
 
-### テストコード
+### Design Doc
+- スコープは明確か
+- 代替案の検討は十分か
+- 実装詳細は過不足ないか
+- ドキュメントガイドライン（`.claude/rules/documentation.instructions.md`）の簡潔さの原則に従っているか
+
+### テストケース / テストコード
 - 機能に対する網羅性
-- エッジケース考慮
-- エラーケース網羅
+- 正常系・異常系・エッジケースの網羅性
+- テストの粒度は適切か
 
 ### 実装コード
 - 過剰な実装をしていないか

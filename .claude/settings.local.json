@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(cp:*)",
+      "Bash(docker compose:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git grep:*)",
+      "Bash(git log:*)",
+      "Bash(git mv:*)",
+      "Bash(git rm:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(go build:*)",
+      "Bash(go doc:*)",
+      "Bash(go list:*)",
+      "Bash(go run:*)",
+      "Bash(go test:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(rmdir:*)",
+      "Bash(test:*)",
+      "Bash(tree:*)",
+      "Bash(xargs cat:*)",
+      "Bash(xargs grep:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(rm:*)"
+    ],
+    "ask": [
+      "Bash(git commit --amend:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/log-to-file.sh 'USER PROMPT'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/log-to-file.sh 'TOOL EXECUTED'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "concise",
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false
+  }
+}

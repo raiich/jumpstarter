@@ -46,8 +46,17 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 **ツール**: AskUserQuestion
 
 **プランファイルに記録する内容:**
+
+⚠️ **重要**: プランファイルの冒頭に必ず「成果物」セクションを記載すること。
+プランモード終了後にコンテキストが失われた場合でも、成果物の種類を正しく判断できるようにするため。
+
 ```markdown
 # 調査・ヒアリング結果
+
+## 成果物
+- 種類: Design Doc（マークダウンドキュメント）
+- 保存先: docs/features/[名前]/design-doc.md
+- ⚠️ コード実装は行わない（implement-feature の責務）
 
 ## 関連する既存機能
 - 機能A: path/to/file.go
@@ -105,13 +114,17 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 - 関連ドキュメント（docs/ 配下）
 
 ## 実装詳細
+- インターフェース/シグネチャのみ。メソッドの中身は書かない
+- 重要なアルゴリズムやロジックの分岐のみコード例で示す
 
 ## 考慮事項（セキュリティなど）
 ```
 
 **注意:**
-- 長い具体的なコードは書かない
-- 重要箇所のみコード例
+- メソッド本体の完全な実装は書かない（implement-feature の責務）
+- コード例は1箇所あたり最大20行程度
+- Design Doc に書くべきコード: シグネチャ、データ構造定義、重要な分岐ロジック
+- Design Doc に書くべきでないコード: ユーティリティ関数、ボイラープレート、完全なクラス実装
 - 図表は Mermaid 形式を優先
 
 **ツール**: Write, Edit, AskUserQuestion
@@ -134,7 +147,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 - 関連コードの調査は十分か
 - スコープは明確か
 - 代替案の検討は十分か
-- 実装詳細は過不足ないか
+- 実装詳細は過不足ないか（完全な実装コードを書いていないか）
 - ドキュメントガイドライン（`.claude/rules/documentation.instructions.md`）の簡潔さの原則に従っているか
 
 観点は内容に応じて調整。不明確な場合はユーザーにヒアリング。

@@ -10,8 +10,8 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 前提
 
-- ユーザーは初期段階で全要件を伝えるとは限らない
-- コードベースを把握した上で的確な質問をする
+- ユーザーは初期段階で全要件を伝えるとは限らないため、能動的にヒアリングする
+- コードベースとドキュメントを先に把握し、その理解に基づいて効率的に質問する
 - 成果物は `design-doc.md` として保存し、`implement-feature` スキルへの入力となる
 
 ## 保存先
@@ -42,6 +42,11 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 調査結果と既存ナレッジを踏まえて、不足情報をユーザーにヒアリング。
 ヒアリング内容をプランファイルに反映。必要に応じて複数回ヒアリングする。
+
+**効率的なヒアリングの原則:**
+- コードを読めば分かることは聞かない
+- 調査で把握した制約・パターンを踏まえ、具体的な選択肢を提示して聞く
+- ユーザーが言及していない観点（エッジケース、既存機能との整合性等）も能動的に確認する
 
 **ツール**: AskUserQuestion
 
@@ -148,6 +153,6 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 - スコープは明確か
 - 代替案の検討は十分か
 - 実装詳細は過不足ないか（完全な実装コードを書いていないか）
-- ドキュメントガイドライン（`.claude/rules/documentation.instructions.md`）の簡潔さの原則に従っているか
+- `.claude/rules/writing-style.instructions.md` の簡潔さの原則に従っているか
 
 観点は内容に応じて調整。不明確な場合はユーザーにヒアリング。

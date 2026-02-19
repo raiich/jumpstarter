@@ -108,6 +108,6 @@ Design Doc を踏まえて、既存コードベースを調査し、実装方針
 - 機能に対する網羅性
 - 正常系・異常系・エッジケースの網羅性
 - テストの粒度は適切か
-- ドキュメントガイドライン（`.claude/rules/documentation.instructions.md`）の簡潔さの原則に従っているか
+- `.claude/rules/writing-style.instructions.md` の簡潔さの原則に従っているか
 
 観点は内容に応じて調整。不明確な場合はユーザーにヒアリング。

@@ -46,7 +46,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write
 
 - [ ] 全ての該当箇所を修正したか
 - [ ] 修正内容は正確か
-- [ ] ドキュメント作成ガイドライン（`.claude/rules/documentation.instructions.md`）に従っているか
+- [ ] `.claude/rules/writing-style.instructions.md` に従っているか
 - [ ] 実装とドキュメントの整合性はあるか
 - [ ] リンクが有効か（参照箇所が存在するか）
 - [ ] 冗長な部分はないか

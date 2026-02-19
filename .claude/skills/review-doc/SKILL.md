@@ -10,7 +10,7 @@ allowed-tools: Read, Grep, Glob
 
 ## レビュー観点
 
-`.claude/rules/documentation.instructions.md` に基づき、以下の観点でレビューを実施：
+`.claude/rules/writing-style.instructions.md` に基づき、以下の観点でレビューを実施：
 
 - **命名規則**: ファイル名が kebab-case か
 - **簡潔さ**: 冗長な説明、重複情報、コードで代替可能な長文

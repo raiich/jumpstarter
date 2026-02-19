@@ -1,0 +1,6 @@
+.local/claude/
+.claude/
+.devcontainer/
+.github/
+.local/
+.idea/

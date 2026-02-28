@@ -39,7 +39,7 @@ allowed-tools: Read, Grep, Glob
 
 ### 3. ドキュメント整合性チェック
 
-- README.md や docs/*.md の記載内容と実装の一致
+- README.md や .local/docs/*.md の記載内容と実装の一致
 - 実装された機能がドキュメントに反映されているか
 - ドキュメント内のリンクが有効か
 

@@ -36,7 +36,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write
 ### 機能説明の修正
 
 1. 説明内容が実装と一致しているか確認
-2. 関連する複数のドキュメント（README、docs/*.md など）を確認
+2. 関連する複数のドキュメント（README、.local/docs/*.md など）を確認
 3. 実装の変更に伴う関連説明も更新が必要か確認
 4. 全て一度に修正
 
@@ -69,7 +69,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write
 
 ✅ 良い例：関連ドキュメント全て修正
 1. Grep ツールで "新機能" を全検索して箇所を特定
-2. README.md, docs/feature-guide.md, docs/api.md を同時修正
+2. README.md, .local/docs/feature-guide.md, .local/docs/api.md を同時修正
 3. コード例も確認して最新版を反映
 4. リンク切れがないか確認
 ```

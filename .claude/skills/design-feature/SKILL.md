@@ -16,10 +16,9 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 保存先
 
-- **ナレッジベース**: `docs/` 配下にトピックごとのファイル
-- **フィーチャー固有ドキュメント**: `docs/features/[名前]/`
+- **ナレッジベース**: `.local/docs/` 配下にトピックごとのファイル
+- **フィーチャー固有ドキュメント**: `.local/docs/features/[名前]/`
   - `design-doc.md` - Design Doc（本スキルの主成果物）
-- **作業要点**: `.local/claude/learnings.md`（追記式）
 
 ## フロー
 
@@ -33,7 +32,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 #### 3. コードベース調査
 
-既存コードベースとドキュメント（`docs/` 配下のナレッジベース含む）を調査し、プランファイルに記録。
+既存コードベースとドキュメント（`.local/docs/` 配下のナレッジベース含む）を調査し、プランファイルに記録。
 広範な探索が必要な場合は Task（Explore エージェント）を活用。
 
 **ツール**: Read, Glob, Grep, Task
@@ -60,17 +59,17 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 成果物
 - 種類: Design Doc（マークダウンドキュメント）
-- 保存先: docs/features/[名前]/design-doc.md
+- 保存先: .local/docs/features/[名前]/design-doc.md
 - ⚠️ コード実装は行わない（implement-feature の責務）
 
 ## 関連する既存機能
-- 機能A: path/to/file.go
+- 機能A: path/to/file
 
 ## 重要なアーキテクチャパターン
 - パターン1: 説明
 
 ## 参考ドキュメント
-- docs/xxx.md
+- .local/docs/xxx.md
 
 ## ヒアリング結果
 - 確認した要件・制約
@@ -93,7 +92,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 プランファイルの調査・ヒアリング結果を基に Design Doc を作成。
 作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従い、ユーザー承認を得る。
 
-**保存先**: `docs/features/[名前]/design-doc.md`
+**保存先**: `.local/docs/features/[名前]/design-doc.md`
 
 **内容:**
 ```markdown
@@ -116,7 +115,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 ## 関連コード・参照
 - 変更対象ファイル・関数
 - 参考にすべき既存パターン
-- 関連ドキュメント（docs/ 配下）
+- 関連ドキュメント（.local/docs/ 配下）
 
 ## 実装詳細
 - インターフェース/シグネチャのみ。メソッドの中身は書かない
@@ -138,7 +137,17 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ### [完了フェーズ]
 
-ナレッジベース更新 → 作業要点の保存 → /kaizen 実行
+#### 7. ナレッジベース更新
+
+調査・実装で得た知見を `.local/docs/` 配下にファイルとして保存・更新。
+
+**対象**: 要件・設計方針・代替案とその理由・技術的制約など
+
+**ツール**: Write, Edit
+
+#### 8. /kaizen 実行
+
+**ツール**: Skill (kaizen)
 
 ## 自己レビュー観点
 

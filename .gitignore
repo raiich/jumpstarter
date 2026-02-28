@@ -1,1 +1,8 @@
-.local/claude/
+.local/
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+.idea/
+.vscode/

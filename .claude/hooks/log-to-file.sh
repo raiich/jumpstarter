@@ -12,12 +12,21 @@ if [ -z "$HEADER_TEXT" ]; then
   exit 1
 fi
 
+CONTENT=$(cat)
+
+# Skip if stdin is empty
+if [ -z "$CONTENT" ]; then
+  exit 0
+fi
+
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 LOG_FILE="$REPO_ROOT/.local/claude/conversation.log"
 mkdir -p "$(dirname "$LOG_FILE")"
 
-echo "" >> "$LOG_FILE"
-echo "## [$(date "+%Y-%m-%d %H:%M:%S")] $HEADER_TEXT" >> "$LOG_FILE"
-echo "" >> "$LOG_FILE"
-cat >> "$LOG_FILE"
-echo "" >> "$LOG_FILE"
+{
+  echo ""
+  echo "## [$(date "+%Y-%m-%d %H:%M:%S")] $HEADER_TEXT"
+  echo ""
+  echo "$CONTENT"
+  echo ""
+} >> "$LOG_FILE"

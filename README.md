@@ -1,54 +1,28 @@
-# Jumpstarter - Claude Code 継続的改善テンプレート
+# Jumpstarter - Claude Code テンプレート
 
 [ [English](https://github.com/raiich/jumpstarter/tree/main) | **日本語** ]
 
-**Claude Codeとの対話履歴をもとに、開発効率を継続的に改善していくためのテンプレートリポジトリ**
+## Jumpstarter とは
+
+Claude Code の設定のテンプレートリポジトリです。
+
+Claude Code から期待する出力を得るには、適切なプロンプトを与える必要があります。
+また、Rules / Skills / Hooks といった設定の整備にもコストがかかります。
+Jumpstarter は、clone して使い始めるだけでこれらの課題を解消し、開発そのものに集中できるようにします。
+
+Claude Code の利用で**ユーザーが頑張らない**ことを目指します:
+
+- **長いプロンプト不要** — コードベース調査・要件のヒアリング・自己レビューを適切に実行します。
+- **凝った仕組みは後回し** — MCP やマルチエージェントは後回し。Rules / Skillsをメインに使います。
+- **継続的改善も手軽** — 改善点やベストプラクティスにもとづき、設定を自動更新します。
 
 ---
 
-## こんな経験ありませんか？
+## 使い方
 
-```
-あなた: 「新機能を実装して」
-Claude: [実装]
-あなた: 「冗長すぎます」
-Claude: [指摘箇所の修正]
-あなた: 「他に漏れはないですか？」
-Claude: [修正してすぐに実行]
-あなた: 「すぐに実行しようとしないでください。まずはレビューをしてください」
-...
-```
-
-**同じフィードバックを何度も繰り返していませんか？**
-
-Jumpstarterは、この問題を `/kaizen` コマンド一つで解決します。
-
----
-
-## コアコンセプト
-
-**AIとの対話履歴から、設定を改善**
-
-1. **conversation.log** に対話履歴を自動記録
-2. **`/kaizen`** でログを分析し、繰り返しパターンを抽出
-3. **Rules / Skills / Hooks** を自動生成してClaude Codeを最適化
-
-```mermaid
-flowchart TD
-    A[開発作業] --> B[conversation.log に自動で蓄積]
-    B --> C[ /kaizen 実行]
-    C --> D[改善策を自動適用]
-    D --> A
-```
-
----
-
-## クイックスタート
-
-### 1. このテンプレートをコピー
+テンプレートをコピーして、すぐに使い始められます。
 
 ```bash
-# jumpstarterをクローン
 git clone https://github.com/raiich/jumpstarter.git
 
 # 既存プロジェクトに .claude/ と .github/ をコピー
@@ -56,101 +30,94 @@ cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
 cp -R jumpstarter/.github "${YOUR_PROJECT}/"
 ```
 
-### 2. Claude Codeで開発
+Claude Code を起動して、スラッシュコマンドでワークフローを起動して開発を進めます。
 
 ```bash
-claude .
-# 普段通り開発。conversation.logに対話履歴が自動記録されます
+claude
 ```
 
-### 3. 定期的に改善
+### 新機能を設計・実装する
 
-```bash
-# Claude Codeセッション内で
-/kaizen
+機能追加時に頑張って完璧なプロンプトを書く必要はありません。
+最小限の指示をもとに、適切に設計・実装するためのワークフローを用意しています。
+
+`/design-feature`スキルが、コードベースを調査した上で的確に要件をヒアリングしてDesign Docを作成します:
+
+```
+/design-feature CLIにverboseオプションを追加したい
 ```
 
-conversation.logを分析し、改善提案を自動生成します。
+実装のズレを減らすためにあらかじめテストケースを設計したい場合は、`/design-feature-tests`スキルが便利です:
+
+```
+/design-feature-tests .local/docs/features/verbose-option/design-doc.md
+```
+
+`/implement-feature`スキルにより、Design Docやテストケースにもとづいて実装します:
+
+```
+/implement-feature .local/docs/features/verbose-option/design-doc.md
+```
+
+設計ドキュメントやテストケースは `.local/docs/features/[名前]/` に整理されます。
+各ステップの成果物をチェックポイントとして利用することで、実装がずれても手戻りを小さくできます。
+
+### Claude Code の設定を継続的に改善する
+
+開発体験が良くならないのは、日々のフィードバックが設定に反映されていないことが多いためです。
+設定の改善も、ユーザーが頑張って行動する必要はありません。
+下記のような仕組みが、継続的な改善の手助けになります。
+
+`/kaizen` コマンドにより、Hooks で記録した対話ログから改善点を抽出できます:
+
+```
+/kaizen   対話ログから改善の提案をして
+```
+
+`/import-best-practices` コマンドにより、ネット上のベストプラクティスを簡単に取り込めます:
+
+```
+/import-best-practices   https://... の記事のベストプラクティスを取り込みたい
+```
+
+これらにより、ルール・スキル・フックなどがプロジェクトに合わせて洗練されていきます。頑張って設定を見直す必要はありません。
+
+### コード・ドキュメントの品質を改善する
+
+レビューで問題を発見し、同種の問題を包括的に検索して一括修正します。
+修正の見逃しや「ここが修正されていません」と指摘する手間が減ります。
+
+```
+コード:         /review-code → /fix-code
+ドキュメント:    /review-doc  → /fix-doc
+```
+
+Claude Code 組み込みの `/simplify` によるコード品質改善も併用できます。
 
 ---
 
-## 実証結果
+## その他の設定
 
-このテンプレートは、 [Goベンチマーク実装プロジェクト](https://github.com/raiich/jumpstarter/tree/feature/kaizen) で作成・検証しました。
+`.claude/` ディレクトリの各要素が連携して「頑張らない」を実現します。
 
-### Before（改善前）
+### 頑張らないための Rules
 
-```
-📊 conversation.log分析結果
-- 繰り返されたフィードバック: 217パターン
-  「冗長すぎます」「他に漏れは...」「実行しないで」など
-```
+ユーザーが毎回指示しなくても、一定の品質基準で動作するためのルール群です (`.claude/rules/`)。
 
-### `/kaizen`実行
+- 冗長な出力を頑張って読み解く必要はありません → **writing-style**
+- 修正漏れがないか頑張って確認する必要はありません → **fix-guidelines**
+- ワークフローを頑張って指示する必要はありません → **workflow-patterns**
 
-```
-🤖 自動生成された改善策
-- Guidelines: 5種類（process, communication, quality, documentation, git）
-- Sub-Agents: 4種類（包括的検索、計画作成、コード整合性、ドキュメント品質）
-- Settings: 安全性向上（Plan Mode、危険操作制限）
-- Skills: 2種類（コード整合性チェック、ドキュメント品質チェック）
-```
+### 頑張らないための Hooks
 
-### After（改善後）
-
-```
-✅ 効果
-- フィードバックループが激減（2-3往復 → 1往復）
-- 並列実行による開発速度向上（30-50%の時間短縮）
-- 修正漏れの削減（包括的検索の自動化）
-- 危険操作の技術的制限（force push、rm -rf拒否）
-- 冗長なドキュメントの自動抑制
-```
+`/kaizen` による改善提案の入力データとなる対話ログを `.local/claude/conversation.log` に自動記録します。
 
 ---
 
-## メインの機能
+## カスタマイズ
 
-### 📊 対話ログ自動記録
+テンプレートをコピーした後、プロジェクトに合わせて調整できます。
 
-`.claude/settings.json` に設定されたhooksにより、全ての対話を `.claude/logs/conversation.log` に記録。
-
-### 🔍 `/kaizen` コマンド
-
-conversation.logを分析し、繰り返しパターンから改善策を自動生成：
-
-- **Rules**: Claude Codeの振る舞いルール（`.claude/rules/`）
-- **Sub-Agents**: 専門タスクの並列実行（`.claude/agents/`）
-- **Skills**: 自動実行される品質チェック機能（`.claude/skills/`）
-- **Settings**: 安全性制限とデフォルト設定（`.claude/settings.json`）
-- **Hooks**: イベント駆動の自動処理（`.claude/settings.json`）
-
-### 📝 すぐに使えるテンプレート
-
-```
-.claude/
-├── commands/kaizen.md          # 継続的改善コマンド
-├── agents/                     # サブエージェント（専門タスク並列実行）
-├── rules/                      # 振る舞いルール
-├── skills/                     # 自動実行機能
-├── logs/conversation.log       # 対話履歴（自動生成）
-└── settings.json               # メイン設定（Plan Mode、安全制限）
-```
-
----
-
-## 本テンプレートと同等のことを実現するプロンプト
-
-下記のようなプロンプトにより、本テンプレートと同等の設定が実現できそうです:
-
-```
-ユーザーとClaude Codeの対話履歴をログに残したいです。どのようなやり方がありますか？
-# → Hooksが良さそうです。
-```
-
-```
-`/kaizen` というスラッシュコマンドを作成して、下記のようなことを実現できたらと考えています:
-
-1. ユーザーとClaude Codeの対話履歴のログを読み込み、ユーザーからClaude Codeに対するフィードバックをまとめる
-2. フィードバックを元にClaude Code 設定を変更し、Claude Code を使ったソフトウェア開発を改善する
-```
+- **スキル・ルールの追加**: `.claude/skills/` や `.claude/rules/` にファイルを追加
+- **権限設定**: `.claude/settings.local.json` で許可・拒否するコマンドを調整
+- **自動改善**: `/kaizen` で対話ログから改善点を抽出、`/import-best-practices` で外部記事のベストプラクティスを取り込み

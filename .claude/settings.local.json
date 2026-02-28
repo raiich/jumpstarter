@@ -25,7 +25,9 @@
       "Bash(test:*)",
       "Bash(tree:*)",
       "Bash(xargs cat:*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Skill(review-doc)",
+      "Skill(review-code)"
     ],
     "deny": [
       "Bash(git push:*)",
@@ -43,19 +45,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/log-to-file.sh 'USER PROMPT'",
+            "command": "jq -r '.prompt // empty' | bash .claude/hooks/log-to-file.sh 'USER PROMPT'",
             "timeout": 5
           }
         ]
       }
     ],
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "*",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/log-to-file.sh 'TOOL EXECUTED'",
+            "command": "jq -r 'select(.stop_hook_active != true) | .last_assistant_message // empty' | bash .claude/hooks/log-to-file.sh 'ASSISTANT RESPONSE'",
             "timeout": 5
           }
         ]

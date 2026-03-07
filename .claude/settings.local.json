@@ -57,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r 'select(.stop_hook_active != true) | .last_assistant_message // empty' | bash .claude/hooks/log-to-file.sh 'ASSISTANT RESPONSE'",
+            "command": "jq -r 'select(.stop_hook_active != true) | .last_assistant_message // empty' | head -c 2000 | bash .claude/hooks/log-to-file.sh 'ASSISTANT RESPONSE'",
             "timeout": 5
           }
         ]

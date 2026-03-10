@@ -1,13 +1,19 @@
 ---
 name: brainstorm
-description: Multi-perspective brainstorming combining critical and constructive analysis. Runs parallel subagents with diverse thinking frameworks.
+description: Multi-perspective brainstorming combining critical and constructive analysis. Runs parallel subagents with diverse thinking frameworks across multiple rounds.
 disable-model-invocation: true
 ---
 
 # Brainstorm
 
 A skill that validates ideas from multiple angles using diverse thinking frameworks.
-It launches subagents in parallel and structures results as a "question generator."
+Launches subagents in parallel and structures results through up to 3 rounds of iterative discussion.
+
+## Flow Overview
+
+```
+1-4: Prep → R1: Independent Analysis (diverge) → R2: Cross-Review (intersect) → R3: Convergence (conditional) → Integration
+```
 
 ## Flow
 
@@ -58,7 +64,7 @@ Only if the topic is related to the codebase, briefly review relevant files and 
 
 **Tools**: Read, Grep, Glob
 
-### 5. Launch Subagents in Parallel
+### 5. Round 1: Independent Analysis (Diverge)
 
 Launch selected subagents **in parallel** (do not run sequentially).
 
@@ -76,10 +82,67 @@ Random constraints: [Constraints generated in step 3]
 
 **Tools**: Agent
 
-### 6. Integrate and Structure Results
+### 6. Round 2: Cross-Review (Intersect)
 
-Integrate subagent outputs and structure them as follows.
+Re-launch the **same agents** from R1 **in parallel**.
+Pass each agent the R1 outputs from all agents (including their own) and instruct cross-review.
+
+#### R2 Prompt Structure
+
+```
+Topic: [Topic]
+Context: [Original context]
+
+--- Round 1 Analysis Results from All Agents ---
+
+## [Agent Name A]'s Analysis:
+[R1 output]
+
+## [Agent Name B]'s Analysis:
+[R1 output]
+
+## [Agent Name C]'s Analysis:
+[R1 output]
+
+---
+
+Cross-review instructions:
+Based on the other agents' analyses, from your specialized perspective:
+1. Point out overlooked aspects
+2. Refute or reinforce other analyses (with evidence)
+3. New insights emerging from combining multiple analyses
+
+Important: Do not repeat your own Round 1 analysis. Report only new findings.
+```
+
+#### Summarizing R1 Output
+
+If the total R1 output is lengthy, summarize each agent's output to approximately 5–7 key points before passing to R2.
+
+**Tools**: Agent
+
+### 7. Round 3: Judgment and Convergence (Conditional)
+
+Evaluate R2 output and execute convergence **only if any of the following apply**.
+
+| Trigger | Criteria |
+|---|---|
+| Significant contradiction | Agents reached opposite conclusions on the same point in R2 |
+| Major new insight | A substantially new idea or perspective emerged in R2 that wasn't in R1 |
+| Unresolved trade-off | Risk vs. opportunity or stakeholder conflicts remain unresolved |
+
+**If triggered**: The orchestrator performs the following (no subagent launch):
+- Resolve contradictions or clarify conditions for coexistence
+- Identify points of agreement
+- Prioritize
+
+**If not triggered**: Skip to step 8.
+
+### 8. Integrate and Structure Results
+
+Integrate outputs from all rounds (R1 + R2 + R3) and structure as follows.
 Merge overlapping findings to maximize information density.
+Prioritize content deepened or reinforced in R2.
 
 **Important**: This is an AI-generated analysis. Use it in combination with feedback from actual humans.
 
@@ -90,6 +153,12 @@ Omit empty sections.
 
 ```markdown
 ## Brainstorm Results: [Topic]
+
+### Analysis Process
+- **Rounds**: [2 or 3]
+- **Participating agents**: [Agent name list]
+- **Selection rationale**: [Brief reason]
+- **R3 judgment**: [Trigger if executed / "Not needed" if skipped]
 
 ### Unverified Assumptions
 Things this idea implicitly assumes. Verification needed.

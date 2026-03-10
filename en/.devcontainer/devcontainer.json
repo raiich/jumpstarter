@@ -1,0 +1,42 @@
+{
+	"name": "my-devcontainer",
+	"image": "mcr.microsoft.com/devcontainers/go:1.25",
+
+	// Claude Code: locally referenced feature — native installer, no Node.js dependency
+	"features": {
+		"./claude-code": {
+			"version": "latest"
+		},
+		"./firewall": {}
+	},
+
+	// Required by init-firewall.sh to manage iptables rules
+	"runArgs": [
+		"--cap-add=NET_ADMIN",
+		"--cap-add=NET_RAW"
+	],
+
+	// Persist Claude config across container rebuilds
+	"mounts": [
+		"source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
+	],
+
+	"containerEnv": {
+		// Space-separated list of extra domains to permit in the firewall
+		"FIREWALL_EXTRA_DOMAINS": "proxy.golang.org sum.golang.org pkg.go.dev",
+
+		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+	},
+
+	"remoteUser": "vscode",
+
+	// Apply outbound network restrictions on every container start
+	"postStartCommand": "sudo env FIREWALL_EXTRA_DOMAINS=\"$FIREWALL_EXTRA_DOMAINS\" /usr/local/bin/init-firewall.sh",
+	"waitFor": "postStartCommand",
+
+	"customizations": {
+		"jetbrains": {
+			"backend": "GoLand"
+		}
+	}
+}

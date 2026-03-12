@@ -54,13 +54,13 @@ claude
 実装のズレを減らすためにあらかじめテストケースを設計したい場合は、`/design-feature-tests`スキルが便利です:
 
 ```
-/design-feature-tests .local/docs/features/verbose-option/design-doc.md
+/design-feature-tests .local/docs/features/verbose-option/design.md
 ```
 
 `/implement-feature`スキルにより、Design Docやテストケースにもとづいて実装します:
 
 ```
-/implement-feature .local/docs/features/verbose-option/design-doc.md
+/implement-feature .local/docs/features/verbose-option/design.md
 ```
 
 設計ドキュメントやテストケースは `.local/docs/features/[名前]/` に整理されます。

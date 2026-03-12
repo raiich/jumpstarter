@@ -11,8 +11,8 @@ A skill for TDD implementation based on a Design Doc and test case design.
 ## Prerequisites
 
 - Input is one of the following:
-  - Deliverable of the `design-feature` skill: `design-doc.md`
-  - Deliverables of `design-feature` + `design-feature-tests` skills: `design-doc.md` + `test-cases.md`
+  - Deliverable of the `design-feature` skill: `design.md`
+  - Deliverables of `design-feature` + `design-feature-tests` skills: `design.md` + `tests.md`
   - Direct user input
 - Run TDD cycles in small increments
 
@@ -31,7 +31,7 @@ A skill for TDD implementation based on a Design Doc and test case design.
 
 #### 1. Verify input
 
-Read `design-doc.md` if it exists. Also read `test-cases.md` if available.
+Read `design.md` if it exists. Also read `tests.md` if available.
 If neither exists, understand requirements from user input.
 Hear from the user if there are unclear points.
 
@@ -53,7 +53,7 @@ If the Design Doc contains ❓ (assumed) items, confirm them with the user befor
 For each task, perform the following:
 
 **3.1. Write test code (basic pattern)**
-- If `test-cases.md` exists: implement test code based on the test case design
+- If `tests.md` exists: implement test code based on the test case design
 - Otherwise: design and implement test cases based on the Design Doc or user input
 
 **3.2. Implement feature (basic pattern)**
@@ -66,8 +66,8 @@ For each task, perform the following:
 Handling failures:
 
 1. **Implementation bug** -> Fix and re-test
-2. **Test design mistake** -> Review the test case design and update test-cases.md
-3. **Requirements misunderstanding** -> Review the Design Doc and update design-doc.md
+2. **Test design mistake** -> Review the test case design and update tests.md
+3. **Requirements misunderstanding** -> Review the Design Doc and update design.md
 4. **Cannot determine** -> Hear from the user
 
 **3.4. Refactoring**

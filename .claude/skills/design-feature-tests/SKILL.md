@@ -10,15 +10,15 @@ Design Doc を入力として、実装計画の策定とテストケース設計
 
 ## 前提
 
-- 入力は `design-feature` スキルの成果物（`design-doc.md`）またはユーザーからの直接入力
-- 成果物は `test-cases.md` として保存し、`implement-feature` スキルへの入力となる
+- 入力は `design-feature` スキルの成果物（`design.md`）またはユーザーからの直接入力
+- 成果物は `tests.md` として保存し、`implement-feature` スキルへの入力となる
 - **承認ゲート**: テストケースはユーザーの明示的な承認なしに完了としない
 
 ## 保存先
 
 - **ナレッジベース**: `.local/docs/` 配下にトピックごとのファイル
 - **フィーチャー固有ドキュメント**: `.local/docs/features/[名前]/` 配下
-  - `test-cases.md` - テストケース設計（本スキルの主成果物）
+  - `tests.md` - テストケース設計（本スキルの主成果物）
 
 ## フロー
 
@@ -26,7 +26,7 @@ Design Doc を入力として、実装計画の策定とテストケース設計
 
 #### 1. Design Doc の確認
 
-`design-doc.md` がある場合はそれを読み込む。ない場合はユーザーの入力から要件を把握する。
+`design.md` がある場合はそれを読み込む。ない場合はユーザーの入力から要件を把握する。
 不明点があればヒアリングする。
 
 **ツール**: Read, AskUserQuestion
@@ -49,7 +49,7 @@ Design Doc を踏まえて、既存コードベースを調査し、実装方針
 # 実装計画
 
 ## Design Doc サマリ
-- design-doc.md からの要約
+- design.md からの要約
 
 ## 影響範囲
 - 変更対象ファイル
@@ -82,7 +82,7 @@ Design Doc を踏まえて、既存コードベースを調査し、実装方針
 
 テストケースを設計。作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従い、ユーザー承認を得る。
 
-**保存先**: `.local/docs/features/[名前]/test-cases.md`
+**保存先**: `.local/docs/features/[名前]/tests.md`
 
 **内容:**
 ```markdown

@@ -12,14 +12,14 @@ A skill for creating a Design Doc through codebase investigation and user hearin
 
 - Users may not provide all requirements upfront; proactively conduct hearings
 - Investigate the codebase and documentation first, then ask efficient questions based on that understanding
-- The deliverable is saved as `design-doc.md` and serves as input for the `implement-feature` skill
+- The deliverable is saved as `design.md` and serves as input for the `implement-feature` skill
 - Each requirement and design item is annotated with a **confidence mark** to indicate source reliability
 
 ## Output Locations
 
 - **Knowledge base**: Topic-specific files under `.local/docs/`
 - **Feature-specific documents**: `.local/docs/features/[name]/`
-  - `design-doc.md` - Design Doc (primary deliverable of this skill)
+  - `design.md` - Design Doc (primary deliverable of this skill)
 
 ## Flow
 
@@ -60,7 +60,7 @@ This ensures the deliverable type can be correctly identified even if context is
 
 ## Deliverable
 - Type: Design Doc (markdown document)
-- Location: .local/docs/features/[name]/design-doc.md
+- Location: .local/docs/features/[name]/design.md
 - ⚠️ No code implementation (that is the responsibility of implement-feature)
 
 ## Related Existing Features
@@ -93,7 +93,7 @@ Self-review the plan file and request user approval with ExitPlanMode.
 Create the Design Doc based on investigation and hearing results from the plan file.
 After creation, follow the **basic pattern** (self-review -> user review -> revision) to obtain user approval.
 
-**Location**: `.local/docs/features/[name]/design-doc.md`
+**Location**: `.local/docs/features/[name]/design.md`
 
 **Content:**
 ```markdown

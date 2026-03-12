@@ -10,15 +10,15 @@ A skill for creating an implementation plan and designing test cases based on a 
 
 ## Prerequisites
 
-- Input is the deliverable of the `design-feature` skill (`design-doc.md`) or direct user input
-- The deliverable is saved as `test-cases.md` and serves as input for the `implement-feature` skill
+- Input is the deliverable of the `design-feature` skill (`design.md`) or direct user input
+- The deliverable is saved as `tests.md` and serves as input for the `implement-feature` skill
 - **Approval gate**: Test cases are not considered complete without explicit user approval
 
 ## Output Locations
 
 - **Knowledge base**: Topic-specific files under `.local/docs/`
 - **Feature-specific documents**: Under `.local/docs/features/[name]/`
-  - `test-cases.md` - Test case design (primary deliverable of this skill)
+  - `tests.md` - Test case design (primary deliverable of this skill)
 
 ## Flow
 
@@ -26,7 +26,7 @@ A skill for creating an implementation plan and designing test cases based on a 
 
 #### 1. Verify Design Doc
 
-If `design-doc.md` exists, read it. Otherwise, understand requirements from user input.
+If `design.md` exists, read it. Otherwise, understand requirements from user input.
 Hear from the user if there are unclear points.
 
 **Tools**: Read, AskUserQuestion
@@ -49,7 +49,7 @@ Use Task (Explore agent) when broad exploration is needed.
 # Implementation Plan
 
 ## Design Doc Summary
-- Summary from design-doc.md
+- Summary from design.md
 
 ## Impact Scope
 - Target files for changes
@@ -82,7 +82,7 @@ Before designing test cases, investigate existing test infrastructure.
 
 Design test cases. After creation, follow the **basic pattern** (self-review -> user review -> revision) to obtain user approval.
 
-**Location**: `.local/docs/features/[name]/test-cases.md`
+**Location**: `.local/docs/features/[name]/tests.md`
 
 **Content:**
 ```markdown

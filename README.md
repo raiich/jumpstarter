@@ -54,13 +54,13 @@ The `/design-feature` skill investigates the codebase and conducts requirements 
 If you want to design test cases in advance to reduce implementation drift, the `/design-feature-tests` skill is useful:
 
 ```
-/design-feature-tests .local/docs/features/verbose-option/design-doc.md
+/design-feature-tests .local/docs/features/verbose-option/design.md
 ```
 
 The `/implement-feature` skill implements based on the Design Doc and test cases:
 
 ```
-/implement-feature .local/docs/features/verbose-option/design-doc.md
+/implement-feature .local/docs/features/verbose-option/design.md
 ```
 
 Design documents and test cases are organized under `.local/docs/features/[name]/`.

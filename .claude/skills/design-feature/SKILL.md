@@ -12,14 +12,14 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 - ユーザーは初期段階で全要件を伝えるとは限らないため、能動的にヒアリングする
 - コードベースとドキュメントを先に把握し、その理解に基づいて効率的に質問する
-- 成果物は `design-doc.md` として保存し、`implement-feature` スキルへの入力となる
+- 成果物は `design.md` として保存し、`implement-feature` スキルへの入力となる
 - 各要件・設計項目には**信頼度マーク**を付与し、情報源の確かさを可視化する
 
 ## 保存先
 
 - **ナレッジベース**: `.local/docs/` 配下にトピックごとのファイル
 - **フィーチャー固有ドキュメント**: `.local/docs/features/[名前]/`
-  - `design-doc.md` - Design Doc（本スキルの主成果物）
+  - `design.md` - Design Doc（本スキルの主成果物）
 
 ## フロー
 
@@ -60,7 +60,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 成果物
 - 種類: Design Doc（マークダウンドキュメント）
-- 保存先: .local/docs/features/[名前]/design-doc.md
+- 保存先: .local/docs/features/[名前]/design.md
 - ⚠️ コード実装は行わない（implement-feature の責務）
 
 ## 関連する既存機能
@@ -93,7 +93,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 プランファイルの調査・ヒアリング結果を基に Design Doc を作成。
 作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従い、ユーザー承認を得る。
 
-**保存先**: `.local/docs/features/[名前]/design-doc.md`
+**保存先**: `.local/docs/features/[名前]/design.md`
 
 **内容:**
 ```markdown

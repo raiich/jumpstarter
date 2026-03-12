@@ -42,6 +42,7 @@ Hear from the user if there are unclear points.
 #### 2. Create implementation task list
 
 Create tasks based on the Design Doc and test cases.
+If the Design Doc contains ❓ (assumed) items, confirm them with the user before implementing the affected tasks.
 
 **Tools**: TaskCreate
 

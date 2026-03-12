@@ -13,6 +13,7 @@ A skill for creating a Design Doc through codebase investigation and user hearin
 - Users may not provide all requirements upfront; proactively conduct hearings
 - Investigate the codebase and documentation first, then ask efficient questions based on that understanding
 - The deliverable is saved as `design-doc.md` and serves as input for the `implement-feature` skill
+- Each requirement and design item is annotated with a **confidence mark** to indicate source reliability
 
 ## Output Locations
 
@@ -124,6 +125,24 @@ After creation, follow the **basic pattern** (self-review -> user review -> revi
 ## Considerations (security, etc.)
 ```
 
+**Confidence marks:**
+
+Annotate each item in the requirements, design, and implementation details sections with a mark indicating source reliability.
+
+- ✅ **Confirmed** — Directly verified from user statements, code, or documentation
+- ⚠️ **Inferred** — Reasonable inference from confirmed information
+- ❓ **Assumed** — Assumption without a source. Needs user confirmation before implementation
+
+```markdown
+## Requirements (example)
+- ✅ Authentication uses the existing JWT middleware (confirmed at auth.go:L42)
+- ⚠️ Token expiry is 24 hours (inferred from current config)
+- ❓ Whether refresh tokens are needed is unconfirmed
+```
+
+Mark target sections: **Requirements**, **Design**, **Implementation Details**.
+Not needed for: Background & Purpose, Scope, Related Code & References.
+
 **Notes:**
 - Do not write complete method body implementations (that is the responsibility of implement-feature)
 - Code examples should be ~20 lines max per location
@@ -163,5 +182,6 @@ Save/update findings from investigation and implementation as files under `.loca
 - Have alternatives been sufficiently considered?
 - Are implementation details appropriate (not writing complete implementation code)?
 - Does it follow the conciseness principles in `.claude/rules/writing-style.instructions.md`?
+- Confidence marks: Can any ❓ (assumed) items be resolved through additional hearing?
 
 Adjust criteria based on content. Hear from the user when unclear.

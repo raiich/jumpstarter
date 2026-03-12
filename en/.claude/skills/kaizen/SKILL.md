@@ -6,7 +6,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 # Claude Code Improvement Command
 
-Extracts feedback from conversation.log, reflects it in learnings.md, and improves Claude Code settings.
+Extracts feedback from conversation.log, reflects it in learnings.md, and improves Claude Code settings including codebase gap analysis.
 
 ## Procedure
 
@@ -40,15 +40,26 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
    - Load `.local/claude/learnings.md`
    - Identify improvable patterns from recorded feedback
 
-2. **Check Claude Code features**
+2. **Codebase gap analysis**
+   - Briefly assess the following (don't over-investigate):
+     - Languages, frameworks, directory structure
+     - Test setup, CI/CD, major external dependencies
+     - Documentation structure, Makefile / task runner availability
+   - Compare against current `.claude/` settings to identify uncovered areas:
+     - **Missing rules**: Patterns exist in codebase but no corresponding rules
+     - **Missing skills/agents**: Repetitive tasks or specialized perspectives not covered
+     - **Missing procedures/automation**: Lack of setup, build, test, or deploy procedures
+     - **Configuration inconsistencies**: Contradictions between settings or divergence from codebase reality
+
+3. **Check Claude Code features**
    - Use WebFetch to check official Claude Code documentation
    - URL: https://code.claude.com/docs/en/claude_code_docs_map.md
    - Also check the changelog (https://code.claude.com/docs/en/changelog.md) for new features and changes
    - Identify Claude Code features that can address feedback patterns
    - Check for underutilized features in current settings
 
-3. **Create improvement proposals**
-   - Combine feedback and Claude Code features into improvement proposals
+4. **Create improvement proposals**
+   - Combine feedback, gap analysis, and Claude Code features into improvement proposals
    - Target the following configuration files:
      - `.claude/settings.local.json` (personal settings; preferred since this is a template repository)
      - `.claude/settings.json` (shared template settings)
@@ -57,7 +68,7 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
      - `.claude/commands/`
      - `.claude/rules/` (actual files in `.github/instructions/`; edit the actual files)
 
-4. **Implement improvements**
+5. **Implement improvements**
    - Present improvement proposals to the user
    - Update configuration files after approval
 
@@ -69,6 +80,10 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
 ### Key Feedback
 - [Feedback 1: frequency X times]
 - [Feedback 2: frequency Y times]
+
+### Codebase Gaps
+- [Gap 1: type - rationale]
+- [Gap 2: type - rationale]
 
 ### Improvement Proposals
 

@@ -121,9 +121,9 @@ Apply the approved changes. After creation, follow the **basic pattern** (self-r
 ### 8. Review including impact analysis
 
 - Check impact on other files (skills, etc.) that reference changed files (search references with Grep)
-- Document quality review via the review-doc skill
+- Document quality review (follow the self-review checklist)
 
-**Tools**: Grep, Skill(review-doc)
+**Tools**: Grep
 
 ### [Completion Phase]
 

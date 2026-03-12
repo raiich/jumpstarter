@@ -86,18 +86,6 @@ The `/import-best-practices` command easily imports best practices from online a
 
 These refine rules, skills, hooks, and more to suit your project. No need to manually review settings.
 
-### Improve code and documentation quality
-
-Discover issues through review, comprehensively search for similar issues, and batch-fix them.
-This reduces missed fixes and the effort of pointing out "this wasn't fixed."
-
-```
-Code:           /review-code → /fix-code
-Documentation:  /review-doc  → /fix-doc
-```
-
-You can also use Claude Code's built-in `/simplify` for code quality improvement.
-
 ---
 
 ## Other Settings

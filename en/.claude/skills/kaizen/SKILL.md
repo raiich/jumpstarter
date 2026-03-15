@@ -52,9 +52,20 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
      - **Configuration inconsistencies**: Contradictions between settings or divergence from codebase reality
 
 3. **Check Claude Code features**
-   - Use WebFetch to check official Claude Code documentation
-   - URL: https://code.claude.com/docs/en/claude_code_docs_map.md
-   - Also check the changelog (https://code.claude.com/docs/en/changelog.md) for new features and changes
+   - Check the following documentation (cached):
+     - `https://code.claude.com/docs/en/claude_code_docs_map.md`
+     - `https://code.claude.com/docs/en/changelog.md`
+   - **Cache procedure**:
+     1. Read cache files from `.local/claude/cache/` using Read
+        - `claude_code_docs_map.md`, `changelog.md`
+     2. Compare the frontmatter `fetched_at: YYYY-MM-DD` with the current date; if **within 7 days**, use as-is
+     3. Only if the file is missing or older than 7 days, fetch via WebFetch and Write in the following format:
+        ```
+        ---
+        fetched_at: YYYY-MM-DD
+        ---
+        (fetched content)
+        ```
    - Identify Claude Code features that can address feedback patterns
    - Check for underutilized features in current settings
 

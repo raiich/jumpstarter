@@ -1,10 +1,10 @@
 ---
-name: design-feature-tests
+name: design-tests
 description: Plan implementation and design test cases based on a design doc.
 allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMode, ExitPlanMode, Skill
 ---
 
-# Design Feature Tests
+# Design Tests
 
 Design Doc を入力として、実装計画の策定とテストケース設計を行うスキルです。
 

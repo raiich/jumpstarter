@@ -12,7 +12,7 @@ A skill for TDD implementation based on a Design Doc and test case design.
 
 - Input is one of the following:
   - Deliverable of the `design-feature` skill: `design.md`
-  - Deliverables of `design-feature` + `design-feature-tests` skills: `design.md` + `tests.md`
+  - Deliverables of `design-feature` + `design-tests` skills: `design.md` + `tests.md`
   - Direct user input
 - Run TDD cycles in small increments
 

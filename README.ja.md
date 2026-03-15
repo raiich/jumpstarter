@@ -51,10 +51,10 @@ claude
 /design-feature CLIにverboseオプションを追加したい
 ```
 
-実装のズレを減らすためにあらかじめテストケースを設計したい場合は、`/design-feature-tests`スキルが便利です:
+実装のズレを減らすためにあらかじめテストケースを設計したい場合は、`/design-tests`スキルが便利です:
 
 ```
-/design-feature-tests .local/docs/features/verbose-option/design.md
+/design-tests .local/docs/features/verbose-option/design.md
 ```
 
 `/implement-feature`スキルにより、Design Docやテストケースにもとづいて実装します:

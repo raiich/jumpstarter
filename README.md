@@ -51,10 +51,10 @@ The `/design-feature` skill investigates the codebase and conducts requirements 
 /design-feature I want to add a verbose option to the CLI
 ```
 
-If you want to design test cases in advance to reduce implementation drift, the `/design-feature-tests` skill is useful:
+If you want to design test cases in advance to reduce implementation drift, the `/design-tests` skill is useful:
 
 ```
-/design-feature-tests .local/docs/features/verbose-option/design.md
+/design-tests .local/docs/features/verbose-option/design.md
 ```
 
 The `/implement-feature` skill implements based on the Design Doc and test cases:

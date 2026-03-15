@@ -1,10 +1,10 @@
 ---
-name: design-feature-tests
+name: design-tests
 description: Plan implementation and design test cases based on a design doc.
 allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMode, ExitPlanMode, Skill
 ---
 
-# Design Feature Tests
+# Design Tests
 
 A skill for creating an implementation plan and designing test cases based on a Design Doc.
 

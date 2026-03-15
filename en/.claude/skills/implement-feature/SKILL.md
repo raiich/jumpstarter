@@ -63,12 +63,23 @@ For each task, perform the following:
 
 **Tools**: Bash (use the test execution command according to project settings)
 
-Handling failures:
+On failure, **analyze the root cause before attempting any fix**:
 
-1. **Implementation bug** -> Fix and re-test
-2. **Test design mistake** -> Review the test case design and update tests.md
-3. **Requirements misunderstanding** -> Review the Design Doc and update design.md
-4. **Cannot determine** -> Hear from the user
+**Root cause analysis (always before fixing):**
+1. Identify the direct cause of the error
+2. Trace upstream — why did this happen? Is the symptom location the real cause?
+3. Consider multiple fix candidates and choose the best approach:
+   - Is this fix addressing the root cause, or just patching the symptom?
+   - Could this fix affect other tests or features?
+   - Does this require a design-level rethink?
+
+**Act based on the analysis:**
+- **Implementation bug** -> Fix at the cause location (not necessarily where the symptom appeared) and re-test
+- **Test design mistake** -> Review the test case design and update tests.md
+- **Design problem** -> Go back to design.md, rethink the design, then redo
+- **Cannot determine** -> Hear from the user
+
+**If a fix fails twice**: Do not repeat the same approach. Reconsider the root cause hypothesis or try a different approach. After 3 failures, consult the user
 
 **3.4. Refactoring**
 - After tests pass, clean up the implementation code (eliminate duplication, improve naming, simplify structure, etc.)

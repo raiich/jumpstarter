@@ -177,6 +177,7 @@ Save/update findings from investigation and implementation as files under `.loca
 ### Design Doc
 - Are What/Why clear?
 - Are there any ambiguities remaining in the requirements?
+- Are functional requirements in a testable format (clear operation and result, e.g., "when X, then Y")?
 - Is the investigation of related code sufficient?
 - Is the scope clear?
 - Have alternatives been sufficiently considered?

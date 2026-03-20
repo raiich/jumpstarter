@@ -113,6 +113,9 @@ Save/update findings from investigation and implementation as files under `.loca
 - Consistency with test case design
 - Coverage of happy paths, error paths, and edge cases
 - Is the test granularity appropriate?
+- Arrange-Act-Assert is clearly separated
+- DAMP > DRY: Prioritize readability of what each test verifies over hiding details in helpers
+- Add comments to supplement test names when the name alone is insufficient
 
 ### Implementation Code
 - Is there over-engineering?

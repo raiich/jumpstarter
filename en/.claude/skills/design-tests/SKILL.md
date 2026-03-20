@@ -88,12 +88,12 @@ Design test cases. After creation, follow the **basic pattern** (self-review -> 
 ```markdown
 # Test Case Design
 
-## Test Case 1: [feature name] happy path
+## Test Case 1: [Behavior]
 - Given: [preconditions]
 - When: [action to perform]
 - Then: [expected result]
 
-## Test Case 2: [feature name] error path
+## Test Case 2: [Behavior] error case
 - Given: [preconditions]
 - When: [action to perform]
 - Then: [expected error handling]
@@ -124,7 +124,17 @@ Save/update findings from investigation and implementation as files under `.loca
 - Are there overlooked areas in the impact scope?
 
 ### Test Cases
-- Coverage of the feature
+
+Review each test case from the following perspectives.
+
+- **Tests behavior**: Verifies "user action → result." Asserting constant values, array sizes, enum counts, or property values is not a test
+- **Bug detector, not change detector**: If a correct refactoring of production code breaks the test, the test is coupled to implementation details
+- **Avoids restating constants**: If changing a value in production code means mechanically updating the same value in the test, the test has no value
+- **Derived from functional requirements**: Starts from requirements in design.md ("when X, then Y"), not from implementation details (type definitions, module structure)
+- **Tests through the public API**: Does not test internal functions or internal state directly. Written from the module consumer's perspective
+- **Tests serve as usage documentation**: Reading the test reveals how to use the module
+- **Mocks are not overly complex**: Bloated mocks signal that the test subject has too many responsibilities. Reconsider the test design or production design
+- **Tests are independent**: Each test does not depend on other tests. No dependency on execution order or shared state
 - Coverage of happy paths, error paths, and edge cases
 - Is the test granularity appropriate?
 - Does it follow the conciseness principles in `.claude/rules/writing-style.instructions.md`?

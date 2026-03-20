@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
       "Bash(cp:*)",
       "Bash(date:*)",
@@ -36,7 +35,8 @@
     "ask": [
       "Bash(git commit --amend:*)",
       "Bash(git reset --hard:*)"
-    ]
+    ],
+    "defaultMode": "acceptEdits"
   },
   "hooks": {
     "UserPromptSubmit": [

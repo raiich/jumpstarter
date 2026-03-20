@@ -177,6 +177,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 ### Design Doc
 - What/Why が明確か
 - 要件に曖昧さが残っていないか
+- 機能要件はテスト可能な形式か（「〜したら〜になる」のように、操作と結果が明確か）
 - 関連コードの調査は十分か
 - スコープは明確か
 - 代替案の検討は十分か

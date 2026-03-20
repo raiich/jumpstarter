@@ -17,7 +17,6 @@ A skill for creating a Design Doc through codebase investigation and user hearin
 
 ## Output Locations
 
-- **Knowledge base**: Topic-specific files under `.local/docs/`
 - **Feature-specific documents**: `.local/docs/features/[name]/`
   - `design.md` - Design Doc (primary deliverable of this skill)
 
@@ -33,14 +32,14 @@ A skill for creating a Design Doc through codebase investigation and user hearin
 
 #### 3. Codebase investigation
 
-Investigate the existing codebase and documentation (including knowledge base under `.local/docs/`) and record findings in the plan file.
+Investigate the existing codebase and documentation and record findings in the plan file.
 Use Task (Explore agent) when broad exploration is needed.
 
 **Tools**: Read, Glob, Grep, Task
 
 #### 4. Requirements hearing
 
-Based on investigation results and existing knowledge, hear from the user about missing information.
+Based on investigation results, hear from the user about missing information.
 Reflect hearing results in the plan file. Conduct multiple rounds of hearing as needed.
 
 **Principles for efficient hearings:**
@@ -68,9 +67,6 @@ This ensures the deliverable type can be correctly identified even if context is
 
 ## Important Architecture Patterns
 - Pattern 1: Description
-
-## Reference Documents
-- .local/docs/xxx.md
 
 ## Hearing Results
 - Confirmed requirements and constraints
@@ -116,7 +112,7 @@ After creation, follow the **basic pattern** (self-review -> user review -> revi
 ## Related Code & References
 - Target files and functions for changes
 - Existing patterns to reference
-- Related documents (under .local/docs/)
+- Related documents
 
 ## Implementation Details
 - Interfaces/signatures only. Do not write method bodies
@@ -156,22 +152,13 @@ Not needed for: Background & Purpose, Scope, Related Code & References.
 
 ### [Completion Phase]
 
-#### 7. Update knowledge base
-
-Save/update findings from investigation and implementation as files under `.local/docs/`.
-
-**Scope**: Requirements, design decisions, alternatives and their rationale, technical constraints, etc.
-
-**Tools**: Write, Edit
-
-#### 8. Run /kaizen
+#### 7. Run /kaizen
 
 **Tools**: Skill (kaizen)
 
 ## Self-Review Criteria
 
 ### Plan (investigation phase)
-- Knowledge base coverage (are related existing features overlooked?)
 - Are there unidentified questions that should be heard?
 
 ### Design Doc

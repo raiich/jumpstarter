@@ -16,7 +16,6 @@ A skill for creating an implementation plan and designing test cases based on a 
 
 ## Output Locations
 
-- **Knowledge base**: Topic-specific files under `.local/docs/`
 - **Feature-specific documents**: Under `.local/docs/features/[name]/`
   - `tests.md` - Test case design (primary deliverable of this skill)
 
@@ -105,15 +104,7 @@ Design test cases. After creation, follow the **basic pattern** (self-review -> 
 
 ### [Completion Phase]
 
-#### 7. Update knowledge base
-
-Save/update findings from investigation and implementation as files under `.local/docs/`.
-
-**Scope**: Requirements, design decisions, alternatives and their rationale, technical constraints, etc.
-
-**Tools**: Write, Edit
-
-#### 8. Run /kaizen
+#### 7. Run /kaizen
 
 **Tools**: Skill (kaizen)
 

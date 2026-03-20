@@ -127,15 +127,7 @@ Apply the approved changes. After creation, follow the **basic pattern** (self-r
 
 ### [Completion Phase]
 
-#### 9. Update knowledge base
-
-Save/update findings from investigation and implementation as files under `.local/docs/`.
-
-**Scope**: Requirements, design decisions, alternatives and their rationale, technical constraints, etc.
-
-**Tools**: Write, Edit
-
-#### 10. Run /kaizen
+#### 9. Run /kaizen
 
 **Tools**: Skill (kaizen)
 

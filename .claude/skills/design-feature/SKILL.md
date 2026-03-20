@@ -17,7 +17,6 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 保存先
 
-- **ナレッジベース**: `.local/docs/` 配下にトピックごとのファイル
 - **フィーチャー固有ドキュメント**: `.local/docs/features/[名前]/`
   - `design.md` - Design Doc（本スキルの主成果物）
 
@@ -33,14 +32,14 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 #### 3. コードベース調査
 
-既存コードベースとドキュメント（`.local/docs/` 配下のナレッジベース含む）を調査し、プランファイルに記録。
+既存コードベースとドキュメントを調査し、プランファイルに記録。
 広範な探索が必要な場合は Task（Explore エージェント）を活用。
 
 **ツール**: Read, Glob, Grep, Task
 
 #### 4. 要件のヒアリング
 
-調査結果と既存ナレッジを踏まえて、不足情報をユーザーにヒアリング。
+調査結果を踏まえて、不足情報をユーザーにヒアリング。
 ヒアリング内容をプランファイルに反映。必要に応じて複数回ヒアリングする。
 
 **効率的なヒアリングの原則:**
@@ -68,9 +67,6 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ## 重要なアーキテクチャパターン
 - パターン1: 説明
-
-## 参考ドキュメント
-- .local/docs/xxx.md
 
 ## ヒアリング結果
 - 確認した要件・制約
@@ -116,7 +112,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 ## 関連コード・参照
 - 変更対象ファイル・関数
 - 参考にすべき既存パターン
-- 関連ドキュメント（.local/docs/ 配下）
+- 関連ドキュメント
 
 ## 実装詳細
 - インターフェース/シグネチャのみ。メソッドの中身は書かない
@@ -156,22 +152,13 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 
 ### [完了フェーズ]
 
-#### 7. ナレッジベース更新
-
-調査・実装で得た知見を `.local/docs/` 配下にファイルとして保存・更新。
-
-**対象**: 要件・設計方針・代替案とその理由・技術的制約など
-
-**ツール**: Write, Edit
-
-#### 8. /kaizen 実行
+#### 7. /kaizen 実行
 
 **ツール**: Skill (kaizen)
 
 ## 自己レビュー観点
 
 ### プラン（調査フェーズ）
-- ナレッジベースの網羅性（関連する既存機能を見落としていないか）
 - ヒアリングすべき不明点を見逃していないか
 
 ### Design Doc

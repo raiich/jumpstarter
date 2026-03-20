@@ -16,10 +16,6 @@ A skill for TDD implementation based on a Design Doc and test case design.
   - Direct user input
 - Run TDD cycles in small increments
 
-## Output Locations
-
-- **Knowledge base**: Topic-specific files under `.local/docs/`
-
 ## Task Granularity
 
 - 1 task = approximately 1 function, class, or method
@@ -95,15 +91,7 @@ On failure, **analyze the root cause before attempting any fix**:
 
 ### [Completion Phase]
 
-#### 4. Update knowledge base
-
-Save/update findings from investigation and implementation as files under `.local/docs/`.
-
-**Scope**: Requirements, design decisions, alternatives and their rationale, technical constraints, etc.
-
-**Tools**: Write, Edit
-
-#### 5. Run /kaizen
+#### 4. Run /kaizen
 
 **Tools**: Skill (kaizen)
 

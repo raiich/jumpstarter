@@ -127,15 +127,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 ### [完了フェーズ]
 
-#### 9. ナレッジベース更新
-
-調査・実装で得た知見を `.local/docs/` 配下にファイルとして保存・更新。
-
-**対象**: 要件・設計方針・代替案とその理由・技術的制約など
-
-**ツール**: Write, Edit
-
-#### 10. /kaizen 実行
+#### 9. /kaizen 実行
 
 **ツール**: Skill (kaizen)
 

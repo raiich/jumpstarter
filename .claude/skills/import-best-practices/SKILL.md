@@ -17,12 +17,12 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 ## リポジトリの制約
 
 - **CLAUDE.md / CLAUDE.local.md は未使用** — 記事が CLAUDE.md への記述を推奨している場合、同等の効果を rules / skills / settings / agents 等の別の仕組みで実現する
-- **`.claude/rules/` は `.github/instructions/` へのシンボリックリンク** — 編集は実体（`.github/instructions/`）側で行う
+- **ルールは `.claude/rules/` に配置** — 直接編集する
 - **settings は `.claude/settings.local.json` を対象にする**（テンプレートリポジトリのため）
 
 ## 出力対象
 
-- `.github/instructions/`（rules の実体）
+- `.claude/rules/`
 - `.claude/skills/`
 - `.claude/commands/`
 - `.claude/agents/`
@@ -51,7 +51,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 ### 3. 現状との差分分析
 
-現在の `.claude/` 設定と `.github/instructions/` を調査する。
+現在の `.claude/` 設定を調査する。
 公式の Claude Code ベストプラクティスを WebFetch (`https://code.claude.com/docs/en/claude_code_docs_map.md`) で確認し、記事の推奨事項が公式の方針と整合しているか検証する。
 
 **注意**: 上記 URL はドキュメントマップ（目次）。関連するトピックのページを必要に応じて個別に WebFetch で取得すること。
@@ -148,7 +148,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 - [ ] ミスマッチがある場合、代替手段を提案したか
 
 ### 実装（ステップ7）
-- [ ] リポジトリの制約に従っているか（CLAUDE.md 不使用、シンボリックリンク、settings.local.json）
+- [ ] リポジトリの制約に従っているか（CLAUDE.md 不使用、settings.local.json）
 - [ ] 既存パターン・形式との整合性があるか
 - [ ] `.claude/rules/writing-style.instructions.md` の簡潔さの原則に従っているか
 

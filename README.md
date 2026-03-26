@@ -25,13 +25,11 @@ Copy the template and start using it right away.
 ```bash
 git clone https://github.com/raiich/jumpstarter.git
 
-# Copy .claude/ and .github/ to your existing project (English version)
+# Copy .claude/ to your existing project (English version)
 cp -R jumpstarter/en/.claude "${YOUR_PROJECT}/"
-cp -R jumpstarter/en/.github "${YOUR_PROJECT}/"
 
 ## Japanese version
 # cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
-# cp -R jumpstarter/.github "${YOUR_PROJECT}/"
 ```
 
 Launch Claude Code and use slash commands to run workflows.

@@ -17,12 +17,12 @@ A skill for analyzing best practices from external articles (specified by URL) a
 ## Repository Constraints
 
 - **CLAUDE.md / CLAUDE.local.md are not used** — If an article recommends writing to CLAUDE.md, achieve the equivalent effect through rules / skills / settings / agents
-- **`.claude/rules/` is a symlink to `.github/instructions/`** — Edit the actual files (under `.github/instructions/`)
+- **Rules are placed directly in `.claude/rules/`** — Edit them directly
 - **Target `.claude/settings.local.json` for settings** (since this is a template repository)
 
 ## Output Targets
 
-- `.github/instructions/` (actual location of rules)
+- `.claude/rules/`
 - `.claude/skills/`
 - `.claude/commands/`
 - `.claude/agents/`
@@ -51,7 +51,7 @@ Fetch content from the URL provided by the user and extract key practices and pr
 
 ### 3. Gap analysis against current settings
 
-Investigate current `.claude/` settings and `.github/instructions/`.
+Investigate current `.claude/` settings.
 Check official Claude Code best practices via WebFetch (`https://code.claude.com/docs/en/claude_code_docs_map.md`) and verify whether the article's recommendations align with official guidelines.
 
 **Note**: The URL above is a document map (table of contents). Fetch individual topic pages via WebFetch as needed.
@@ -148,7 +148,7 @@ Apply the approved changes. After creation, follow the **basic pattern** (self-r
 - [ ] Proposed alternative means if mismatches were found
 
 ### Implementation (step 7)
-- [ ] Follows repository constraints (no CLAUDE.md, symlink, settings.local.json)
+- [ ] Follows repository constraints (no CLAUDE.md, settings.local.json)
 - [ ] Consistent with existing patterns and formats
 - [ ] Follows conciseness principles in `.claude/rules/writing-style.instructions.md`
 

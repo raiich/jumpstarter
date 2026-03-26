@@ -86,7 +86,7 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
      - `.claude/agents/`
      - `.claude/skills/`
      - `.claude/commands/`
-     - `.claude/rules/` (actual files in `.github/instructions/`; edit the actual files)
+     - `.claude/rules/`
 
 5. **Implement improvements**
    - Present improvement proposals to the user

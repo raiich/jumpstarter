@@ -52,10 +52,20 @@ The context window is the most critical resource. Manage it proactively.
 - **Research tasks**: Delegate to subagents to protect the main context
 - **Fix fails twice**: `/clear` and restart with a new prompt that includes what you learned
 
+## Providing Verification Methods
+
+Deliverable quality depends on having verification methods. Secure verification methods at the start of a task.
+
+- **Code changes**: Test commands, expected output, screenshots
+- **Documentation changes**: Self-review checklist, comprehension check by target audience
+- **Configuration changes**: Commands to compare behavior before and after the change
+
+If no verification method exists, create one first (write tests, define a checklist, etc.).
+
 ## Completion Criteria
 
 Do not mark a deliverable as complete until it meets the following.
 
 - **Code changes**: Build succeeds, tests pass, existing tests are not broken
 - **Documentation changes**: Self-review checklist passed
-- **Common**: Self-review completed
+- **Common**: Self-review completed, verified with verification methods

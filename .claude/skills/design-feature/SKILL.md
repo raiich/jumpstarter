@@ -2,6 +2,7 @@
 name: design-feature
 description: Design features through codebase investigation and user hearing, producing a design doc.
 allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMode, ExitPlanMode, Skill
+effort: high
 ---
 
 # Design Feature
@@ -46,6 +47,16 @@ allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMo
 - コードを読めば分かることは聞かない
 - 調査で把握した制約・パターンを踏まえ、具体的な選択肢を提示して聞く
 - ユーザーが言及していない観点（エッジケース、既存機能との整合性等）も能動的に確認する
+
+**例: 効率的なヒアリング**
+
+ユーザー入力: 「通知機能を追加したい」
+
+❌ 悪い質問: 「どのような通知機能ですか？」（広すぎる）
+
+✅ 良い質問（調査結果を踏まえた選択肢付き）:
+- 「既存の EventBus（events/bus.go）を使ったイベント駆動と、直接呼び出しのどちらを想定していますか？」
+- 「通知先は Slack webhook（config に slack_url が既存）以外にもありますか？」
 
 **ツール**: AskUserQuestion
 

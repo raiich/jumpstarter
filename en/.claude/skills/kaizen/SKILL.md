@@ -1,7 +1,7 @@
 ---
 name: kaizen
 description: Claude Code improvement command
-allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
+allowed-tools: Read, Grep, Glob, Edit, Write, Bash, WebFetch, AskUserQuestion, Skill
 ---
 
 # Claude Code Improvement Command
@@ -31,6 +31,14 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
    - Each item should be concise (one line)
    - Present the additions to the user and update after approval
 
+   **Example: Feedback extraction judgment**
+
+   Log: "I wanted a sequence diagram in the Design Doc"
+   → ✅ Extract (reusable insight: include sequence diagrams when the Design Doc involves processing flows)
+
+   Log: "Fix L42 in auth.go"
+   → ❌ Do not extract (one-time task instruction)
+
 4. **Clear logs**
    - After approval and update, clear `.local/claude/conversation.log` (make it an empty file)
 
@@ -59,13 +67,14 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
      1. Read cache files from `.local/claude/cache/` using Read
         - `claude_code_docs_map.md`, `changelog.md`
      2. Compare the frontmatter `fetched_at: YYYY-MM-DD` with the current date; if **within 7 days**, use as-is
-     3. Only if the file is missing or older than 7 days, fetch via WebFetch and Write in the following format:
+     3. Only if the file is missing or older than 7 days, fetch via curl and Write in the following format:
         ```
         ---
         fetched_at: YYYY-MM-DD
         ---
         (fetched content)
         ```
+     4. **Important**: Save fetched content as-is — do not summarize or rename files
    - Identify Claude Code features that can address feedback patterns
    - Check for underutilized features in current settings
 
@@ -116,3 +125,4 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
 - Backup before changes is recommended
 - Implement changes only after user approval
 - **learnings.md is intermediate data exclusive to kaizen**. Do not propose injecting it into regular sessions (e.g., SessionStart hooks). Reflect improvements in `.claude/` configuration files
+- **learnings.md and memory are independent**. When extracting feedback, do not check whether it is already saved in memory. The two serve different purposes (learnings.md is input for kaizen improvements, memory is behavioral guidance for regular sessions)

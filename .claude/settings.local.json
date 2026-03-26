@@ -2,6 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(cp:*)",
+      "Bash(curl -sL 'https://code.claude.com/docs/en/changelog.md')",
+      "Bash(curl -sL 'https://code.claude.com/docs/en/claude_code_docs_map.md')",
       "Bash(date:*)",
       "Bash(diff:*)",
       "Bash(docker compose:*)",
@@ -26,7 +28,8 @@
       "Bash(tree:*)",
       "Bash(uname:*)",
       "Bash(wc:*)",
-      "Bash(which:*)"
+      "Bash(which:*)",
+      "WebFetch(domain:code.claude.com)"
     ],
     "deny": [
       "Bash(git push:*)",

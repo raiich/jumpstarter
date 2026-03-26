@@ -50,7 +50,7 @@ Write according to the approved structure.
 
 - **Diagrams**: Prefer mermaid for sequence diagrams, state diagrams, and flowcharts
 - **Tone**: Use a polite, readable style appropriate for technical articles
-- **Emoji**: Acceptable when used to improve readability
+- **Emoji**: Acceptable when used to improve readability. However, adding emoji to every element is excessive. Limit to key emphasis points, easy-to-miss items, and enumerated lists where items are hard to distinguish
 - **Tables**: Keep cell content short (1-2 sentences max). Write longer explanations outside the table
 - Do not write lengthy prose for what code examples can explain sufficiently
 

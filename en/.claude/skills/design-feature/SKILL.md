@@ -2,6 +2,7 @@
 name: design-feature
 description: Design features through codebase investigation and user hearing, producing a design doc.
 allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, EnterPlanMode, ExitPlanMode, Skill
+effort: high
 ---
 
 # Design Feature
@@ -46,6 +47,16 @@ Reflect hearing results in the plan file. Conduct multiple rounds of hearing as 
 - Do not ask about things that can be understood by reading the code
 - Present specific options based on constraints and patterns identified during investigation
 - Proactively confirm aspects the user has not mentioned (edge cases, consistency with existing features, etc.)
+
+**Example: Efficient hearing**
+
+User input: "I want to add a notification feature"
+
+❌ Bad question: "What kind of notification feature?" (too broad)
+
+✅ Good questions (with options based on investigation results):
+- "Do you envision event-driven using the existing EventBus (events/bus.go), or direct invocation?"
+- "Are there notification targets beyond Slack webhook (slack_url already exists in config)?"
 
 **Tools**: AskUserQuestion
 

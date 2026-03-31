@@ -1,9 +1,10 @@
 ---
-paths: "**"
-applyTo: "**"
+name: fix
+description: Perform comprehensive search and batch fixes for code and documentation. Use for fix tasks and "fix this" type requests.
+allowed-tools: Read, Grep, Glob, Edit, Write, Bash, AskUserQuestion
 ---
 
-# Fix Guidelines
+# Fix
 
 Common principles and processes for fixing code and documentation.
 
@@ -13,15 +14,15 @@ Common principles and processes for fixing code and documentation.
 - **Confirm the impact scope before fixing** - Understand all related locations
 - **Fix all similar issues at once** - Avoid incremental fixes
 
-## Fix Flow (Common)
+## Fix Flow
 
-### 1. Understand the fix
+### 1. Understand the Fix
 
 - Understand the user's fix instructions
 - Identify the target locations
 - Estimate the impact scope of the fix
 
-### 2. Perform comprehensive search
+### 2. Perform Comprehensive Search
 
 **Important**: Always check if the same issue exists elsewhere
 
@@ -35,13 +36,13 @@ Common principles and processes for fixing code and documentation.
    - Example: Function name change -> Check all call sites
    - Example: Type definition change -> Check all files using it
 
-### 3. Batch fix
+### 3. Batch Fix
 
 Fix all found locations at once
 - Avoid incremental fixes
 - Resolve the same issue in a single fix
 
-### 4. Self-review
+### 4. Self-Review
 
 After fixing, verify:
 
@@ -62,13 +63,13 @@ Report the fix concisely:
 ```
 Fix task: "Fix unused err variable"
 
-❌ Bad approach:
+Bad approach:
 1. Fix only the 1 reported location
 2. Report to user
 3. User: "Are there any others?"
 4. Search again and fix more...
 
-✅ Good approach:
+Good approach:
 1. Use Grep to search all unused "err" patterns
 2. Fix all found locations at once
 3. Report to user: "Fixed unused err variables in 5 locations"

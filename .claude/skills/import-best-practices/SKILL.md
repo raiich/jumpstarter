@@ -121,7 +121,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 ### 8. 影響分析を含むレビュー
 
 - 変更ファイルを参照する他ファイル（skills 等）への影響確認（Grep で参照箇所を検索）
-- ドキュメント品質レビュー（セルフレビューチェックリストに従う）
+- ドキュメント品質レビュー（writing-style のセルフレビュー観点に従う）
 
 **ツール**: Grep
 

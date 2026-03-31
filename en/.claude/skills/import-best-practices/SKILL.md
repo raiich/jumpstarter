@@ -121,7 +121,7 @@ Apply the approved changes. After creation, follow the **basic pattern** (self-r
 ### 8. Review including impact analysis
 
 - Check impact on other files (skills, etc.) that reference changed files (search references with Grep)
-- Document quality review (follow the self-review checklist)
+- Document quality review (follow the self-review criteria in writing-style)
 
 **Tools**: Grep
 

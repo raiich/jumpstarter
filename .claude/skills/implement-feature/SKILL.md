@@ -2,6 +2,7 @@
 name: implement-feature
 description: Implement features with TDD workflow based on a design doc and optional test cases.
 allowed-tools: Read, Grep, Glob, Edit, Write, Task, AskUserQuestion, TaskCreate, TaskUpdate, TaskList, TaskGet, Skill
+effort: high
 ---
 
 # Implement Feature

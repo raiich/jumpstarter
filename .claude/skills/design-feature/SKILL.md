@@ -150,12 +150,57 @@ effort: high
 マークの付与対象: **要件**、**設計**、**実装詳細** セクションの各項目。
 背景・目的、スコープ、関連コードには不要。
 
-**注意:**
-- メソッド本体の完全な実装は書かない（implement-feature の責務）
-- コード例は1箇所あたり最大20行程度
-- Design Doc に書くべきコード: シグネチャ、データ構造定義、重要な分岐ロジック
-- Design Doc に書くべきでないコード: ユーティリティ関数、ボイラープレート、完全なクラス実装
-- 図表は Mermaid 形式を優先
+**⛔ Design Doc はコードを書く場所ではない:**
+
+Design Doc の目的は「何をどう作るか」の設計判断を伝えること。実装コードを書くことではない。
+コードは設計判断を補足する最小限の断片のみ許可する。
+
+- **書いてよいコード**: 型定義・インターフェース、データ構造、非自明な分岐ロジック（数行）
+- **書いてはいけないコード**: クラスの完全実装、関数の本体、初期化処理、ボイラープレート、ユーティリティ関数
+
+**判断基準**: そのコードブロックを削除しても設計意図が伝わるなら、そのコードは不要。
+
+**定量目安**: コードブロックの合計行数がドキュメント全体の 1/3 を超えたら書きすぎ。
+
+**Bad（設計ドキュメントに不適切）**:
+
+```typescript
+// ❌ クラスの完全実装を書いている
+class MovingState implements State<GameData> {
+  name() { return "Moving"; }
+  entry(machine: EntryMachine<GameData>, event: object): void {
+    const data = machine.value();
+    if (event instanceof MoveEvent) {
+      data.moveDirection = event.direction;
+      data.facing = event.direction;
+    }
+    const tick = (m: AfterFuncMachine<GameData>): void => {
+      const d = m.value();
+      const dx = d.moveDirection === "right" ? SPEED : -SPEED;
+      d.playerX = Math.max(0, Math.min(d.playerX + dx, d.sceneWidthPx - W));
+      updateCamera(d);
+      checkSceneTransition(m, d);
+      m.afterFunc(d.dispatcher, TICK_MS, tick);
+    };
+    machine.afterFunc(data.dispatcher, TICK_MS, tick);
+  }
+}
+```
+
+**Good（設計判断のみ伝える）**:
+
+> Moving state は afterFunc チェーン（16ms 間隔）でピクセル単位移動を実現する。
+> self-transition で前回チェーンが自動キャンセルされるため、方向変更・停止が安全。
+
+```typescript
+// 移動 tick 内でシーン遷移ゾーンを検出 → StopMoveEvent + EnterTownEvent
+machine.afterFunc(dispatcher, TICK_MS, tick);
+```
+
+**その他の注意:**
+- 1つのコード例 = 1つの設計判断（複数の関心事を混ぜない）
+- 自明な処理は `// ...validation...` のように省略コメントで飛ばす
+- コードよりテキスト・表・Mermaid 図が適切な場合はそちらを使う
 
 **ツール**: Write, Edit, AskUserQuestion
 
@@ -179,7 +224,11 @@ effort: high
 - 関連コードの調査は十分か
 - スコープは明確か
 - 代替案の検討は十分か
-- 実装詳細は過不足ないか（完全な実装コードを書いていないか）
+- **⛔ コード量チェック**: コードブロック合計行数がドキュメント全体の 1/3 を超えていないか
+- **⛔ コード必要性チェック**: 各コードブロックを削除しても設計意図が伝わるか？伝わるなら削除する
+- **⛔ 実装混入チェック**: クラスの完全実装、関数本体、初期化処理が含まれていないか
+- 設計を全部コードで表現しようとしていないか（テキストや図表で十分な箇所はないか）
+- 各コード例が1つの設計判断に焦点を当てているか（複数の関心事が混在していないか）
 - `.claude/rules/writing-style.instructions.md` の簡潔さの原則に従っているか
 - 信頼度マーク: ❓（仮定）が多い項目はヒアリングで解消できないか検討
 

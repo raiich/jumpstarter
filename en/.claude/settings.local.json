@@ -21,6 +21,8 @@
       "Bash(head:*)",
       "Bash(ls:*)",
       "Bash(mkdir:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vitest:*)",
       "Bash(pwd:*)",
       "Bash(rmdir:*)",
       "Bash(tail:*)",
@@ -29,10 +31,12 @@
       "Bash(uname:*)",
       "Bash(wc:*)",
       "Bash(which:*)",
+      "Skill(kaizen)",
       "WebFetch(domain:code.claude.com)"
     ],
     "deny": [
       "Bash(git push:*)",
+      "Bash(npm install:*)",
       "Bash(rm:*)"
     ],
     "ask": [

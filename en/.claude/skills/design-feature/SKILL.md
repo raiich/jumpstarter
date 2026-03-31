@@ -150,11 +150,57 @@ Annotate each item in the requirements, design, and implementation details secti
 Mark target sections: **Requirements**, **Design**, **Implementation Details**.
 Not needed for: Background & Purpose, Scope, Related Code & References.
 
-**Notes:**
-- Do not write complete method body implementations (that is the responsibility of implement-feature)
-- Code examples should be ~20 lines max per location
-- Code to include in the Design Doc: signatures, data structure definitions, important branching logic
-- Code NOT to include in the Design Doc: utility functions, boilerplate, complete class implementations
+**⛔ A Design Doc is NOT a place to write code:**
+
+The purpose of a Design Doc is to communicate design decisions — not to write implementation code.
+Only minimal code fragments that supplement design decisions are permitted.
+
+- **Allowed code**: Type definitions/interfaces, data structures, non-obvious branching logic (a few lines)
+- **Disallowed code**: Complete class implementations, function bodies, initialization, boilerplate, utility functions
+
+**Judgment criterion**: If removing a code block still conveys the design intent, that code is unnecessary.
+
+**Quantitative guideline**: If total code block lines exceed 1/3 of the entire document, you've written too much.
+
+**Bad (inappropriate for a design doc)**:
+
+```typescript
+// ❌ Writing a complete class implementation
+class MovingState implements State<GameData> {
+  name() { return "Moving"; }
+  entry(machine: EntryMachine<GameData>, event: object): void {
+    const data = machine.value();
+    if (event instanceof MoveEvent) {
+      data.moveDirection = event.direction;
+      data.facing = event.direction;
+    }
+    const tick = (m: AfterFuncMachine<GameData>): void => {
+      const d = m.value();
+      const dx = d.moveDirection === "right" ? SPEED : -SPEED;
+      d.playerX = Math.max(0, Math.min(d.playerX + dx, d.sceneWidthPx - W));
+      updateCamera(d);
+      checkSceneTransition(m, d);
+      m.afterFunc(d.dispatcher, TICK_MS, tick);
+    };
+    machine.afterFunc(data.dispatcher, TICK_MS, tick);
+  }
+}
+```
+
+**Good (communicates only the design decision)**:
+
+> Moving state achieves pixel-level movement via afterFunc chain (16ms interval).
+> Self-transition auto-cancels the previous chain, making direction changes and stops safe.
+
+```typescript
+// Detect scene transition zones within the movement tick → StopMoveEvent + EnterTownEvent
+machine.afterFunc(dispatcher, TICK_MS, tick);
+```
+
+**Other notes:**
+- One code example = one design decision (do not mix multiple concerns)
+- Omit obvious logic with comments like `// ...validation...`
+- Use text, tables, or Mermaid diagrams when they work better than code
 - Prefer Mermaid format for diagrams
 
 **Tools**: Write, Edit, AskUserQuestion
@@ -179,7 +225,11 @@ Not needed for: Background & Purpose, Scope, Related Code & References.
 - Is the investigation of related code sufficient?
 - Is the scope clear?
 - Have alternatives been sufficiently considered?
-- Are implementation details appropriate (not writing complete implementation code)?
+- **⛔ Code volume check**: Do total code block lines exceed 1/3 of the entire document?
+- **⛔ Code necessity check**: Can each code block be removed and the design intent still be understood? If so, remove it
+- **⛔ Implementation leak check**: Are there complete class implementations, function bodies, or initialization code?
+- Is design being expressed entirely through code when text or diagrams would suffice?
+- Does each code example focus on a single design decision (no mixed concerns)?
 - Does it follow the conciseness principles in `.claude/rules/writing-style.instructions.md`?
 - Confidence marks: Can any ❓ (assumed) items be resolved through additional hearing?
 

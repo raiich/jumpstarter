@@ -90,12 +90,6 @@ On failure, **analyze the root cause before attempting any fix**:
 - Minor tasks: Batch review is acceptable
 - Important tasks: Individual review
 
-### [Completion Phase]
-
-#### 4. Run /kaizen
-
-**Tools**: Skill (kaizen)
-
 ## Self-Review Criteria
 
 ### Test Code

@@ -102,12 +102,6 @@ Design test cases. After creation, follow the **basic pattern** (self-review -> 
 
 **⛔ Do not proceed without user approval**
 
-### [Completion Phase]
-
-#### 7. Run /kaizen
-
-**Tools**: Skill (kaizen)
-
 ## Self-Review Criteria
 
 ### Plan (implementation planning phase)

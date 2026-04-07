@@ -125,12 +125,6 @@ Apply the approved changes. After creation, follow the **basic pattern** (self-r
 
 **Tools**: Grep
 
-### [Completion Phase]
-
-#### 9. Run /kaizen
-
-**Tools**: Skill (kaizen)
-
 ## Self-Review Criteria
 
 ### Objective confirmation (step 1)

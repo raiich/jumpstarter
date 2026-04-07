@@ -125,12 +125,6 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 **ツール**: Grep
 
-### [完了フェーズ]
-
-#### 9. /kaizen 実行
-
-**ツール**: Skill (kaizen)
-
 ## セルフレビュー観点
 
 ### 目的確認（ステップ1）

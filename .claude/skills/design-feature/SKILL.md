@@ -206,12 +206,6 @@ machine.afterFunc(dispatcher, TICK_MS, tick);
 
 **⛔ ユーザーの承認なしに次へ進まない**
 
-### [完了フェーズ]
-
-#### 7. /kaizen 実行
-
-**ツール**: Skill (kaizen)
-
 ## 自己レビュー観点
 
 ### プラン（調査フェーズ）

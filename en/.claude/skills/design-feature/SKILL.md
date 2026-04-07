@@ -207,12 +207,6 @@ machine.afterFunc(dispatcher, TICK_MS, tick);
 
 **⛔ Do not proceed without user approval**
 
-### [Completion Phase]
-
-#### 7. Run /kaizen
-
-**Tools**: Skill (kaizen)
-
 ## Self-Review Criteria
 
 ### Plan (investigation phase)

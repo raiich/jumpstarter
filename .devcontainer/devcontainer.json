@@ -1,6 +1,6 @@
 {
 	"name": "my-devcontainer",
-	"image": "mcr.microsoft.com/devcontainers/go:1.25",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node",
 
 	// Claude Code: locally referenced feature — native installer, no Node.js dependency
 	"features": {
@@ -18,17 +18,19 @@
 
 	// Persist Claude config across container rebuilds
 	"mounts": [
-		"source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
+		"source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
 	],
 
 	"containerEnv": {
 		// Space-separated list of extra domains to permit in the firewall
-		"FIREWALL_EXTRA_DOMAINS": "proxy.golang.org sum.golang.org pkg.go.dev",
+		"FIREWALL_EXTRA_DOMAINS": "developer.mozilla.org nodejs.org typescriptlang.org npmjs.com registry.npmjs.org",
 
-		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+		"CLAUDE_CONFIG_DIR": "/home/node/.claude"
 	},
 
-	"remoteUser": "vscode",
+	"forwardPorts": [5173],
+
+	"remoteUser": "node",
 
 	// Apply outbound network restrictions on every container start
 	"postStartCommand": "sudo env FIREWALL_EXTRA_DOMAINS=\"$FIREWALL_EXTRA_DOMAINS\" /usr/local/bin/init-firewall.sh",
@@ -36,7 +38,7 @@
 
 	"customizations": {
 		"jetbrains": {
-			"backend": "GoLand"
+			"backend": "WebStorm"
 		}
 	}
 }

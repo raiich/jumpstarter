@@ -41,28 +41,16 @@ claude
 ### Design and implement new features
 
 No need to write a perfect prompt when adding features.
-We provide workflows for proper design and implementation from minimal instructions.
+We provide a workflow that runs hearing, design, test design, implementation, and test execution in a single pass from minimal instructions.
 
-The `/design-feature` skill investigates the codebase and conducts requirements hearings to create a Design Doc:
-
-```
-/design-feature I want to add a verbose option to the CLI
-```
-
-If you want to design test cases in advance to reduce implementation drift, the `/design-tests` skill is useful:
+The `/develop-feature` skill investigates the codebase while hearing requirements, produces a Design Doc and test cases, then proceeds to implementation in the same run:
 
 ```
-/design-tests .local/docs/features/verbose-option/design.md
+/develop-feature I want to add a verbose option to the CLI
 ```
 
-The `/implement-feature` skill implements based on the Design Doc and test cases:
-
-```
-/implement-feature .local/docs/features/verbose-option/design.md
-```
-
-Design documents and test cases are organized under `.local/docs/features/[name]/`.
-Each step's deliverable serves as a checkpoint, minimizing rework even if implementation drifts.
+Design documents and test cases are saved under `.local/docs/features/[name]/design.md` and `tests.md`.
+Each deliverable serves as a checkpoint — if you stop midway, the remaining `design.md` / `tests.md` let you resume from where you left off.
 
 ### Continuously improve Claude Code settings
 
@@ -95,8 +83,8 @@ Each element in the `.claude/` directory works together to achieve the "no strug
 Rules that ensure consistent quality without users having to give instructions every time (`.claude/rules/`).
 
 - No need to struggle reading verbose output → **writing-style**
-- No need to struggle checking for missed fixes → **fix-guidelines**
-- No need to struggle specifying workflows → **workflow-patterns**
+- No need to struggle checking for missed fixes → **self-review**
+- No need to struggle standardizing bash command usage → **bash-commands**
 
 ### Hooks for not struggling
 

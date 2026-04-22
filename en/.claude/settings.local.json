@@ -1,14 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cp:*)",
       "Bash(curl -sL 'https://code.claude.com/docs/en/changelog.md')",
       "Bash(curl -sL 'https://code.claude.com/docs/en/claude_code_docs_map.md')",
       "Bash(date:*)",
       "Bash(diff:*)",
       "Bash(docker compose:*)",
       "Bash(echo:*)",
-      "Bash(env:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git diff:*)",
@@ -32,14 +30,19 @@
       "Bash(wc:*)",
       "Bash(which:*)",
       "Skill(kaizen)",
-      "WebFetch(domain:code.claude.com)"
+      "WebFetch(domain:code.claude.com)",
+      "Bash(npm test:*)"
     ],
     "deny": [
+      "Bash(docker compose exec:*)",
+      "Bash(docker compose run:*)",
+      "Bash(env:*)",
       "Bash(git push:*)",
       "Bash(npm install:*)",
       "Bash(rm:*)"
     ],
     "ask": [
+      "Bash(cp:*)",
       "Bash(git commit --amend:*)",
       "Bash(git reset --hard:*)"
     ],

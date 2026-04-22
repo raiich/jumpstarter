@@ -81,12 +81,12 @@ Extracts feedback from conversation.log, reflects it in learnings.md, and improv
 4. **Create improvement proposals**
    - Combine feedback, gap analysis, and Claude Code features into improvement proposals
    - Target the following configuration files:
-     - `.claude/settings.local.json` (personal settings; preferred since this is a template repository)
-     - `.claude/settings.json` (shared template settings)
+     - `.claude/settings.local.json`
      - `.claude/agents/`
      - `.claude/skills/`
-     - `.claude/commands/`
      - `.claude/rules/`
+     - `.claude/guidelines/`
+     - `.claude/hooks/`
 
 5. **Implement improvements**
    - Present improvement proposals to the user

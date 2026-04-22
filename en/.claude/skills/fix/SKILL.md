@@ -1,82 +1,60 @@
 ---
 name: fix
-description: Perform comprehensive search and batch fixes for code and documentation. Use for fix tasks and "fix this" type requests.
-allowed-tools: Read, Grep, Glob, Edit, Write, Bash, AskUserQuestion
+description: Starting from user input, hear then apply a fix or lightweight new implementation without approval gates. Does not produce design docs (design.md / tests.md).
+allowed-tools: Read, Grep, Glob, Edit, Write, Bash, AskUserQuestion, TaskCreate, TaskUpdate, TaskList
 ---
 
 # Fix
 
-Common principles and processes for fixing code and documentation.
+Apply lightweight fixes or new implementations after hearing, with no approval gates.
+Does not produce design documents (design.md / tests.md).
 
-## Core Principles
+## When to Use
 
-- **Decide the fix strategy before fixing** - Do not fix ad hoc
-- **Confirm the impact scope before fixing** - Understand all related locations
-- **Fix all similar issues at once** - Avoid incremental fixes
+- **fix**: fixes to existing code, localized additions, lightweight new implementations (where a design doc is unnecessary)
+- **design-feature**: when only design documents (`design.md` / `tests.md`) are needed. No implementation
+- **develop-feature**: when requirements need to be organized first, or the change spans multiple components and requires deliberate design and implementation end-to-end
 
-## Fix Flow
+## Principles
 
-### 1. Understand the Fix
+- Avoid band-aid or incremental fixes; decide the approach first, then change in one pass
+- Principles (decide approach first, verify impact scope, pattern search): see [../../guidelines/processes/fix-in-one-pass.md](../../guidelines/processes/fix-in-one-pass.md)
 
-- Understand the user's fix instructions
-- Identify the target locations
-- Estimate the impact scope of the fix
+## Flow
 
-### 2. Perform Comprehensive Search
+### 1. Understand input and hear
 
-**Important**: Always check if the same issue exists elsewhere
+- Understand the user's instruction; estimate target and impact scope
+- Efficiently hear on missing information ([../../guidelines/processes/hearing.md](../../guidelines/processes/hearing.md))
 
-**Steps:**
+**Tools**: Read, Glob, Grep, AskUserQuestion
 
-1. **Pattern search**: Use Grep to search for the same issue elsewhere
-   - Example: Error handling fix -> Search all instances of the same pattern
-   - Example: Variable name fix -> Search all usage locations of the same name
+### 2. Comprehensive search (for fix-type tasks)
 
-2. **Related file check**: Identify the impact scope
-   - Example: Function name change -> Check all call sites
-   - Example: Type definition change -> Check all files using it
+Grep for the same problem elsewhere (see "Pattern Search" in fix-in-one-pass.md).
 
-### 3. Batch Fix
+**Tools**: Grep, Glob
 
-Fix all found locations at once
-- Avoid incremental fixes
-- Resolve the same issue in a single fix
+### 3. Implement / Fix
 
-### 4. Self-Review
+- Fix-type: fix all found locations in one pass
+- New implementation: implement only the minimum necessary code within the impact scope
 
-After fixing, verify:
+**Tools**: Edit, Write
 
-- [ ] All affected locations have been fixed
-- [ ] The fix is correct
-- [ ] Follows style guidelines
-- [ ] Related documentation or code also needs updating?
+### 4. Run tests (if tests exist)
 
-### 5. Report
+Use the test command per project settings. For failure root cause analysis, see [../../guidelines/processes/root-cause-analysis.md](../../guidelines/processes/root-cause-analysis.md).
 
-Report the fix concisely:
-- Files and locations fixed
-- Summary of the fix
-- Verification results
+**Tools**: Bash
 
-## Practical Example
+### 5. Self-review
 
-```
-Fix task: "Fix unused err variable"
+- [ ] Did you fix/implement every relevant location?
+- [ ] Are the changes correct?
+- [ ] Do they follow the writing rules (`.claude/rules/writing-style.instructions.md`) and the self-review perspectives (`.claude/rules/self-review.instructions.md`)?
+- [ ] Do related docs/code also need updates?
 
-Bad approach:
-1. Fix only the 1 reported location
-2. Report to user
-3. User: "Are there any others?"
-4. Search again and fix more...
+### 6. Report
 
-Good approach:
-1. Use Grep to search all unused "err" patterns
-2. Fix all found locations at once
-3. Report to user: "Fixed unused err variables in 5 locations"
-```
-
-## Goal
-
-- Eliminate "Did you miss any?" questions
-- Avoid incremental fixes; deliver complete fixes in one pass
-- Save the user's time
+Briefly report: files touched, summary, test results (if executed).

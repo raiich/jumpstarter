@@ -54,20 +54,7 @@ Ask only the following 3 points first. Deeper exploration happens after presenti
 - The biggest challenges you currently face (up to 3)
 - If previous year's OKR exists: achievement level and causes of shortfalls
 
-**Principles for efficient interviewing:**
-- Don't ask about things that can be learned from existing documents
-- Ask by presenting specific options
-- Proactively check perspectives the user hasn't mentioned
-
-**Example: Efficient interviewing**
-
-User input: "We want to improve development productivity"
-
-❌ Bad question: "What kind of productivity improvement?" (too broad)
-
-✅ Good questions:
-- "Among lead time reduction, deployment frequency improvement, and incident recovery time reduction, which would have the most impact?"
-- "What is your current deployment frequency? Do you have a target value in mind?"
+Hearing principles and Good/Bad examples: see [../../guidelines/processes/hearing.md](../../guidelines/processes/hearing.md).
 
 #### 5. Present a rough OKR draft
 
@@ -110,7 +97,7 @@ Refine the draft based on user feedback. Ask targeted questions about missing in
 **Perspectives to confirm during iterations:**
 - Contradictions with stakeholder expectations
 - Resources & constraints (headcount, budget, technical aspects, major events during the fiscal year)
-- Measurement infrastructure availability for each KR (→ A/B/C classification, described later)
+- Measurement infrastructure availability for each KR (→ A/B/C: [quantification.md](quantification.md))
 - If there are 4 or more Objective candidates, narrow down to 3 or fewer through prioritization discussion
 
 **Convergence signal**: Move to the next step when the user responds with "this is roughly right" regarding the direction of Objectives and KRs.
@@ -121,7 +108,9 @@ Self-review the plan file and request user approval with ExitPlanMode.
 
 **Tool**: ExitPlanMode
 
-### [OKR Creation Phase] — Normal mode (approval gate)
+### [OKR Creation Phase] — Normal mode (autonomous after ExitPlanMode approval)
+
+After obtaining direction approval via ExitPlanMode, proceed to completion without asking for further approvals.
 
 #### 8. Create OKR document
 
@@ -183,9 +172,8 @@ Conversion rationale for qualitative goals that were quantified:
 
 **KR writing rules:**
 
-- **Write as outcomes**: Not "release XX" but "XX improves YY"
-- **Current value and target value are mandatory**: Don't set goals without a baseline (for measurement infrastructure rank B, follow the rules described later)
-- **Measurement method and data source are mandatory**: Confirm "can we measure this right now"
+- **Write as outcomes**: Not "release XX" but "XX improves YY" ([outcome-vs-output.md](outcome-vs-output.md))
+- **Current value, target value, measurement method, and data source are mandatory**: measurement-foundation classification (A/B/C), quantification techniques, and rationale are in [quantification.md](quantification.md)
 - **Don't include numbers in Objectives**: Numbers belong in KRs
 
 **Tool**: Write, Edit, AskUserQuestion
@@ -202,9 +190,9 @@ After completing the OKR draft, ask:
 
 **Tool**: AskUserQuestion, Edit
 
-#### 10. Completion check
+#### 10. Completion report
 
-Conduct a self-review of the OKR document (using the review perspectives described later), then perform the following **failure scenario check** and present the results to the user.
+Conduct a self-review of the OKR document (using the review perspectives described later), then perform the following **failure scenario check** and report the results to the user.
 
 **Failure Scenario Check:**
 
@@ -214,57 +202,7 @@ Conduct a self-review of the OKR document (using the review perspectives describ
 - {Pattern 2}: {description}
 - ...
 
-**Completion criteria**: The user has acknowledged the risks and decided to "proceed."
-
-⛔ **Do not mark as complete without user approval**
-
-## Measurement Infrastructure A/B/C Classification
-
-Classify the measurement infrastructure status when KR candidates emerge.
-
-| Rank | Status | Action |
-|------|--------|--------|
-| 🟢 **A** | Data source already exists, measurable immediately | Adopt as KR as-is |
-| 🟡 **B** | No data source, or measurement setup is not in place | Note "Complete baseline measurement by Q1" as a prerequisite. Record current value as `[Q1 measurement planned]` and set a provisional target value |
-| 🔴 **C** | Measurement is not realistic | Replace with a different proxy metric or exclude from KR candidates |
-
-If there are 3 or more rank B items, propose making measurement infrastructure development itself one of the KRs.
-
-## KR Quantification Guide
-
-When users express goals in qualitative terms, propose an appropriate technique from the following and quantify with mutual agreement.
-
-| Technique | When to Apply | Example |
-|-----------|--------------|---------|
-| Direct metric | A measurable target exists | Revenue, user count, response time |
-| Proxy metric | Direct measurement is difficult | "Improve work environment" → eNPS score |
-| Milestone completion rate | Project completion type | "Release new feature" → X out of 4 features completed |
-| Frequency / count | Behavior / process improvement | "Activate knowledge sharing" → Hold X study sessions per month |
-| Time reduction | Efficiency type | "Speed up deployment" → Lead time from X days to Y days |
-| Percentage / ratio | Quality improvement type | "Reduce bugs" → Defect rate below X% |
-| Satisfaction score | Subjective quality | "Improve customer experience" → NPS from X to Y |
-| Binary judgment | Clear achieved/not achieved | "Revamp auth infrastructure" → All services running on new infrastructure |
-
-**Quantification principles:**
-- Include current value (baseline) and target value for all KRs
-- Include measurement method and data source alongside
-- If measurement infrastructure doesn't exist, handle according to A/B/C classification
-- When struggling to choose development-related metrics, refer to the [SPACE Framework](space-framework.md)
-
-## Outcome Conversion Guide
-
-When a KR candidate is an output (deliverable), convert it to an outcome (result).
-
-**Example: Output → Outcome conversion**
-
-| Output (❌) | Outcome (✅) | Conversion rationale |
-|------------|-------------|---------------------|
-| Build a CI/CD pipeline | Increase deployment frequency from weekly to daily | The purpose of building the pipeline is faster deployment |
-| Create a monitoring dashboard | Reduce time from incident detection to response start from X min to Y min | The purpose of the dashboard is early incident detection |
-| Improve documentation | Reduce new member onboarding period from X weeks to Y weeks | The purpose of documentation is to support ramp-up |
-| Achieve 80% test coverage | Reduce post-release defect rate from X% to Y% | Coverage is a means; quality is the goal |
-
-**Conversion prompt**: "If you achieve that, what changes for you or your customers?"
+Do not request approval. Apply any revision instructions the user provides ([../../guidelines/processes/review-flow.md](../../guidelines/processes/review-flow.md)).
 
 ## Self-Review Perspectives
 

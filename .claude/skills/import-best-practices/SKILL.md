@@ -24,8 +24,8 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 - `.claude/rules/`
 - `.claude/skills/`
-- `.claude/commands/`
 - `.claude/agents/`
+- `.claude/hooks/`
 - `.claude/settings.local.json`
 
 ## フロー
@@ -58,35 +58,11 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 **ツール**: Read, Grep, Glob, WebFetch
 
-記事の各項目について、**目的との関連性**を含めて判定し、表形式でユーザーに提示する：
-
-| 記事の項目 | 目的との関連 | 公式との整合 | 現状 | 判定 |
-|-----------|------------|------------|------|------|
-| 項目A | 直結 | 整合 | rules/xxx.md でカバー | カバー済み |
-| 項目B | 関連あり | 整合 | 一部 skills で対応 | 部分的 |
-| 項目C | 関連薄い | 公式に該当なし | 対応なし | 対象外 |
-| 項目D | 直結 | 公式と矛盾 | — | 非推奨 |
-
-**判定基準の優先順位**:
-1. 目的との関連性（関連が薄い項目は未対応でも「対象外」）
-2. 公式との整合性
-3. 現状のカバー状況
+記事の各項目を [evaluation-matrix.md](evaluation-matrix.md) の表形式で判定し、ユーザーに提示する（判定軸: 目的との関連 / 公式との整合 / 現状）。
 
 ### 4. 手段の妥当性評価と代替提案
 
-ステップ3の結果を踏まえ、ユーザーの目的に対して記事の手段が適切かを評価する。
-
-**ミスマッチがある場合**（目的に直結する課題があるのに、記事がカバーしていない / 記事の手段が最適でない）:
-- 目的を達成するためのより適切な手段を、公式ドキュメントや既存設定の知見から提案する
-- 記事の項目を改変して取り込む案も含めて検討する
-
-提案は以下の形式でユーザーに提示する：
-
-```
-目的: 〇〇の改善
-記事のアプローチ: △△（ミスマッチの理由）
-提案: □□（なぜこちらが適切か）
-```
+ステップ3の結果を踏まえ、目的に対して記事の手段が適切かを評価する。ミスマッチがある場合は [evaluation-matrix.md](evaluation-matrix.md) の「ミスマッチの扱い」に従って代替案を提案する。
 
 **ツール**: AskUserQuestion
 
@@ -101,7 +77,7 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 選定された各項目について、どこにどう取り込むかを検討する：
 
 - 公式ドキュメント（`features-overview.md` 等）で最新の Claude Code 機能を確認し、最適な仕組みを選定する
-- rules / skills / commands / agents / hooks / MCP / output styles / plugins 等から最適なものを選択
+- rules / skills / agents / hooks / MCP / output styles / plugins 等から最適なものを選択
 - 既存ファイルへの追加 or 新規ファイル作成
 - 既存の参照パターン・形式との整合性
 - 記事が CLAUDE.md や CLAUDE.local.md を推奨する場合、代替手段を検討（リポジトリの制約参照）
@@ -110,18 +86,18 @@ allowed-tools: Read, Grep, Glob, Edit, Write, WebFetch, AskUserQuestion, Skill
 
 **ツール**: AskUserQuestion
 
-**⛔ ユーザーの承認なしに次へ進まない**
+**⛔ ユーザーの承認なしに次へ進まない**（[../../guidelines/processes/review-flow.md](../../guidelines/processes/review-flow.md)）
 
 ### 7. 実装
 
-承認された内容を反映する。作成後は**基本パターン**（自己レビュー → ユーザーレビュー → 修正）に従う。
+承認された内容を反映する。作成後は [../../guidelines/processes/review-flow.md](../../guidelines/processes/review-flow.md) に従う。
 
 **ツール**: Write, Edit
 
 ### 8. 影響分析を含むレビュー
 
 - 変更ファイルを参照する他ファイル（skills 等）への影響確認（Grep で参照箇所を検索）
-- ドキュメント品質レビュー（writing-style のセルフレビュー観点に従う）
+- ドキュメント品質レビュー（[../../rules/self-review.instructions.md](../../rules/self-review.instructions.md) に従う）
 
 **ツール**: Grep
 

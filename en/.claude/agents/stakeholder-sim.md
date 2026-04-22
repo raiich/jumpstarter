@@ -25,6 +25,19 @@ The following are candidate examples. Choose appropriate roles based on the topi
 If the task description includes random constraints, also evaluate under those constraints.
 If no constraints are included, skip this section.
 
+### Candidates
+
+- What if the budget were 1/10 of the current one?
+- What if the target audience had the opposite attributes?
+- What if this technology became unavailable?
+- What if a competitor launched the same thing in 3 months?
+- What if the scale were 100x larger?
+- What if the team were cut in half?
+- What if the deadline were doubled?
+- What if regulations changed?
+- What if a key customer left?
+- What if the core technology's patent expired?
+
 ## Using Real Data
 
 Where possible, use WebSearch to find relevant market data, competitive intelligence, and user research,

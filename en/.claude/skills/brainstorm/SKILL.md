@@ -39,24 +39,13 @@ Not all need to be launched every time.
 
 Report selection rationale together with results (proceed directly to launch without user confirmation here).
 
-### 3. Generate Random Constraints
+### 3. Select Random Constraints
 
-Intuitively pick **2** from the list below. Avoid repeating the same combination as last time.
-Prefer surprising combinations over those too closely related to the topic.
-You may also invent constraints not on this list.
+When launching `stakeholder-sim`, intuitively pick **2** from the "Random Constraints" candidates in [stakeholder-sim.md](../../agents/stakeholder-sim.md).
 
-- What if the budget were 1/10 of the current one?
-- What if the target audience had the opposite attributes?
-- What if this technology became unavailable?
-- What if a competitor launched the same thing in 3 months?
-- What if the scale were 100x larger?
-- What if the team were cut in half?
-- What if the deadline were doubled?
-- What if regulations changed?
-- What if a key customer left?
-- What if the core technology's patent expired?
-
-Pass these constraints to `stakeholder-sim` if it is launched.
+- Avoid repeating the same combination as last time
+- Prefer surprising combinations over those too closely related to the topic
+- You may also invent constraints not on this list
 
 ### 4. Gather Context (if needed)
 
@@ -77,7 +66,7 @@ Context: [Collected relevant information, if any]
 
 For `stakeholder-sim`, also add random constraints:
 ```
-Random constraints: [Constraints generated in step 3]
+Random constraints: [Constraints selected in step 3]
 ```
 
 **Tools**: Agent
@@ -140,64 +129,59 @@ Evaluate R2 output and execute convergence **only if any of the following apply*
 
 ### 8. Integrate and Structure Results
 
-Integrate outputs from all rounds (R1 + R2 + R3) and structure as follows.
-Merge overlapping findings to maximize information density.
-Prioritize content deepened or reinforced in R2.
+Reorganize outputs from all rounds (R1 + R2 + R3) **along the reader's decision flow**.
+Do not arrange by technique; structure chapters by "what the reader should decide and in what order."
+Merge duplicates. Prioritize content deepened or reinforced in R2.
+Add a source tag `(from: agent-name / technique)` to each item to preserve traceability.
 
 **Important**: This is an AI-generated analysis. Use it in combination with feedback from actual humans.
 
 #### Output Format
 
-Include only sections that correspond to actual subagent output.
-Omit empty sections.
+Include only sections that have actual content. Omit empty sections.
+Top sections (TL;DR, Next Actions, Key Tensions) must be synthesized, not raw R1 output pasted in.
 
 ```markdown
 ## Brainstorm Results: [Topic]
 
+### TL;DR
+3–5 lines summarizing the core. Only decision-relevant conclusions.
+
+### Next Actions
+List in execution order. Note verification cost.
+1. [Top priority action] — Verification cost: Low/Med/High
+2. ...
+3. ...
+
+### Key Tensions
+Points where agents disagreed, or unresolved trade-offs. Primarily reflects R2 / R3 output.
+- Tension: [Description]
+  - Position A: [Claim] (from: [source])
+  - Position B: [Claim] (from: [source])
+  - Deciding condition: [What determines which to pick]
+
+### What to Validate
+Merge unverified assumptions and questions to ask.
+- [ ] Assumption: [Description] — Verification method: [How to confirm] (from: [source])
+- [ ] Question: [Description] — Ask: [Who] (from: [source])
+
+### Risks and Opportunities
+- Risk: [Description] (Probability: High/Med/Low, Impact: High/Med/Low) — Prevention: [Explanation] / Early warning: [Signal] (from: [source])
+- Opportunity: [Description] — Evidence: [Explanation] (from: [source])
+
+### Alternative Approaches
+- Option: [Summary] — Pros/Cons: [Explanation] (from: [source])
+
+### Appendix: Source Notes
+Material from individual techniques that didn't fit into the upper sections, or that is worth preserving as-is.
+- **Problem Structure Pattern**: [Name] → [Application to this topic]
+- **Analogy**: [Domain]'s [Case] → [Transfer]
+- **Naive Question**: [Description] → [Why it matters]
+- **TRIZ Principle**: [Principle name] → [Insight]
+
 ### Analysis Process
-- **Rounds**: [2 or 3]
-- **Participating agents**: [Agent name list]
-- **Selection rationale**: [Brief reason]
-- **R3 judgment**: [Trigger if executed / "Not needed" if skipped]
-
-### Unverified Assumptions
-Things this idea implicitly assumes. Verification needed.
-- [ ] Assumption 1: [Description] — Verification method: [How to confirm]
-
-### Risk List (by priority)
-- [ ] Risk 1: [Description] (Probability: High/Med/Low, Impact: High/Med/Low)
-  - Preventive measure: [Explanation]
-  - Early warning indicator: [Signal]
-
-### Problem Structure Analysis
-Known patterns this problem maps to, and their known solutions.
-- Pattern: [Name] — Application to this topic: [Explanation]
-
-### Hints from Analogies
-Transferable patterns from structurally similar problems in other domains.
-- [Domain]: [Case] → Transfer: [Explanation]
-
-### Beginner's Questions
-Naive questions that experts tend to overlook.
-- [ ] Question: [Description] — Why it matters: [Explanation]
-
-### TRIZ Insights
-Ideas derived from inventive principles.
-- [Principle name]: [Concrete insight for the topic]
-
-### Opportunities and Strengths
-Points to leverage and hidden opportunities. With evidence.
-- Opportunity 1: [Description] — Evidence: [Explanation]
-
-### Questions to Validate
-Questions to confirm with actual users, markets, or stakeholders.
-- [ ] Question 1: [Description] — Ask: [Who to ask]
-
-### Discovered Alternative Approaches
-- Option 1: [Summary] — Source: [Which analysis]
-
-### Recommended Next Actions
-1. [Top priority to validate]
-2. [Next to validate]
-3. [Then validate]
+- Rounds: [2 or 3]
+- Participating agents: [List]
+- Selection rationale: [Brief]
+- R3 judgment: [Trigger name / Not needed]
 ```

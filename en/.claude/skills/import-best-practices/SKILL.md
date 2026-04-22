@@ -24,8 +24,8 @@ A skill for analyzing best practices from external articles (specified by URL) a
 
 - `.claude/rules/`
 - `.claude/skills/`
-- `.claude/commands/`
 - `.claude/agents/`
+- `.claude/hooks/`
 - `.claude/settings.local.json`
 
 ## Flow
@@ -58,35 +58,11 @@ Check official Claude Code best practices via WebFetch (`https://code.claude.com
 
 **Tools**: Read, Grep, Glob, WebFetch
 
-For each article item, assess including **relevance to the objective** and present to the user in table format:
-
-| Article Item | Relevance to Objective | Official Alignment | Current Status | Assessment |
-|---|---|---|---|---|
-| Item A | Directly relevant | Aligned | Covered by rules/xxx.md | Covered |
-| Item B | Related | Aligned | Partially covered by skills | Partial |
-| Item C | Low relevance | No official equivalent | Not covered | Out of scope |
-| Item D | Directly relevant | Contradicts official | — | Not recommended |
-
-**Assessment criteria priority**:
-1. Relevance to objective (low-relevance items are "out of scope" even if not covered)
-2. Alignment with official best practices
-3. Current coverage status
+Assess each article item using the table format in [evaluation-matrix.md](evaluation-matrix.md) (axes: relevance to objective / official alignment / current status) and present to the user.
 
 ### 4. Evaluate means and propose alternatives
 
-Based on step 3 results, evaluate whether the article's means are appropriate for the user's objective.
-
-**If there is a mismatch** (an issue directly relevant to the objective exists but the article doesn't cover it / the article's means are not optimal):
-- Propose more appropriate means from official documentation and existing settings knowledge
-- Also consider adapting article items before importing
-
-Present proposals to the user in the following format:
-
-```
-Objective: Improving XX
-Article's approach: YY (reason for mismatch)
-Proposal: ZZ (why this is more appropriate)
-```
+Based on step 3 results, evaluate whether the article's means are appropriate for the user's objective. If a mismatch exists, follow "Handling Mismatches" in [evaluation-matrix.md](evaluation-matrix.md) to propose alternatives.
 
 **Tools**: AskUserQuestion
 
@@ -101,7 +77,7 @@ Combine article items from step 3 and alternative proposals from step 4, and let
 For each selected item, determine where and how to import:
 
 - Check the latest Claude Code features in official docs (`features-overview.md` etc.) to select the optimal mechanism
-- Choose from rules / skills / commands / agents / hooks / MCP / output styles / plugins
+- Choose from rules / skills / agents / hooks / MCP / output styles / plugins
 - Add to existing file or create new file
 - Ensure consistency with existing reference patterns and formats
 - If the article recommends CLAUDE.md or CLAUDE.local.md, consider alternatives (see Repository Constraints)
@@ -110,18 +86,18 @@ Present the plan to the user and obtain approval.
 
 **Tools**: AskUserQuestion
 
-**⛔ Do not proceed without user approval**
+**⛔ Do not proceed without user approval** ([../../guidelines/processes/review-flow.md](../../guidelines/processes/review-flow.md))
 
 ### 7. Implementation
 
-Apply the approved changes. After creation, follow the **basic pattern** (self-review -> user review -> revision).
+Apply the approved changes. After creation, follow [../../guidelines/processes/review-flow.md](../../guidelines/processes/review-flow.md).
 
 **Tools**: Write, Edit
 
 ### 8. Review including impact analysis
 
 - Check impact on other files (skills, etc.) that reference changed files (search references with Grep)
-- Document quality review (follow the self-review criteria in writing-style)
+- Document quality review (follow [../../rules/self-review.instructions.md](../../rules/self-review.instructions.md))
 
 **Tools**: Grep
 

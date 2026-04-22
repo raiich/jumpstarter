@@ -28,13 +28,11 @@
 - **Code blocks**: One subject per block. Separate different files and Before/After into different blocks
 - Do not write lengthy prose for what code examples can explain sufficiently
 
-## Self-Review
-
-- Ask for each section: Can it be deleted without losing understanding? Am I explaining known information? Is it duplicated? Can it be halved?
-- Review critically: Don't settle for "looks good" — actively look for weaknesses and risks. Verify means-ends alignment
-- Impact analysis: Use Grep to search for references to changed elements and verify consistency
-
 ## Terminology
 
 - Do not call tool names (Docker, React, etc.) "technology"
 - Describe the underlying methods and principles as "technology", and reference tools as their implementations
+
+## Review
+
+After writing or implementing, perform self-review per [self-review.instructions.md](self-review.instructions.md).

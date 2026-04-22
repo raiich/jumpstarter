@@ -41,28 +41,16 @@ claude
 ### 新機能を設計・実装する
 
 機能追加時に頑張って完璧なプロンプトを書く必要はありません。
-最小限の指示をもとに、適切に設計・実装するためのワークフローを用意しています。
+最小限の指示から、ヒアリング・設計・テスト設計・実装・テスト実行までを一気通貫するワークフローを用意しています。
 
-`/design-feature`スキルが、コードベースを調査した上で的確に要件をヒアリングしてDesign Docを作成します:
-
-```
-/design-feature CLIにverboseオプションを追加したい
-```
-
-実装のズレを減らすためにあらかじめテストケースを設計したい場合は、`/design-tests`スキルが便利です:
+`/develop-feature`スキルが、コードベースを調査しながら要件をヒアリングし、Design Docとテストケースを作ったうえで実装まで進めます:
 
 ```
-/design-tests .local/docs/features/verbose-option/design.md
+/develop-feature CLIにverboseオプションを追加したい
 ```
 
-`/implement-feature`スキルにより、Design Docやテストケースにもとづいて実装します:
-
-```
-/implement-feature .local/docs/features/verbose-option/design.md
-```
-
-設計ドキュメントやテストケースは `.local/docs/features/[名前]/` に整理されます。
-各ステップの成果物をチェックポイントとして利用することで、実装がずれても手戻りを小さくできます。
+設計ドキュメントとテストケースは `.local/docs/features/[名前]/design.md` と `tests.md` に保存されます。
+各ステップの成果物がチェックポイントになり、途中で止めても `design.md` / `tests.md` が残っていれば続きから再開できます。
 
 ### Claude Code の設定を継続的に改善する
 
@@ -95,8 +83,8 @@ claude
 ユーザーが毎回指示しなくても、一定の品質基準で動作するためのルール群です (`.claude/rules/`)。
 
 - 冗長な出力を頑張って読み解く必要はありません → **writing-style**
-- 修正漏れがないか頑張って確認する必要はありません → **fix-guidelines**
-- ワークフローを頑張って指示する必要はありません → **workflow-patterns**
+- 修正漏れを頑張って確認する必要はありません → **self-review**
+- Bash コマンドの書き方を頑張って揃える必要はありません → **bash-commands**
 
 ### 頑張らないための Hooks
 

@@ -1,40 +1,62 @@
-# Jumpstarter
+# Jumpstarter (Development Instructions for This Template Repository)
 
-A template repository for Claude Code configuration. See [README.md](README.md) / [README.ja.md](README.ja.md) for details.
+A template repository for Claude Code configuration. **This file is the development guide for this repository itself** —
+it is not the `CLAUDE.md` that ends up in projects copied from this template. For the user-facing overview,
+see [README.md](README.md) / [README.ja.md](README.ja.md).
 
-## Repository Structure
+## Target Environments
 
-Bilingual layout: Japanese (root) and English (`en/`).
+The representative coding agent is Claude Code; `.claude/` is the edit target. The same assets are designed to also run
+under **GitHub Copilot (CLI / VSCode)** — users who run Copilot copy the contents of `.claude/` into `.github/` after
+cloning. For the full scope (which Copilot products are in/out) and the feature mapping,
+see [docs/development/claude-vs-copilot.md](docs/development/claude-vs-copilot.md).
+
+- This repository does not contain `.github/`.
+- Authoring conventions (cross-environment compatibility, template purity) live
+  in [docs/development/authoring-guide.md](docs/development/authoring-guide.md).
+
+## Repository Layout
 
 ```
-.claude/              # Claude Code config (Japanese)
-  agents/             # Custom agent definitions
-  guidelines/         # Shared policies, perspectives, and checklists referenced from skills
-    perspectives/     # Review/design perspectives (what to check)
-    processes/        # Processes and principles (how to proceed)
-  hooks/              # Hooks (conversation logging, etc.)
-  rules/              # Rules (*.instructions.md)
-  skills/             # Skill definitions (SKILL.md per skill)
-  settings.local.json
+.claude/                  # Claude Code config (Japanese)
+  agents/                 # Custom agent definitions (*.agent.md)
+  rules/                  # Always-loaded rules (*.instructions.md)
+  references/             # On-demand reference material (vocabulary, lookups, examples) linked from rules and skills
+  skills/<name>/          # Skill definitions
+    SKILL.md              #   skill policy and flow (applies across environments)
+    environment.md        #   per-environment concrete means (Claude / Copilot sections)
+    references/*.md       #   skill-local reference docs (perspective checklists etc.) consulted at task time (optional)
+    README.md             #   user-facing usage examples
 
-.devcontainer/    # Dev container config
-
-en/                   # English version (mirrors root structure)
-  .claude/
-  .devcontainer/
+.devcontainer/        # Dev container config (docker-compose: workspace + egress gateway)
+docs/development/     # Repository-development docs in English (not copied into downstream projects)
 ```
 
-## JA/EN Sync Rule
+## Language
 
-When modifying files under `.claude/` or `.devcontainer/`, update the corresponding file under `en/` as well (and vice versa).
+`.claude/` is written in Japanese. `CLAUDE.md` and `docs/development/*.md` are written directly in English.
+`.devcontainer/` contains only JSON / shell configuration (no natural-language content).
 
-- Edit a root file → update the `en/` counterpart
-- Edit an `en/` file → update the root counterpart
-- Adding a new file → add to both language versions
-- Translate content (Japanese ↔ English). Keep config values (JSON, etc.) identical except for the language key
-- File names and directory structure are shared between JA/EN (only the body is translated)
+## Rule Application Scope
 
-## Guidelines vs Rules
+`.claude/rules/*.instructions.md` apply to **every file in this repository, including `.claude/` itself and the rule
+files**. When editing skills, agents, rules, or docs, re-check the relevant rule file before finishing the edit —
+especially `writing-style.instructions.md` (terseness, terminology, emphasis discipline) and
+`review.instructions.md` (post-edit checklist). "It's a `.claude/` config edit, so style rules don't apply" is
+not a valid exception.
 
-- `.claude/rules/` — **norms** (must follow). Style and bash command rules.
-- `.claude/guidelines/` — **policies / perspectives** (reference to improve quality). Referenced from SKILL.md via relative links, loaded on demand rather than always-on.
+## Capturing Repo-Specific Conventions
+
+When a session surfaces a convention meant to apply beyond the current edit — a frontmatter rule, authoring pattern,
+or empirically verified gotcha — append it to [docs/development/authoring-guide.md](docs/development/authoring-guide.md)
+so future sessions don't re-derive it. One-off edits don't need capturing; policy-shaped instructions ("always", "from
+now on") and non-obvious findings (schema constraints, runtime behavior) do.
+
+## Related
+
+- [docs/development/authoring-guide.md](docs/development/authoring-guide.md) — Authoring conventions for skills, agents,
+  rules, and instructions
+- [docs/development/claude-vs-copilot.md](docs/development/claude-vs-copilot.md) — Feature and config mapping between
+  Claude Code and GitHub Copilot (CLI / VSCode)
+- [docs/development/sensitive-info-review.md](docs/development/sensitive-info-review.md) — Checklist and grep patterns
+  for reviewing tracked files for credentials, personal identifiers, local paths, and other leakage before publishing

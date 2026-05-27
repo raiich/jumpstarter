@@ -12,7 +12,8 @@ Jumpstarter eliminates these hurdles — just clone and start using it, so you c
 
 The goal is for users to **not have to struggle** with Claude Code:
 
-- **No lengthy prompts needed** — Codebase investigation, requirements hearing, and self-review are handled automatically.
+- **No lengthy prompts needed** — Codebase investigation, requirements hearing, and self-review are handled
+  automatically.
 - **No complex setups upfront** — MCP and multi-agent can wait. Focus on Rules and Skills.
 - **Continuous improvement made easy** — Settings are auto-updated based on improvement suggestions and best practices.
 
@@ -25,11 +26,10 @@ Copy the template and start using it right away.
 ```bash
 git clone https://github.com/raiich/jumpstarter.git
 
-# Copy .claude/ to your existing project (English version)
-cp -R jumpstarter/en/.claude "${YOUR_PROJECT}/"
+# Copy .claude/ to your existing project (Japanese version)
+cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
 
-## Japanese version
-# cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
+# Note: an English version of .claude/ is planned for a future release.
 ```
 
 Launch Claude Code and use slash commands to run workflows.
@@ -38,19 +38,22 @@ Launch Claude Code and use slash commands to run workflows.
 claude
 ```
 
-### Design and implement new features
+### Sketch new features
 
 No need to write a perfect prompt when adding features.
-We provide a workflow that runs hearing, design, test design, implementation, and test execution in a single pass from minimal instructions.
+From minimal instructions, we provide a workflow that produces a buildable sketch instead of a standalone design doc:
+the "why" goes into a thin design doc, the "what / how" into code stubs that compile, leaving interface consistency to
+the type checker.
 
-The `/develop-feature` skill investigates the codebase while hearing requirements, produces a Design Doc and test cases, then proceeds to implementation in the same run:
+The `/sketch-feature` skill investigates the codebase while hearing requirements, then writes public types and
+signatures with doc comments (build passes) plus test cases that fail explicitly until implemented:
 
 ```
-/develop-feature I want to add a verbose option to the CLI
+/sketch-feature I want to add a verbose option to the CLI
 ```
 
-Design documents and test cases are saved under `.local/docs/features/[name]/design.md` and `tests.md`.
-Each deliverable serves as a checkpoint — if you stop midway, the remaining `design.md` / `tests.md` let you resume from where you left off.
+The thin `design.md` is saved under `.local/docs/features/[name]/`; the design and test stubs live in the real source
+tree. You then fill in the stubs to implement.
 
 ### Continuously improve Claude Code settings
 
@@ -58,11 +61,16 @@ Poor development experience is often caused by daily feedback not being reflecte
 Users don't need to manually take action to improve settings.
 The following mechanisms help with continuous improvement.
 
-The `/kaizen` command extracts improvement suggestions from conversation logs recorded by Hooks:
+The `/kaizen` command observes problems that arose during the session, identifies root causes via 5 Whys analysis, and
+prevents recurrence by updating settings:
 
 ```
-/kaizen   Suggest improvements from conversation logs
+/kaizen                        Observe the whole session
+/kaizen <problem description>  Focus on a specific problem
 ```
+
+It also triggers when the user asks "why did this happen?" — responding with root cause analysis and recurrence
+prevention instead of surface-level apologies.
 
 The `/import-best-practices` command easily imports best practices from online articles:
 
@@ -83,12 +91,8 @@ Each element in the `.claude/` directory works together to achieve the "no strug
 Rules that ensure consistent quality without users having to give instructions every time (`.claude/rules/`).
 
 - No need to struggle reading verbose output → **writing-style**
-- No need to struggle checking for missed fixes → **self-review**
-- No need to struggle standardizing bash command usage → **bash-commands**
-
-### Hooks for not struggling
-
-Conversation logs are automatically recorded to `.local/claude/conversation.log` as input data for `/kaizen` improvement suggestions.
+- No need to struggle checking for missed fixes → **review**
+- No need to struggle correcting flattery / unverified claims → **no-sycophancy**
 
 ---
 
@@ -97,5 +101,5 @@ Conversation logs are automatically recorded to `.local/claude/conversation.log`
 After copying the template, you can adjust it to suit your project.
 
 - **Add skills and rules**: Add files to `.claude/skills/` or `.claude/rules/`
-- **Permission settings**: Adjust allowed/denied commands in `.claude/settings.local.json`
-- **Auto-improvement**: Extract improvements from conversation logs with `/kaizen`, import best practices from external articles with `/import-best-practices`
+- **Auto-improvement**: Analyze session problems for root causes and standardize fixes with `/kaizen`; import best
+  practices from external articles with `/import-best-practices`

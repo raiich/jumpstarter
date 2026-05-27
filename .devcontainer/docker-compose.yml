@@ -1,0 +1,54 @@
+services:
+  # Egress gateway: attached to both networks, so it is the only bridge from the
+  # internal network to the internet.
+  gateway:
+    image: ubuntu/squid:6.6-24.04_edge@sha256:8a3baed477e2c282ab8aa5edad442f69873246964f225c5c2ae8364b6610963c
+    # Policy mounted read-only; squid reads it once at startup.
+    volumes:
+      - ./gateway/squid.conf:/etc/squid/squid.conf:ro
+      - ./gateway/allowed-domains.acl:/etc/squid/allowed-domains.acl:ro
+    networks:
+      - internal
+      - external
+    restart: unless-stopped
+
+  # Development container. Attached ONLY to the internal network, which has no route
+  # to the internet — so egress is forced through the gateway even if root.
+  workspace:
+    build:
+      context: ./workspace
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the project's PARENT so each project gets its real path /workspaces/<dirname>
+      # (matching workspaceFolder), keeping Claude's per-path projects/ & memory/ from colliding.
+      # Trade-off: sibling dirs are also exposed read/write — egress is locked, local files aren't.
+      - ../..:/workspaces:cached
+      # Fixed-name volume (no compose project prefix): every project shares the same
+      # auth/settings/history, incl. API tokens — convenience over per-project isolation.
+      - claude-code-config:/home/vscode/.claude
+    networks:
+      - internal
+    environment:
+      HTTP_PROXY: http://gateway:3128
+      HTTPS_PROXY: http://gateway:3128
+      http_proxy: http://gateway:3128
+      https_proxy: http://gateway:3128
+      NO_PROXY: localhost,127.0.0.1,gateway
+      CLAUDE_CONFIG_DIR: /home/vscode/.claude
+    depends_on:
+      # Startup order only — does not wait for squid readiness. Egress before the
+      # gateway is up fails closed; add a health check if a startup command needs it.
+      - gateway
+    command: sleep infinity
+
+networks:
+  # No `internal: true`: the gateway needs internet access.
+  external: {}
+  # internal: true => Docker adds no route off this network. Workspace egress is
+  # therefore impossible except through the gateway.
+  internal:
+    internal: true
+
+volumes:
+  claude-code-config:
+    name: claude-code-config

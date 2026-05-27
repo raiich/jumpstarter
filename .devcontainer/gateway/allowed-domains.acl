@@ -1,0 +1,38 @@
+# Domains the workspace is allowed to reach (one per line).
+# A leading dot matches the domain and all its subdomains (e.g. .github.com).
+# To change the policy: edit this file and rebuild the gateway
+#   (Dev Containers: Rebuild Container). The workspace cannot edit it at runtime.
+# Denied requests are logged by the gateway: `docker compose logs gateway`.
+# Scope: this governs RUNTIME egress only. Image build (including the claude-code
+# feature's installer download) runs on the host build network and is NOT filtered
+# by this allowlist.
+
+# Anthropic / Claude Code (API, installer, docs)
+.anthropic.com
+.claude.ai
+.claude.com
+
+# GitHub (clone, raw content, releases; LFS objects served from S3)
+.github.com
+.githubusercontent.com
+github-cloud.s3.amazonaws.com
+
+# Debian packages
+.debian.org
+
+# Language package registries (match the toolchains installed via features)
+.npmjs.org
+pypi.org
+files.pythonhosted.org
+.golang.org
+.nuget.org
+
+# Node / front-end toolchain (node-gyp headers, Playwright browser binaries)
+nodejs.org
+cdn.playwright.dev
+playwright.download.prss.microsoft.com
+
+# Docs (browsing from the container; not required for builds)
+developer.mozilla.org
+typescriptlang.org
+npmjs.com

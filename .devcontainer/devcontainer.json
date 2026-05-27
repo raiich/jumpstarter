@@ -1,44 +1,32 @@
 {
 	"name": "my-devcontainer",
-	"image": "mcr.microsoft.com/devcontainers/javascript-node",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "workspace",
 
-	// Claude Code: locally referenced feature — native installer, no Node.js dependency
 	"features": {
-		"./claude-code": {
+		"ghcr.io/devcontainers/features/dotnet:2": {
+			"version": "10.0"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "24"
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.14"
+		},
+		"ghcr.io/devcontainers/features/git-lfs:1": {
+			"version": "latest",
+			"autoPull": false
+		},
+		"ghcr.io/devcontainers/features/go:1": {
 			"version": "latest"
 		},
-		"./firewall": {}
-	},
-
-	// Required by init-firewall.sh to manage iptables rules
-	"runArgs": [
-		"--cap-add=NET_ADMIN",
-		"--cap-add=NET_RAW"
-	],
-
-	// Persist Claude config across container rebuilds
-	"mounts": [
-		"source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
-	],
-
-	"containerEnv": {
-		// Space-separated list of extra domains to permit in the firewall
-		"FIREWALL_EXTRA_DOMAINS": "developer.mozilla.org nodejs.org typescriptlang.org npmjs.com registry.npmjs.org",
-
-		"CLAUDE_CONFIG_DIR": "/home/node/.claude"
-	},
-
-	"forwardPorts": [5173],
-
-	"remoteUser": "node",
-
-	// Apply outbound network restrictions on every container start
-	"postStartCommand": "sudo env FIREWALL_EXTRA_DOMAINS=\"$FIREWALL_EXTRA_DOMAINS\" /usr/local/bin/init-firewall.sh",
-	"waitFor": "postStartCommand",
-
-	"customizations": {
-		"jetbrains": {
-			"backend": "WebStorm"
+		"./claude-code": {
+			"version": "latest"
 		}
-	}
+	},
+
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"remoteUser": "vscode",
+
+	"forwardPorts": [5173]
 }

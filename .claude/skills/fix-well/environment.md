@@ -3,7 +3,9 @@
 ## Claude Code
 
 - **並列探索**: `Agent` ツール（`subagent_type=Explore`）を `breadth` パラメータで範囲指定して並列に
+- **構造化ヒアリング**: `AskUserQuestion`（1ラウンド最大 4 問）
 
 ## GitHub Copilot (CLI / VSCode)
 
 - **並列探索**: 組み込みエージェント `Explore` を `agent` ツールで並列起動。シンプルな範囲では `grep` / `glob` で逐次調査。広範な探索になりそうな場合は対象範囲をユーザーへ早めに確認
+- **構造化ヒアリング**: 通常応答で選択肢を列挙する形に置き換え（1ラウンド最大 4 問のルールは維持）

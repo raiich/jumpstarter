@@ -1,7 +1,7 @@
 ---
 name: hyper-think
 description: 複数のサブエージェントにより並列・多角的に思考する（review / ideate / opine の 3 モード）。
-effort: high
+disable-model-invocation: true
 ---
 
 # Hyper Think
@@ -20,7 +20,7 @@ effort: high
 ## 1. モード判定と対象特定
 
 入力のキーワードから判定。`review` はファイル/PR/差分を特定。
-対象/お題が曖昧なら構造化ヒアリング（[ヒアリング原則](../ask-before-task/references/ask-the-user.md)）。
+対象/お題が曖昧なら構造化ヒアリング（[ヒアリング原則](../fix-well/references/ask-the-user.md)）。
 
 ## 2. エージェント選定
 

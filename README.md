@@ -17,26 +17,67 @@ The goal is for users to **not have to struggle** with Claude Code:
 - **No complex setups upfront** — MCP and multi-agent can wait. Focus on Rules and Skills.
 - **Continuous improvement made easy** — Settings are auto-updated based on improvement suggestions and best practices.
 
+It also ships a **dev container** for running the agent autonomously and safely: outbound traffic is
+restricted to domains you allow, and runtimes like Node, Python, Go, and .NET come preinstalled, so it
+runs in isolation out of the box.
+
 ---
 
 ## Usage
 
-Copy the template and start using it right away.
+The main way to use Jumpstarter is to run Claude Code inside the bundled dev container. You can also
+just copy `.claude/` into your project.
+
+### Use the dev container
+
+Clone jumpstarter and open the repo in the container (VS Code: **Reopen in Container**; requires
+Docker and the Dev Containers extension). The allowed domains live in
+`.devcontainer/gateway/allowed-domains.acl`, and forwarded ports (5173 for dev servers by default) in
+`devcontainer.json`.
+
+#### Sibling directories are visible
+
+The container mounts the target repo's *parent* directory, so beyond the workspace you can also reach
+sibling directories — handy for using your own libraries kept alongside the repo. They're mounted
+read/write, though, so keep repos holding secrets out of the same parent.
+
+#### Reuse the dev container in another repo
+
+Instead of copying, the `jumpstart` command symlinks this template's `.devcontainer` into another
+repo — a symlink rather than a copy, so the template's updates apply automatically. The dev container
+is shared, and its bind mount exposes jumpstarter's `.claude/` at that repo's root.
+
+```bash
+# Run from the target repo (jumpstarter/bin on PATH, or call by full path)
+cd /path/to/other-repo
+jumpstart
+```
+
+Reopen the repo in the dev container afterward. The symlink points at a machine-local path, so don't
+commit it.
+
+> **Note.** Claude's auth and settings live in a shared `claude-code-config` volume, so login state
+> and config changes (e.g. from `/kaizen`) apply across every project that uses this container.
+
+### Copy `.claude/` only
+
+Without the dev container, you can simply copy `.claude/` into an existing project. It's lighter, but
+you don't get the network isolation or bundled runtimes.
 
 ```bash
 git clone https://github.com/raiich/jumpstarter.git
 
-# Copy .claude/ to your existing project (Japanese version)
+# Copy .claude/ into your project (Japanese; English version in progress)
 cp -R jumpstarter/.claude "${YOUR_PROJECT}/"
 
-# Note: an English version of .claude/ is planned for a future release.
-```
-
-Launch Claude Code and use slash commands to run workflows.
-
-```bash
 claude
 ```
+
+### Develop with Claude Code
+
+Once set up, just launch `claude` and develop as usual — the bundled Rules and Skills kick in
+automatically, no special prompts required. For specific situations, the workflows below are also
+available.
 
 ### Sketch new features
 
@@ -91,8 +132,14 @@ Each element in the `.claude/` directory works together to achieve the "no strug
 Rules that ensure consistent quality without users having to give instructions every time (`.claude/rules/`).
 
 - No need to struggle reading verbose output → **writing-style**
-- No need to struggle checking for missed fixes → **review**
 - No need to struggle correcting flattery / unverified claims → **no-sycophancy**
+
+### Skills for not struggling
+
+Beyond the workflows above, these skills (`.claude/skills/`) cut everyday friction.
+
+- No need to struggle with half-finished fixes or ambiguous change requests → **fix-well** (pins the interpretation down first when ambiguous, then fixes the related spots too, consistently)
+- No need to struggle thinking from a single angle → **hyper-think** (parallel multi-agent review / ideation)
 
 ---
 

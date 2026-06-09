@@ -59,10 +59,12 @@ explicit invocation; it is not a prerequisite.
 | Role                 | Claude Code                                                | GitHub Copilot (CLI / VSCode)                   |
 |----------------------|------------------------------------------------------------|-------------------------------------------------|
 | Path/topic-specific  | `.claude/rules/*.instructions.md` (this repo's convention) | `.github/instructions/**/*.instructions.md` ✅   |
-| Required frontmatter | None (project convention)                                  | `applyTo` (glob, e.g. `"**/*.ts,**/*.tsx"`) ✅   |
-| Optional frontmatter | —                                                          | `excludeAgent` (exclude from specific agents) ✅ |
+| Required frontmatter | `applyTo: "**"` (carried for Copilot; Claude ignores it)   | `applyTo` (glob, e.g. `"**/*.ts,**/*.tsx"`) ✅   |
+| Optional frontmatter | `description` (rule summary; ignored by both as an instructions field) | `excludeAgent` (exclude from specific agents) ✅ |
 
-Claude Code has no built-in mechanism for `.instructions.md`. This repo references them from `CLAUDE.md` or from skills.
+Claude Code has no built-in mechanism for `.instructions.md`; it loads these rules globally and ignores `applyTo`. The
+files nonetheless carry `applyTo: "**"` (plus a short `description`) so they drop into Copilot's `.github/instructions/`
+unchanged. This repo references them from `CLAUDE.md` or from skills.
 
 ### Custom agents
 
@@ -161,7 +163,6 @@ To reference an MCP tool in Copilot, use `server-name/tool-name` or `server-name
 | `description`              | yes ✅                                      | yes (required) ✅                                                 |
 | `allowed-tools`            | yes ✅ (optional, comma-separated or array) | yes ✅ (optional, array of MCP names)                             |
 | `disable-model-invocation` | yes ✅                                      | yes (boolean; `true` makes it explicit-only via `/skill-name`) ✅ |
-| `effort`                   | yes ✅ (thinking-budget override)           | undocumented (assumed ignored) ❓                                 |
 | `version`                  | yes ✅                                      | undocumented                                                     |
 | `user-invocable`           | yes ✅                                      | yes ✅                                                            |
 | `mode`                     | yes ✅                                      | undocumented                                                     |
@@ -171,7 +172,7 @@ To reference an MCP tool in Copilot, use `server-name/tool-name` or `server-name
 
 | Field          | Claude Code                 | GitHub Copilot (CLI / VSCode) |
 |----------------|-----------------------------|-------------------------------|
-| `applyTo`      | absent (project convention) | required (glob)               |
+| `applyTo`      | `"**"` (carried, ignored)   | required (glob)               |
 | `excludeAgent` | —                           | optional                      |
 
 ## This Repository's Frontmatter Policy
@@ -195,7 +196,6 @@ The side that understands it interprets; the other side ignores. Worth keeping f
 | Field             | Claude          | Copilot                             |
 |-------------------|-----------------|-------------------------------------|
 | `model`           | interprets      | interprets (value list unpublished) |
-| `effort`          | thinking budget | ignored                             |
 | `memory`          | interprets      | ignored                             |
 | `maxTurns`        | interprets      | ignored                             |
 | `mode`, `version` | interprets      | ignored                             |
@@ -226,8 +226,8 @@ The side that understands it interprets; the other side ignores. Worth keeping f
 
 ## Constraints & Caveats
 
-- `applyTo` is required by Copilot. Most Claude-side `.instructions.md` files have no frontmatter, so adding it is
-  necessary when porting to `.github/instructions/`
+- `applyTo` is required by Copilot. This repo's `.claude/rules/*.instructions.md` already carry `applyTo: "**"`, so they
+  drop into `.github/instructions/` unchanged — no per-file transform on port
 - Claude-specific tools (`AskUserQuestion`, `Skill`, `EnterPlanMode`, etc.) have no Copilot equivalent. Skills that
   depend on them will degrade on Copilot
 - Hook scripts don't transfer 1:1: Copilot CLI hooks use a `version: 1` JSON config with separate `bash` / `powershell`

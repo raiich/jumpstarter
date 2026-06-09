@@ -41,8 +41,8 @@ docs/development/     # Repository-development docs in English (not copied into 
 
 `.claude/rules/*.instructions.md` apply to **every file in this repository, including `.claude/` itself and the rule
 files**. When editing skills, agents, rules, or docs, re-check the relevant rule file before finishing the edit —
-especially `writing-style.instructions.md` (terseness, terminology, emphasis discipline) and
-`review.instructions.md` (post-edit checklist). "It's a `.claude/` config edit, so style rules don't apply" is
+especially `writing-style.instructions.md` (terseness, terminology, emphasis discipline, post-edit self-review).
+"It's a `.claude/` config edit, so style rules don't apply" is
 not a valid exception.
 
 ## Capturing Repo-Specific Conventions

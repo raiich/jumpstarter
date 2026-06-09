@@ -127,6 +127,10 @@ mechanism. Do not link to them by file path from `SKILL.md`, `environment.md`, `
 `references/*.md` — the rule is already in context, so the link adds noise without adding signal, and the path also
 tends to rot when files are renamed or moved.
 
+Unlike `references/*.md`, each rule carries `applyTo: "**"` (plus a short `description`) frontmatter so it ports into
+Copilot's `.github/instructions/` unchanged — Copilot requires `applyTo`; Claude ignores it and loads the rule globally
+regardless.
+
 When skill content needs to invoke a rule, reference it by concept (e.g., "セルフレビュー", "記法・文体") rather
 than file path. The same skill-isolation rule applies to `.claude/references/*.md` (see next section).
 
@@ -195,7 +199,7 @@ outside the tracked tree is unavailable to those copies.
 - **Opening sentence states when to open it.** Each file begins with a one-line "when this is consulted" so an agent
   arriving via concept search can confirm relevance before reading the body
 - **Naming.** kebab-case; group with a topic prefix (e.g., `writing-*`) when related files are likely to grow alongside
-  it. Files without natural siblings stay bare (`wording.md`, `review-severity.md`)
+  it. Files without natural siblings stay bare (e.g., `wording.md`)
 
 ## `environment.md` Structure
 
@@ -330,11 +334,12 @@ Every remaining line must help auto-invocation matching. After drafting, delete:
 Test for each line: "If I deleted this line, would the matcher miss prompts it should catch, or catch prompts it
 shouldn't?" If neither, delete the line — its content belongs in `SKILL.md` body.
 
-Example (from `fix-well`):
+Example:
 
 > For change requests ("fix it", "rename", "unify"), consider impact scope, similar issues, and consistency with
-> callers and docs. Also covers fix-style instructions issued during feature work or review. Does not trigger for
-> knowledge questions or larger feature additions.
+> callers and docs, pinning the interpretation down first when the request is ambiguous. Also covers fix-style
+> instructions issued during feature work or review. Does not trigger for knowledge questions or new creation from
+> scratch.
 
 ## Auto-Invocation and Explicit Invocation
 
@@ -352,7 +357,7 @@ Explicit invocation uses `/<name>`. Notes when writing:
 
 Use these mechanisms to reference other skills:
 
-- **File reference**: relative-path link like `[asking principles](../ask-before-task/references/ask-the-user.md)`.
+- **File reference**: relative-path link like `[asking principles](../fix-well/references/ask-the-user.md)`.
   Renames are followed by updating the path
 - **`/<name>` invocation**: when describing "call another skill" in `environment.md`, write the `/<name>` form or pair
   it with a file-path link rather than hardcoding a concrete name

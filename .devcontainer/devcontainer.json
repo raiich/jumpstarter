@@ -1,6 +1,9 @@
 {
 	"name": "my-devcontainer",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": [
+		"docker-compose.yml",
+		"docker-compose.claude.yml"
+	],
 	"service": "workspace",
 
 	"features": {
@@ -13,10 +16,10 @@
 		"ghcr.io/devcontainers/features/python:1": {
 			"version": "3.14"
 		},
-		"ghcr.io/devcontainers/features/git-lfs:1": {
-			"version": "latest",
-			"autoPull": false
-		},
+//		"ghcr.io/devcontainers/features/git-lfs:1": {
+//			"version": "latest",
+//			"autoPull": false
+//		},
 		"ghcr.io/devcontainers/features/go:1": {
 			"version": "latest"
 		},
@@ -24,9 +27,31 @@
 			"version": "latest"
 		}
 	},
-
+	"overrideFeatureInstallOrder": [
+		"./claude-code",
+		"ghcr.io/devcontainers/features/python",
+		"ghcr.io/devcontainers/features/go",
+		"ghcr.io/devcontainers/features/node",
+		"ghcr.io/devcontainers/features/dotnet",
+		"ghcr.io/devcontainers/features/git-lfs",
+	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"remoteUser": "vscode",
+
+	// Expose this template's .claude/ at the opened repo's root, even when only
+	// .devcontainer is symlinked into that repo. The source goes through
+	// .devcontainer/.ai (symlink -> ../.claude), so a symlinked .devcontainer
+	// resolves back to this template's real .claude/ on the host.
+	"mounts": [
+		"source=${localWorkspaceFolder}/.devcontainer/.ai,target=/workspaces/${localWorkspaceFolderBasename}/.claude,type=bind,consistency=cached",
+		// Project the same assets into .github/ so GitHub Copilot (VSCode) reads them.
+		// rules carry applyTo, so they drop into .github/instructions/ unchanged; agents
+		// keep the .agent.md format both tools accept. skills need no mount — Copilot reads
+		// .claude/skills/ for backward compatibility, and that path keeps skill-internal
+		// ../../references links resolvable.
+		"source=${localWorkspaceFolder}/.devcontainer/.ai/rules,target=/workspaces/${localWorkspaceFolderBasename}/.github/instructions,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder}/.devcontainer/.ai/agents,target=/workspaces/${localWorkspaceFolderBasename}/.github/agents,type=bind,consistency=cached"
+	],
 
 	"forwardPorts": [5173]
 }

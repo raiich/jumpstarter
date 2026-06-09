@@ -23,9 +23,6 @@ services:
       # (matching workspaceFolder), keeping Claude's per-path projects/ & memory/ from colliding.
       # Trade-off: sibling dirs are also exposed read/write — egress is locked, local files aren't.
       - ../..:/workspaces:cached
-      # Fixed-name volume (no compose project prefix): every project shares the same
-      # auth/settings/history, incl. API tokens — convenience over per-project isolation.
-      - claude-code-config:/home/vscode/.claude
     networks:
       - internal
     environment:
@@ -34,7 +31,6 @@ services:
       http_proxy: http://gateway:3128
       https_proxy: http://gateway:3128
       NO_PROXY: localhost,127.0.0.1,gateway
-      CLAUDE_CONFIG_DIR: /home/vscode/.claude
     depends_on:
       # Startup order only — does not wait for squid readiness. Egress before the
       # gateway is up fails closed; add a health check if a startup command needs it.
@@ -48,7 +44,3 @@ networks:
   # therefore impossible except through the gateway.
   internal:
     internal: true
-
-volumes:
-  claude-code-config:
-    name: claude-code-config

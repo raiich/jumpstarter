@@ -1,0 +1,16 @@
+# Claude Code-specific overlay, merged onto docker-compose.yml.
+# Listed after the base file in devcontainer.json's dockerComposeFile array,
+# so its workspace volumes/environment entries merge into the base service.
+services:
+  workspace:
+    volumes:
+      # Fixed-name volume (no compose project prefix): every project shares the same
+      # auth/settings/history, incl. API tokens — convenience over per-project isolation.
+      - claude-code-config:/home/vscode/.claude
+    environment:
+      # Point Claude Code at the config volume mounted above.
+      CLAUDE_CONFIG_DIR: /home/vscode/.claude
+
+volumes:
+  claude-code-config:
+    name: claude-code-config

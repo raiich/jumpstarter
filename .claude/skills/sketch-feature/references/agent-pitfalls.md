@@ -5,7 +5,7 @@
 ## 不確実性の表明
 
 「分からない」「未確認」「仮定」と「確認済み」を区別して表明する。確認可能なことは確認し、未確認のまま進む場合は仮定であると明示する。
-信頼度マークの記法は [sketch-templates.md](../sketch-templates.md) を参照する。
+信頼度マークの記法は [confidence-marks.md](confidence-marks.md) を参照する。
 
 ## 既存コードとの整合性確認
 

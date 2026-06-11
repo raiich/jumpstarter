@@ -240,6 +240,24 @@ sections is intentional (one section is dropped on deploy).
   interact) in the overview — that belongs in the 手順 sections. Procedure stated in both places duplicates content
   and makes the overview hard to skim. The overview should answer "what is this skill," not "how does it run"
 
+## Approval Gates in Skill Flows
+
+A confirmation point in a flow (承認ゲート) is not free: it costs the user a round-trip — roughly the same as one
+correction issued after seeing the result. A gate pays off only when it heads off *several* corrections or an
+*irreversible* outcome, not when it merely front-loads a single adjustment the user could make just as easily
+afterward.
+
+Default to **fix-afterward**: produce the deliverable, report what was assumed, and let the user correct it in one
+pass. Add a gate only when:
+
+- A wrong guess propagates into many correction rounds (e.g., an unverified premise the whole result rests on), or
+- The action is destructive or irreversible.
+
+This is why the design skills gate only on `❓` assumptions and just before irreversible operations, then run to
+completion without further gates. When authoring a flow — especially `kaizen`'s mechanization proposals — weigh any
+new gate against fix-afterward by this test before adding it. A skill that ships downstream restates this guard in its
+own body, since it cannot link to this doc.
+
 ## Skill `README.md` Body
 
 `README.md` ships with `.claude/` and is user-facing — it shows what the skill is and a concrete invocation sample.
@@ -408,6 +426,7 @@ When editing or reviewing PRs:
 | Self-references            | The skill's own name is not hardcoded in `environment.md` etc.                                                                  |
 | Reference direction        | Depended-on skills don't name their callers in `SKILL.md` / `environment.md`; `references/*.md` cross-refs are OK in both ways  |
 | `description`              | (1) auto vs explicit-only decided; (2) purpose + trigger only, no execution detail; (3) non-trigger added when ambiguity exists |
+| Flow gates                 | Confirmation points earn their place via multi-round correction cost or irreversibility; otherwise fix-afterward                |
 | Terminology                | "Slash command" used only for built-ins, not for skill `/<name>`                                                                |
 | Impact scope               | When renaming identifiers / paths, references (links, examples, other skills) follow                                            |
 | Rule application           | Relevant `.claude/rules/*.instructions.md` and `.claude/references/*.md` are applied to the edit itself                         |

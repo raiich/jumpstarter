@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# worktree — add a sibling git worktree for <branch>, sharing .claude,
+# open a shell in it, and remove the worktree on shell exit.
+set -euo pipefail
+
+branch=$1
+# Anchor to the main worktree even when run from inside a worktree (avoid chained links).
+base=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
+dir="$(dirname "$base")/$(basename "$base")-${branch##*/}"
+
+# Skip add if the worktree already exists (idempotent re-entry); else create it.
+if ! git worktree list --porcelain | grep -qxF "worktree $dir"; then
+  git worktree add --relative-paths "$dir" "$branch" 2>/dev/null \
+    || git worktree add --relative-paths -b "$branch" "$dir"
+fi
+[ -e "$dir/.claude" ] || ln -s "../$(basename "$base")/.claude" "$dir/.claude"
+( cd "$dir" && exec "$SHELL" ) || true
+# Remove on exit; refuses with git's error if there is uncommitted work (ignored files like .claude don't count).
+git worktree remove "$dir"

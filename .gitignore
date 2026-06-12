@@ -9,3 +9,4 @@
 .vscode/
 .claude/agent-memory-local/
 .claude/scheduled_tasks.lock
+.github

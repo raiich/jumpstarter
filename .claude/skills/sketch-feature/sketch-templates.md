@@ -41,7 +41,7 @@ type Resource interface {
 }
 
 // Registry は確保済み Resource を名前で保持します。
-// 解放責務は Registry にあり、Close で全 Resource を解放します。
+// 解放責務は Registry にあります。
 type Registry struct{}
 
 // Add は res を登録します。同一 name の既存 Resource は呼び出し側が解放済みである前提です。
@@ -57,7 +57,7 @@ func (r *Registry) Close() error {
 }
 ```
 
-例の `Add`: doc コメントは契約（「呼び出し側が解放済みである前提」など、シグネチャから読めない情報。名前の言い換えにしない）、`// TODO` は内部処理（重複検出・解放順序など）を表し、両者は別に置く。
+例の `Add`: doc コメントは契約（「呼び出し側が解放済みである前提」など、シグネチャから読めない情報。名前の言い換えにしない）、`// TODO` は内部処理（重複検出・解放順序など）を表し、両者は別に置く。型 `Registry` の doc は型レベルの不変条件（所有権）に絞り、解放の挙動は `Close` のメソッド doc に置く（型・package の doc に各メソッドの説明を寄せない）。
 
 ## テストスタブ（コード）
 

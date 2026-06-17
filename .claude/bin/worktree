@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# worktree — add a sibling git worktree for <branch>, sharing .claude,
-# open a shell in it, and remove the worktree on shell exit.
+# worktree — add a sibling git worktree for <branch>, sharing .claude (and
+# pre-accepting its Claude Code folder trust), open a shell in it, and remove
+# it on exit (unless another session is still inside it).
 set -euo pipefail
 
 branch=$1
@@ -8,12 +9,31 @@ branch=$1
 base=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
 dir="$(dirname "$base")/$(basename "$base")-${branch##*/}"
 
-# Skip add if the worktree already exists (idempotent re-entry); else create it.
-if ! git worktree list --porcelain | grep -qxF "worktree $dir"; then
-  git worktree add --relative-paths "$dir" "$branch" 2>/dev/null \
-    || git worktree add --relative-paths -b "$branch" "$dir"
+# Reuse an existing worktree for this branch, else create one.
+if git worktree list --porcelain | grep -qxF "worktree $dir"; then
+  # Same leaf name across branches maps to one dir; refuse rather than clobber another branch's.
+  current=$(git -C "$dir" symbolic-ref --quiet --short HEAD || true)
+  if [ "$current" != "$branch" ]; then
+    echo "worktree: '$dir' is checked out to '${current:-detached HEAD}', not '$branch'" >&2
+    exit 1
+  fi
+else
+  # Check out the branch, else create it; on failure show the first error, not the fallback's misleading one.
+  err=$(git worktree add --relative-paths "$dir" "$branch" 2>&1) \
+    || git worktree add --relative-paths -b "$branch" "$dir" 2>/dev/null \
+    || { printf '%s\n' "$err" >&2; exit 1; }
 fi
-[ -e "$dir/.claude" ] || ln -s "../$(basename "$base")/.claude" "$dir/.claude"
+"$base/.claude/bin/init-claude" "$dir" "$base"
+
 ( cd "$dir" && exec "$SHELL" ) || true
-# Remove on exit; refuses with git's error if there is uncommitted work (ignored files like .claude don't count).
-git worktree remove "$dir"
+
+# Skip removal if another session is still inside (cwd in $dir); ours has already exited.
+# git refuses if there's uncommitted work, so removal never discards it.
+worktree_busy() {
+  local p
+  for p in /proc/[0-9]*/cwd; do
+    case "$(readlink "$p" 2>/dev/null)" in "$dir"|"$dir"/*) return 0 ;; esac
+  done
+  return 1
+}
+worktree_busy || git worktree remove "$dir"

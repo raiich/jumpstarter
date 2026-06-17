@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# init-claude — make worktree <dir> usable with Claude Code: share the main
+# worktree's .claude via symlink and pre-accept its Claude Code folder trust.
+set -euo pipefail
+
+dir=$1
+base=$2
+
+[ -e "$dir/.claude" ] || ln -s "../$(basename "$base")/.claude" "$dir/.claude"
+
+# Pre-accept Claude Code's folder trust for $dir so the first `claude` there
+# doesn't prompt. Best-effort: a failure just means the prompt shows once.
+# Write via temp + mv (same FS, atomic): jq can't read and truncate $cfg at once.
+cfg="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.claude.json"
+{
+  [ -f "$cfg" ] || echo '{}' > "$cfg"
+  tmp=$(mktemp "$(dirname "$cfg")/.claude.json.XXXXXX")
+  jq --arg dir "$dir" '
+    .projects[$dir].hasTrustDialogAccepted = true
+    | .projects[$dir].hasCompletedProjectOnboarding = true
+    | .projects[$dir].projectOnboardingSeenCount //= 0
+  ' "$cfg" > "$tmp" && mv "$tmp" "$cfg" || rm -f "$tmp"
+} 2>/dev/null || true

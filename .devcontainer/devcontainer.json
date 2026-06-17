@@ -23,17 +23,21 @@
 		"ghcr.io/devcontainers/features/go:1": {
 			"version": "latest"
 		},
-		"./claude-code": {
+		"./features/claude-code": {
 			"version": "latest"
-		}
+		},
+		"./features/just": {},
+		"./features/playwright": {}
 	},
 	"overrideFeatureInstallOrder": [
-		"./claude-code",
+		"./features/claude-code",
 		"ghcr.io/devcontainers/features/python",
 		"ghcr.io/devcontainers/features/go",
 		"ghcr.io/devcontainers/features/node",
 		"ghcr.io/devcontainers/features/dotnet",
 		"ghcr.io/devcontainers/features/git-lfs",
+		"./features/just",
+		"./features/playwright"
 	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"remoteUser": "vscode",

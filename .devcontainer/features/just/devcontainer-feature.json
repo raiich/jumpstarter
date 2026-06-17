@@ -1,0 +1,7 @@
+{
+    "id": "just",
+    "version": "0.0.1",
+    "name": "just",
+    "description": "Installs the just command runner from the distribution's apt repository",
+    "documentationURL": "https://just.systems/man/en/"
+}

@@ -32,6 +32,7 @@ flag only new occurrences outside this set.
 - `mcr.microsoft.com/devcontainers/base:debian` — public base image
 - `docs.github.com`, `raw.githubusercontent.com`, `github.blog`, `agents.md`, `code.visualstudio.com` — public docs
 - `deb.debian.org`, `www.debian.org`, `bugs.debian.org` — public Debian mirrors
+- `just.systems`, `playwright.dev` — public tool documentation (devcontainer features)
 - `example.com` — RFC 2606 documentation domain (sample value in docs/rules)
 - `github.com/raiich/jumpstarter` — this repository's own clone URL
 - `/home/vscode/.claude`, user `vscode` — devcontainer convention, not a real account

@@ -1,0 +1,25 @@
+{
+    "id": "playwright",
+    "version": "0.0.1",
+    "name": "Playwright browsers",
+    "description": "Installs Playwright browsers and their system dependencies",
+    "documentationURL": "https://playwright.dev/docs/browsers",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Playwright version whose browsers are baked into the image; projects on other versions add their own with 'npx playwright install'"
+        },
+        "browsers": {
+            "type": "string",
+            "default": "chromium",
+            "description": "Space-separated browsers to install (chromium, firefox, webkit)"
+        }
+    },
+    "containerEnv": {
+        "PLAYWRIGHT_BROWSERS_PATH": "/usr/local/share/ms-playwright"
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/node"
+    ]
+}

@@ -26,10 +26,10 @@ does not contain `.github/`.
 | Path-specific rules    | `.claude/rules/*.instructions.md`               | `.github/instructions/*.instructions.md`                                                          |
 | Custom agents          | `.claude/agents/*.agent.md`                     | `.github/agents/*.agent.md`                                                                       |
 | Skills                 | `.claude/skills/<name>/SKILL.md`                | `.github/skills/<name>/SKILL.md`                                                                  |
-| Hooks                  | `.claude/hooks/` (unused in this repo)          | `.github/hooks/<name>.json` (repo) / `~/.copilot/hooks/` (user) ✅                                 |
+| Hooks                  | `.claude/hooks/*.sh` + `settings.json`          | `.github/hooks/<name>.json` (repo) / `~/.copilot/hooks/` (user) ✅                                 |
 | Memory                 | `~/.claude/projects/<id>/memory/` (user home)   | "Copilot Memory" — repo-level managed memory ✅ (semantics differ from Claude's file-based memory) |
 
-Copilot also reads `.claude/skills/` for backward compatibility ✅. When `.github/skills/` and `.claude/skills/` both
+Copilot also reads `.claude/skills/` ✅. When `.github/skills/` and `.claude/skills/` both
 contain the same skill, precedence is undocumented ❓. This repo ships only `.claude/skills/`, leaving the placement
 decision to the user.
 
@@ -150,7 +150,7 @@ To reference an MCP tool in Copilot, use `server-name/tool-name` or `server-name
 | `model`                    | yes (`haiku`/`sonnet`/`opus`, etc.) | yes (default if omitted) ✅                              | Copilot does not publish the value list ❓                                                 |
 | `memory`                   | yes                                 | absent (ignored) ✅                                      |                                                                                           |
 | `maxTurns`                 | yes                                 | absent (ignored) ✅                                      |                                                                                           |
-| `disable-model-invocation` | skill only ✅                        | supported on agents (boolean, default `false`) ✅        | Prevents auto-selection. Former `infer` is retired ✅                                      |
+| `disable-model-invocation` | skill only ✅                        | supported on agents (boolean, default `false`) ✅        | Prevents auto-selection                                                                   |
 | `user-invocable`           | skill only ✅                        | supported on agents (boolean, default `true`) ✅         |                                                                                           |
 | `target`                   | —                                   | `vscode` / `github-copilot` ✅ (default: both)           |                                                                                           |
 | `mcp-servers`              | —                                   | object ✅ (CLI only; ignored in VS Code)                 |                                                                                           |
@@ -226,8 +226,7 @@ The side that understands it interprets; the other side ignores. Worth keeping f
 
 ## Constraints & Caveats
 
-- `applyTo` is required by Copilot. This repo's `.claude/rules/*.instructions.md` already carry `applyTo: "**"`, so they
-  drop into `.github/instructions/` unchanged — no per-file transform on port
+- `applyTo` is required by Copilot; this repo's rules carry it (`"**"`) and port into `.github/instructions/` unchanged
 - Claude-specific tools (`AskUserQuestion`, `Skill`, `EnterPlanMode`, etc.) have no Copilot equivalent. Skills that
   depend on them will degrade on Copilot
 - Hook scripts don't transfer 1:1: Copilot CLI hooks use a `version: 1` JSON config with separate `bash` / `powershell`

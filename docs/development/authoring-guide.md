@@ -1,12 +1,10 @@
 # Authoring Guide for Skills / Agents / Instructions
 
-Conventions for editing skills, agents, and rule files under `.claude/`. This repository targets Claude Code as the
-primary environment; the same assets are designed to also run under **GitHub Copilot (CLI / VSCode)** once users copy
-`.claude/` into `.github/`.
+Conventions for editing skills, agents, and rule files under `.claude/`. This file focuses on "how to write"; it lives
+in `docs/development/` and is not copied into downstream projects.
 
-For the supported-product scope and the full feature / config mapping (paths, tool names, frontmatter details),
-see [claude-vs-copilot.md](claude-vs-copilot.md). This file focuses on "how to write." It lives in `docs/development/`
-and is not copied into downstream projects.
+For the supported-product scope, the Claude / Copilot mapping, and the full feature / config details (paths, tool
+names, frontmatter), see [claude-vs-copilot.md](claude-vs-copilot.md).
 
 ## Premise
 
@@ -104,8 +102,7 @@ related-files block, and the body.
   a large perspective catalog is often better re-expressed as a derivation procedure plus a long-tail safety net (see
   the taxonomy note above)
 - **Handling duplication.** When similar perspectives appear across files, keep the shared method in the derivation
-  procedure (e.g., `derive-perspectives.md`) and restrict perspective files to the easily-missed long tail. Pair this with the
-  related-files block in the file layout above so the boundary is visible at the top of each cluster member
+  procedure (e.g., `derive-perspectives.md`) and restrict perspective files to the easily-missed long tail
 - **Naming.** kebab-case. Within a skill's `references/`, bare topic words (`security.md`, `testing.md`) suffice —
   the skill name already groups them, so the topic-prefix convention used under `.claude/references/` is unnecessary
 - **Adding.** Check that the new heading is not semantically duplicating an existing one and that several proposed items
@@ -134,14 +131,35 @@ regardless.
 When skill content needs to invoke a rule, reference it by concept (e.g., "セルフレビュー", "記法・文体") rather
 than file path. The same skill-isolation rule applies to `.claude/references/*.md` (see next section).
 
+### Terse is necessary but not sufficient — make rules verifiable
+
+An always-loaded rule earns its cost only if an agent can hold output against it. A vague directive ("be
+concise", "stay consistent") can't be confirmed or refuted. Write rules a reviewer can check a span against and
+call pass/fail:
+
+- **Split policy from self-review.** Policy rule = *how to write*; self-review rule = *how to spot a violation*
+  (a scannable signature → 確認 → 直す). `writing-style.instructions.md` + `writing-review.instructions.md` is the
+  canonical pair.
+- **Signature, not adjective.** A checkable rule names something to scan for — a phrase, structure, or marker
+  (`なぜなら`, `〜しますか`, a 3-column table) — not an end-state quality word.
+- **Route the residual to an independent pass.** Qualities no signature catches (overall brevity, fit with
+  surrounding prose) stay in the policy rule and go to a reviewer other than the generation that wrote the text
+  (separate agent / session; see `sketch-feature/references/verification-strategy.md`). Don't force them into a
+  brittle pattern or pretend they are mechanical.
+- **State the scope.** A signature passes against a concrete span; file- or PR-level qualities are the residual,
+  not a per-span check. Say which a rule targets so "this span passes" ≠ "the whole reads fine".
+- **Offload a finite signature to a hook.** A fixed string set or small regex (flagged-word lists) moves to a
+  `PostToolUse` (Write|Edit) hook over a `.claude/references/` word list, leaving only the semantic residual (is
+  the rewrite natural?) in self-review. Pattern: `.claude/hooks/check-wording.sh` + `references/writing-word-check.md`.
+  Gotchas: the hook runs after the write, so it is advisory (`exit 2` feeds the message back, not a block); a
+  missing list reports rather than passing silently; opt-out is `<!-- wording-check: skip -->` as the file's
+  first line, so a doc that quotes the marker in its body stays checked.
+
 ## References under `.claude/references/`
 
 On-demand reference material shared across rules and skills (vocabulary tables, severity classifications, writing
 examples, terminology guides). Not loaded into context unconditionally — read when a rule or another root reference
 links to it, or when an agent concept-matches the topic from inside a skill.
-
-Use this directory when the content is invoked from multiple rules/skills, or is reference material (vocabulary,
-lookup tables, examples) rather than a standing directive that must influence every response.
 
 Three placement locations:
 
@@ -198,8 +216,8 @@ outside the tracked tree is unavailable to those copies.
 - **No frontmatter.** Loaded on demand; no `applyTo` / `description` is needed
 - **Opening sentence states when to open it.** Each file begins with a one-line "when this is consulted" so an agent
   arriving via concept search can confirm relevance before reading the body
-- **Naming.** kebab-case; group with a topic prefix (e.g., `writing-*`) when related files are likely to grow alongside
-  it. Files without natural siblings stay bare (e.g., `wording.md`)
+- **Naming.** kebab-case; group related files that grow alongside each other under a shared topic prefix (e.g., the
+  `writing-*` references). A standalone reference with no such family stays bare
 
 ## `environment.md` Structure
 
@@ -219,8 +237,8 @@ Don't write here:
 - Environment-independent policy (→ `SKILL.md`, which is always kept regardless of deploy)
 - The skill's main flow (→ `SKILL.md`)
 
-"Both environments use the same value, so let's centralize it" is not the right reasoning. Duplication across the two
-sections is intentional (one section is dropped on deploy).
+Don't centralize a value shared by both sections — per the Premise, the duplication is intentional (one section is
+dropped on deploy).
 
 ## `SKILL.md` Body
 
@@ -267,8 +285,7 @@ Follow this shape:
 - An overview paragraph immediately after the title — one or two short sentences describing what the skill is, ending
   in a noun that names the skill (in JA: `...スキル`). The overview lives here and only here
 - `## 実行例` containing a fenced block with `❯ /<name> <example argument>`, an `● <agent intro line>`, and an indented
-  output sample. Put no prose between the heading and the fenced block — the example itself communicates the case, and
-  a case-description preamble duplicates the overview above
+  output sample. Put no prose between the heading and the fenced block
 - For multi-mode skills, split the section into `### <mode name>` subsections, each holding its own fenced block
 
 Keep examples concrete but generic — template purity applies, so don't encode jumpstarter-specific scenarios.
@@ -350,7 +367,7 @@ Every remaining line must help auto-invocation matching. After drafting, delete:
 - Restating the purpose in multiple ways
 
 Test for each line: "If I deleted this line, would the matcher miss prompts it should catch, or catch prompts it
-shouldn't?" If neither, delete the line — its content belongs in `SKILL.md` body.
+shouldn't?" If neither, delete the line.
 
 Example:
 
@@ -416,7 +433,9 @@ the entry point" rule above still applies to `SKILL.md` / `environment.md` / `*-
 
 ## Review Checklist
 
-When editing or reviewing PRs:
+When editing or reviewing PRs. Each row below is a checkable `Aspect → Check` item, so a change can be
+confirmed pass/fail; when you add a convention elsewhere in this guide, add its row here rather than
+leaving it as prose:
 
 | Aspect                     | Check                                                                                                                           |
 |----------------------------|---------------------------------------------------------------------------------------------------------------------------------|
@@ -431,14 +450,13 @@ When editing or reviewing PRs:
 | Impact scope               | When renaming identifiers / paths, references (links, examples, other skills) follow                                            |
 | Rule application           | Relevant `.claude/rules/*.instructions.md` and `.claude/references/*.md` are applied to the edit itself                         |
 | Skill isolation            | No file-path link from skill assets to `.claude/rules/*` or `.claude/references/*`; concept-name references used instead        |
+| Rule verifiability         | Each new/edited `.claude/rules/*` constraint is a scannable signature (→ 確認 → 直す) or is split into policy + self-review; no vague aspiration left as the operative rule |
+| Convention verifiability   | A convention added to this guide is checkable (signature / `Aspect → Check` / grep) with a matching row here — not a prose-only aspiration |
 
 ## Verification
 
-Official specs change. When adopting new fields or tools:
-
-- Verify against official docs via web fetch
-- Mark unverifiable items with `❓`
-- Update the confidence marks (✅ / ⚠️ / ❓) in [claude-vs-copilot.md](claude-vs-copilot.md)
+When adopting new fields or tools, verify against official docs and update the confidence marks — see
+[Verification in claude-vs-copilot.md](claude-vs-copilot.md#verification).
 
 ## Related Files
 

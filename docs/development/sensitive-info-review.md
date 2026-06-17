@@ -20,13 +20,9 @@ Excluded by `.gitignore` (no need to inspect): `.env*`, `*.key`, `*.pem`, `*.loc
 | Placeholder hygiene     | Slang, real-resource look-alikes, copy-paste leftovers from other projects               | The placeholder set defined in `.claude/rules/writing-style.instructions.md`       |
 | Dev markers             | `TODO` / `FIXME` / `XXX` that leak unfinished context or names                           | Documentation that explains the marker itself                                      |
 
-Placeholder convention (authoritative source: `.claude/rules/writing-style.instructions.md`): name = `foo`, IPv4 =
-`192.0.2.x`, IPv6 = `2001:db8::/32`, domain = `example.com`, email = `user@example.com`.
-
 ## Pre-Vetted Public References
 
-The following appear in tracked files and have already been judged safe. Re-flagging them on each review wastes time;
-flag only new occurrences outside this set.
+The following appear in tracked files and have already been judged safe. Flag only new occurrences outside this set.
 
 - `api.anthropic.com`, `code.claude.com`, `claude.ai/install.sh` — Claude Code installation / endpoint
 - `mcr.microsoft.com/devcontainers/base:debian` — public base image

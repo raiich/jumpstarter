@@ -1,0 +1,16 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/statusline.sh"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/check-wording.sh" }
+        ]
+      }
+    ]
+  }
+}

@@ -59,5 +59,5 @@ now on") and non-obvious findings (schema constraints, runtime behavior) do.
   rules, and instructions
 - [docs/development/claude-vs-copilot.md](docs/development/claude-vs-copilot.md) — Feature and config mapping between
   Claude Code and GitHub Copilot (CLI / VSCode)
-- [docs/development/sensitive-info-review.md](docs/development/sensitive-info-review.md) — Checklist and grep patterns
-  for reviewing tracked files for credentials, personal identifiers, local paths, and other leakage before publishing
+- [docs/development/sensitive-info-review.md](docs/development/sensitive-info-review.md) — This template's pre-vetted
+  allowlist and leakage hotspots; the generic scan lives in the `publish-gate` skill

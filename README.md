@@ -25,15 +25,32 @@ runs in isolation out of the box.
 
 ## Usage
 
-The main way to use Jumpstarter is to run Claude Code inside the bundled dev container. You can also
-just copy `.claude/` into your project.
+The main way to use Jumpstarter is to run the `jumpstart` command in your own repo, reusing the
+bundled dev container. You can also open jumpstarter itself directly, or just copy `.claude/` into
+your project.
 
 ### Use the dev container
 
-Clone jumpstarter and open the repo in the container (VS Code: **Reopen in Container**; requires
-Docker and the Dev Containers extension). The allowed domains live in
-`.devcontainer/gateway/allowed-domains.acl`, and forwarded ports (5173 for dev servers by default) in
-`devcontainer.json`.
+Clone jumpstarter once, then run `jumpstart` from your target repo to reuse the dev container.
+`jumpstart` symlinks jumpstarter's `.devcontainer` into the target repo — a symlink rather than a
+copy, so the template's updates apply automatically — and its bind mount exposes jumpstarter's
+`.claude/` at that repo's root.
+
+```bash
+git clone https://github.com/raiich/jumpstarter.git
+
+# Run from the target repo (jumpstarter/bin on PATH, or call by full path)
+cd /path/to/other-repo
+jumpstart
+```
+
+Reopen the target repo in the dev container afterward (VS Code: **Reopen in Container**; requires
+Docker and the Dev Containers extension). The symlink points at a machine-local path, so don't commit
+it. The allowed domains live in `.devcontainer/gateway/allowed-domains.acl`, and forwarded ports (5173
+for dev servers by default) in `devcontainer.json`.
+
+> **Note.** Claude's auth and settings live in a shared `claude-code-config` volume, so login state
+> and config changes (e.g. from `/kaizen`) apply across every project that uses this container.
 
 #### Sibling directories are visible
 
@@ -41,23 +58,10 @@ The container mounts the target repo's *parent* directory, so beyond the workspa
 sibling directories — handy for using your own libraries kept alongside the repo. They're mounted
 read/write, though, so keep repos holding secrets out of the same parent.
 
-#### Reuse the dev container in another repo
+#### Open jumpstarter itself
 
-Instead of copying, the `jumpstart` command symlinks this template's `.devcontainer` into another
-repo — a symlink rather than a copy, so the template's updates apply automatically. The dev container
-is shared, and its bind mount exposes jumpstarter's `.claude/` at that repo's root.
-
-```bash
-# Run from the target repo (jumpstarter/bin on PATH, or call by full path)
-cd /path/to/other-repo
-jumpstart
-```
-
-Reopen the repo in the dev container afterward. The symlink points at a machine-local path, so don't
-commit it.
-
-> **Note.** Claude's auth and settings live in a shared `claude-code-config` volume, so login state
-> and config changes (e.g. from `/kaizen`) apply across every project that uses this container.
+Clone jumpstarter and open it directly in the dev container to use it without `jumpstart`. Suited to
+trying out or developing the template itself.
 
 ### Copy `.claude/` only
 

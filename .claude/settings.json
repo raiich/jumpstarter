@@ -1,4 +1,5 @@
 {
+  "outputStyle": "doya-genki",
   "statusLine": {
     "type": "command",
     "command": ".claude/statusline.sh"

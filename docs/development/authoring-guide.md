@@ -137,11 +137,15 @@ An always-loaded rule earns its cost only if an agent can hold output against it
 concise", "stay consistent") can't be confirmed or refuted. Write rules a reviewer can check a span against and
 call pass/fail:
 
-- **Split policy from self-review.** Policy rule = *how to write*; self-review rule = *how to spot a violation*
-  (a scannable signature → 確認 → 直す). `writing-style.instructions.md` + `writing-review.instructions.md` is the
-  canonical pair.
+- **Pair policy with signature.** Each concern carries both *how to write* (方針) and *how to verify and fix a deviation*
+  (検証と修正: a scannable check paired with its fix), co-located so the verifiable form is tightened in one
+  place. `writing-style.instructions.md` is the canonical example.
 - **Signature, not adjective.** A checkable rule names something to scan for — a phrase, structure, or marker
   (`なぜなら`, `〜しますか`, a 3-column table) — not an end-state quality word.
+- **State the procedure, not the symptom.** For a check that needs judgment, name *how to detect* — what to
+  inspect, what to compare against (the user's input, the requirements, the placeholder set), and how to decide —
+  not the policy restated in the negative. "avoid X → if X, remove" carries no method and lets violations through;
+  "compare the output against the user's input; delete wording that leaked in" is checkable.
 - **Route the residual to an independent pass.** Qualities no signature catches (overall brevity, fit with
   surrounding prose) stay in the policy rule and go to a reviewer other than the generation that wrote the text
   (separate agent / session; see `sketch-feature/references/verification-strategy.md`). Don't force them into a
@@ -152,8 +156,8 @@ call pass/fail:
   `PostToolUse` (Write|Edit) hook over a `.claude/references/` word list, leaving only the semantic residual (is
   the rewrite natural?) in self-review. Pattern: `.claude/hooks/check-wording.sh` + `references/writing-word-check.md`.
   Gotchas: the hook runs after the write, so it is advisory (`exit 2` feeds the message back, not a block); a
-  missing list reports rather than passing silently; opt-out is `<!-- wording-check: skip -->` as the file's
-  first line, so a doc that quotes the marker in its body stays checked.
+  missing list reports rather than passing silently; a file that must quote the flagged words as examples (the
+  word list, the style rule) is opted out by path inside the hook, so the rule files carry no in-file marker.
 
 ## References under `.claude/references/`
 
@@ -216,6 +220,9 @@ outside the tracked tree is unavailable to those copies.
 - **No frontmatter.** Loaded on demand; no `applyTo` / `description` is needed
 - **Opening sentence states when to open it.** Each file begins with a one-line "when this is consulted" so an agent
   arriving via concept search can confirm relevance before reading the body
+- **No principle restatement.** When a root reference is linked from an always-loaded rule, that rule's principle is
+  already in context — don't re-assert it. Carry only the trigger line plus what the rule lacks: worked examples,
+  lookup tables, edge-case rulings
 - **Naming.** kebab-case; group related files that grow alongside each other under a shared topic prefix (e.g., the
   `writing-*` references). A standalone reference with no such family stays bare
 
@@ -450,6 +457,7 @@ leaving it as prose:
 | Impact scope               | When renaming identifiers / paths, references (links, examples, other skills) follow                                            |
 | Rule application           | Relevant `.claude/rules/*.instructions.md` and `.claude/references/*.md` are applied to the edit itself                         |
 | Skill isolation            | No file-path link from skill assets to `.claude/rules/*` or `.claude/references/*`; concept-name references used instead        |
+| Reference dedup            | A `.claude/references/*` linked from a rule adds examples / tables / edge-case rulings, not a restatement of the rule's always-loaded principle |
 | Rule verifiability         | Each new/edited `.claude/rules/*` constraint is a scannable signature (→ 確認 → 直す) or is split into policy + self-review; no vague aspiration left as the operative rule |
 | Convention verifiability   | A convention added to this guide is checkable (signature / `Aspect → Check` / grep) with a matching row here — not a prose-only aspiration |
 
